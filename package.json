@@ -1,7 +1,7 @@
 {
-  "name": "module-repository",
+  "name": "module-util",
   "version": "0.0.0",
-  "description": "Repository",
+  "description": "Util",
   "main": "",
   "author": {
     "name": "misak113",
