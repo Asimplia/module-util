@@ -1,4 +1,4 @@
-﻿
+﻿/// <reference path="./typings/underscore/underscore.d.ts" />
 import _ = require('underscore');
 
 export = ArrayHelper;

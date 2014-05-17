@@ -1,4 +1,5 @@
-﻿var _ = require('underscore');
+﻿/// <reference path="./typings/underscore/underscore.d.ts" />
+var _ = require('underscore');
 
 var ArrayHelper = (function () {
     function ArrayHelper() {
