@@ -11,11 +11,5 @@
     "underscore": "^1.6.0"
   },
   "readme": "﻿# Util\r\n\r\nmodule for work with special functions in global context\r\n",
-  "readmeFilename": "README.md",
-  "_id": "asimplia-util@0.0.0",
-  "dist": {
-    "shasum": "762bec059b2ba42b11fa1dc39d5011b90cc4536d"
-  },
-  "_resolved": "git+ssh://git@github.com:Asimplia/module-util.git#162f5f1bf15ccd95e32513bfabfd4d1601dd5b3e",
-  "_from": "asimplia-util@git+ssh://git@github.com:Asimplia/module-util.git"
+  "readmeFilename": "README.md"
 }
