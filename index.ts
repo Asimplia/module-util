@@ -1,4 +1,4 @@
-﻿/// <reference path="./typings/node/node.d.ts" />
+﻿/// <reference path="../../typings/node/node.d.ts" />
 
 export import ArrayHelper = require('./ArrayHelper');
 export import EnumHelper = require('./EnumHelper');
