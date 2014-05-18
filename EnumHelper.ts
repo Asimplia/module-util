@@ -12,7 +12,7 @@ class EnumHelper {
 		}
 	}
 
-	static getEnum<EnumType>(enumType: any, enumString: string): EnumType {
+	static getEnum<EnumType>(enumType: any, enumString: string): /*EnumType*/any {
 		if (_.isNumber(enumString)) {
 			return enumString;
 		} else {

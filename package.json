@@ -1,14 +1,15 @@
 {
-  "name": "module-repository",
-  "version": "0.0.0",
-  "description": "Repository",
+  "name": "asimplia-util",
+  "version": "0.0.1",
+  "description": "Util",
   "main": "",
   "author": {
-    "name": "misak113",
-    "email": ""
+    "name": "misak113"
   },
   "dependencies": {
     "express": ">=4.1.1",
     "underscore": "^1.6.0"
-  }
+  },
+  "readme": "﻿# Util\r\n\r\nmodule for work with special functions in global context\r\n",
+  "readmeFilename": "README.md"
 }
