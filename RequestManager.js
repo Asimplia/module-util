@@ -1,7 +1,7 @@
 ﻿var RequestManager = (function () {
     function RequestManager() {
     }
-    RequestManager.getPostData = function (req, res, callback) {
+    RequestManager.getPostData = function (req /*express.Request*/ , res, callback) {
         // Check if this is a form post or a stream post via REST client.
         if (req.readable) {
             // REST post.
@@ -30,4 +30,3 @@
     return RequestManager;
 })();
 module.exports = RequestManager;
-//# sourceMappingURL=RequestManager.js.map

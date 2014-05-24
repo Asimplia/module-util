@@ -1,4 +1,4 @@
-﻿/// <reference path="./typings/underscore/underscore.d.ts" />
+﻿/// <reference path="../../typings/underscore/underscore.d.ts" />
 var _ = require('underscore');
 
 var ArrayHelper = (function () {
@@ -22,4 +22,3 @@ var ArrayHelper = (function () {
     return ArrayHelper;
 })();
 module.exports = ArrayHelper;
-//# sourceMappingURL=ArrayHelper.js.map

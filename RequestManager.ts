@@ -1,9 +1,9 @@
-﻿
+﻿/// <reference path="../../typings/express/express.d.ts" />
 import express = require('express');
 
 export = RequestManager;
 class RequestManager  {
-    static getPostData(req: express.Request, res: express.Response, callback: (data: string) => void) {
+	static getPostData(req: any/*express.Request*/, res: express.Response, callback: (data: string) => void) {
         // Check if this is a form post or a stream post via REST client.
         if (req.readable) {
             // REST post.
