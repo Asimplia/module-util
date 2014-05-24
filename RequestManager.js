@@ -30,3 +30,4 @@
     return RequestManager;
 })();
 module.exports = RequestManager;
+//# sourceMappingURL=RequestManager.js.map
