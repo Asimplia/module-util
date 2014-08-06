@@ -10,6 +10,9 @@
     },
     "express/express.d.ts": {
       "commit": "fbee02cb171c2676ea8a391f7ad874a63d0216b0"
+    },
+    "node/node.d.ts": {
+      "commit": "bb59fade926c39c73f0c23781a7db60d51fbcff3"
     }
   }
 }
