@@ -1,6 +1,6 @@
 module.exports = function (grunt) {
 
-	var tsFiles = ["src/**/*.ts", "!src/**/*.d.ts", "!node_modules/**/*.ts"];
+	var tsFiles = ["src/**/*.ts", "tests/**/*.ts", "!node_modules/**/*.ts"];
 	// Project configuration.
 	grunt.initConfig({
 		typescript: {
@@ -26,7 +26,7 @@ module.exports = function (grunt) {
 		jasmine_node: {
 			unit: {
 				options: {
-					specFolders: ['tests/unit/']
+					specFolders: ['build/tests/unit/']
 				},
 			}
 		},

@@ -1,7 +1,9 @@
 
 /// <reference path="../typings/node/node.d.ts" />
+/// <reference path="../typings/underscore/underscore.d.ts" />
 
 import IObjectableError = require('./Error/IObjectableError');
+import _ = require('underscore');
 
 export = ErrorLogger;
 class ErrorLogger {
