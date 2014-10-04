@@ -7,9 +7,18 @@ var ErrorLogger = (function () {
         var _this = this;
         var consoleError = console.error;
         var consoleWarn = console.warn;
+        var callOnError = function (e, type) {
+            if (!_this.isError(e)) {
+                var error = new Error();
+                error.causedBy = e;
+                onError(error, type);
+            } else {
+                onError(e, type);
+            }
+        };
         process.on('uncaughtException', function (e) {
             try  {
-                onError(e, errorType);
+                callOnError(e, errorType);
             } catch (e) {
                 consoleError(e);
             }
@@ -17,13 +26,13 @@ var ErrorLogger = (function () {
         console.error = function () {
             consoleError.apply(_this, arguments);
             _.forEach(arguments, function (e) {
-                onError(e, errorType);
+                callOnError(e, errorType);
             });
         };
         console.warn = function () {
             consoleWarn.apply(_this, arguments);
             _.forEach(arguments, function (e) {
-                onError(e, warningType);
+                callOnError(e, warningType);
             });
         };
     };
@@ -40,6 +49,10 @@ var ErrorLogger = (function () {
             },
             configurable: true
         });
+    };
+
+    ErrorLogger.prototype.isError = function (e) {
+        return e == '[object Error]';
     };
     return ErrorLogger;
 })();

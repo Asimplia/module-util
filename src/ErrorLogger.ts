@@ -11,9 +11,18 @@ class ErrorLogger {
 	catchErrors(errorType: any, warningType: any, onError: (e: IObjectableError, type: any) => void) {
 		var consoleError = console.error;
 		var consoleWarn = console.warn;
+		var callOnError = (e, type) => {
+			if (!this.isError(e)) {
+				var error = <IObjectableError>new Error();
+				error.causedBy = e;
+				onError(error, type);
+			} else {
+				onError(e, type);
+			}
+		};
 		process.on('uncaughtException', (e) => {
 			try {
-				onError(e, errorType);
+				callOnError(e, errorType);
 			} catch (e) {
 				consoleError(e);
 			}
@@ -21,13 +30,13 @@ class ErrorLogger {
 		console.error = () => {
 			consoleError.apply(this, arguments);
 			_.forEach(arguments, (e) => {
-				onError(e, errorType);
+				callOnError(e, errorType);
 			});
 		};
 		console.warn = () => {
 			consoleWarn.apply(this, arguments);
 			_.forEach(arguments, (e) => {
-				onError(e, warningType);
+				callOnError(e, warningType);
 			});
 		};
 	}
@@ -44,5 +53,9 @@ class ErrorLogger {
 			},
 			configurable: true
 		});
+	}
+
+	private isError(e: any) {
+		return e == '[object Error]';
 	}
 }
