@@ -14,7 +14,7 @@
 [Dd]ebug/
 [Rr]elease/
 x64/
-build/
+build/reports/
 [Bb]in/
 [Oo]bj/
 

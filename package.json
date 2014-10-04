@@ -12,6 +12,10 @@
     "hooker": "~0.2.3",
     "moment": "~2.8.3"
   },
+  "scripts": {
+    "postinstall": "",
+    "test": "grunt test"
+  },
   "readme": "﻿# Util\r\n\r\nmodule for work with special functions in global context\r\n",
   "readmeFilename": "README.md",
   "devDependencies": {
