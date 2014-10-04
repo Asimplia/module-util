@@ -1,18 +1,25 @@
 {
   "name": "asimplia-util",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Util",
-  "main": "",
+  "main": "build/src/index.js",
   "author": {
     "name": "misak113"
   },
   "dependencies": {
     "express": ">=4.1.1",
-    "underscore": "^1.6.0"
+    "underscore": "^1.6.0",
+    "hooker": "~0.2.3"
   },
   "readme": "﻿# Util\r\n\r\nmodule for work with special functions in global context\r\n",
   "readmeFilename": "README.md",
   "devDependencies": {
-    "tsd": "^0.5.7"
+    "grunt": "^0.4.5",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-typescript": "~0.3.8",
+    "grunt-cli": "^0.1.13",
+    "tsd": "^0.5.7",
+    "jasmine": "~2.0.1",
+    "grunt-jasmine-node": "~0.2.1"
   }
 }
