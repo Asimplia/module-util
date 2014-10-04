@@ -1,10 +1,12 @@
 
 /// <reference path="../typings/node/node.d.ts" />
 
+import IObjectableError = require('./Error/IObjectableError');
+
 export = ErrorLogger;
 class ErrorLogger {
 	
-	catchErrors(errorType: any, warningType: any, onError: (e: Error, type: any) => void) {
+	catchErrors(errorType: any, warningType: any, onError: (e: IObjectableError, type: any) => void) {
 		var consoleError = console.error;
 		var consoleWarn = console.warn;
 		process.on('uncaughtException', (e) => {
