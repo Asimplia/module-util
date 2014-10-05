@@ -56,6 +56,6 @@ class ErrorLogger {
 	}
 
 	private isError(e: any) {
-		return e == '[object Error]';
+		return (''+e).substr(0, 5) == 'Error';
 	}
 }

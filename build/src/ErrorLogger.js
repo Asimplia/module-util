@@ -52,7 +52,7 @@ var ErrorLogger = (function () {
     };
 
     ErrorLogger.prototype.isError = function (e) {
-        return e == '[object Error]';
+        return ('' + e).substr(0, 5) == 'Error';
     };
     return ErrorLogger;
 })();
