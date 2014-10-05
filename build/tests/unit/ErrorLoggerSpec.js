@@ -13,7 +13,7 @@ describe("catchErrors", function () {
     });
 
     it("will create error.causedBy on console.error", function () {
-        errorLogger.catchErrors('error', 'warn', function (e, type) {
+        errorLogger.catchErrors('uncaught', 'error', 'warn', function (e, type) {
             expect(e.causedBy).toEqual('Some text');
             expect(type).toBe('error');
         });
@@ -22,7 +22,7 @@ describe("catchErrors", function () {
     });
 
     it("will log Error on console.error", function () {
-        errorLogger.catchErrors('error', 'warn', function (e, type) {
+        errorLogger.catchErrors('uncaught', 'error', 'warn', function (e, type) {
             expect(e.name).toEqual('Error');
             expect(type).toBe('error');
         });
@@ -31,7 +31,7 @@ describe("catchErrors", function () {
     });
 
     it("will create error.causedBy on console.warn", function () {
-        errorLogger.catchErrors('error', 'warn', function (e, type) {
+        errorLogger.catchErrors('uncaught', 'error', 'warn', function (e, type) {
             expect(e.causedBy).toEqual('Some warning');
             expect(type).toBe('warn');
         });
@@ -40,7 +40,7 @@ describe("catchErrors", function () {
     });
 
     it("will log Error on console.warn", function () {
-        errorLogger.catchErrors('error', 'warn', function (e, type) {
+        errorLogger.catchErrors('uncaught', 'error', 'warn', function (e, type) {
             expect(e.name).toEqual('Error');
             expect(type).toBe('warn');
         });
@@ -49,18 +49,18 @@ describe("catchErrors", function () {
     });
 
     it("will create error.causedBy on uncaughtException", function () {
-        errorLogger.catchErrors('error', 'warn', function (e, type) {
+        errorLogger.catchErrors('uncaught', 'error', 'warn', function (e, type) {
             expect(e.causedBy).toEqual('Some warning');
-            expect(type).toBe('error');
+            expect(type).toBe('uncaught');
         });
         var e = 'Some warning';
         process.emit('uncaughtException', e);
     });
 
     it("will log Error on uncaughtException", function () {
-        errorLogger.catchErrors('error', 'warn', function (e, type) {
+        errorLogger.catchErrors('uncaught', 'error', 'warn', function (e, type) {
             expect(e.name).toEqual('Error');
-            expect(type).toBe('error');
+            expect(type).toBe('uncaught');
         });
         var e = new Error('some warning');
         process.emit('uncaughtException', e);

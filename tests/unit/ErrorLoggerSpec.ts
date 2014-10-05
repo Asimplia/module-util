@@ -18,7 +18,7 @@ describe("catchErrors", () => {
 	});
 
 	it("will create error.causedBy on console.error", () => {
-		errorLogger.catchErrors('error', 'warn', (e: IObjectableError, type: string) => {
+		errorLogger.catchErrors('uncaught', 'error', 'warn', (e: IObjectableError, type: string) => {
 			expect(e.causedBy).toEqual('Some text');
 			expect(type).toBe('error');
 		});
@@ -27,7 +27,7 @@ describe("catchErrors", () => {
 	});
 
 	it("will log Error on console.error", () => {
-		errorLogger.catchErrors('error', 'warn', (e: IObjectableError, type: string) => {
+		errorLogger.catchErrors('uncaught', 'error', 'warn', (e: IObjectableError, type: string) => {
 			expect(e.name).toEqual('Error');
 			expect(type).toBe('error');
 		});
@@ -36,7 +36,7 @@ describe("catchErrors", () => {
 	});
 
 	it("will create error.causedBy on console.warn", () => {
-		errorLogger.catchErrors('error', 'warn', (e: IObjectableError, type: string) => {
+		errorLogger.catchErrors('uncaught', 'error', 'warn', (e: IObjectableError, type: string) => {
 			expect(e.causedBy).toEqual('Some warning');
 			expect(type).toBe('warn');
 		});
@@ -45,7 +45,7 @@ describe("catchErrors", () => {
 	});
 
 	it("will log Error on console.warn", () => {
-		errorLogger.catchErrors('error', 'warn', (e: IObjectableError, type: string) => {
+		errorLogger.catchErrors('uncaught', 'error', 'warn', (e: IObjectableError, type: string) => {
 			expect(e.name).toEqual('Error');
 			expect(type).toBe('warn');
 		});
@@ -54,18 +54,18 @@ describe("catchErrors", () => {
 	});
 
 	it("will create error.causedBy on uncaughtException", () => {
-		errorLogger.catchErrors('error', 'warn', (e: IObjectableError, type: string) => {
+		errorLogger.catchErrors('uncaught', 'error', 'warn', (e: IObjectableError, type: string) => {
 			expect(e.causedBy).toEqual('Some warning');
-			expect(type).toBe('error');
+			expect(type).toBe('uncaught');
 		});
 		var e = 'Some warning';
 		process.emit('uncaughtException', e);
 	});
 
 	it("will log Error on uncaughtException", () => {
-		errorLogger.catchErrors('error', 'warn', (e: IObjectableError, type: string) => {
+		errorLogger.catchErrors('uncaught', 'error', 'warn', (e: IObjectableError, type: string) => {
 			expect(e.name).toEqual('Error');
-			expect(type).toBe('error');
+			expect(type).toBe('uncaught');
 		});
 		var e = new Error('some warning');
 		process.emit('uncaughtException', e);

@@ -3,7 +3,7 @@ var _ = require('underscore');
 var ErrorLogger = (function () {
     function ErrorLogger() {
     }
-    ErrorLogger.prototype.catchErrors = function (errorType, warningType, onError) {
+    ErrorLogger.prototype.catchErrors = function (uncaughtErrorType, errorType, warningType, onError) {
         var _this = this;
         var consoleError = console.error;
         var consoleWarn = console.warn;
@@ -18,7 +18,7 @@ var ErrorLogger = (function () {
         };
         process.on('uncaughtException', function (e) {
             try  {
-                callOnError(e, errorType);
+                callOnError(e, uncaughtErrorType);
             } catch (e) {
                 consoleError(e);
             }

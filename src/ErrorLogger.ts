@@ -8,7 +8,12 @@ import _ = require('underscore');
 export = ErrorLogger;
 class ErrorLogger {
 	
-	catchErrors(errorType: any, warningType: any, onError: (e: IObjectableError, type: any) => void) {
+	catchErrors(
+		uncaughtErrorType: any, 
+		errorType: any, 
+		warningType: any, 
+		onError: (e: IObjectableError, type: any) => void
+	) {
 		var consoleError = console.error;
 		var consoleWarn = console.warn;
 		var callOnError = (e, type) => {
@@ -22,7 +27,7 @@ class ErrorLogger {
 		};
 		process.on('uncaughtException', (e) => {
 			try {
-				callOnError(e, errorType);
+				callOnError(e, uncaughtErrorType);
 			} catch (e) {
 				consoleError(e);
 			}

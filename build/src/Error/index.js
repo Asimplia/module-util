@@ -4,3 +4,4 @@ var AlreadyLockedError = require('./AlreadyLockedError');
 exports.AlreadyLockedError = AlreadyLockedError;
 
 exports.AlreadyRunningError;
+exports.AlreadyLockedError;
