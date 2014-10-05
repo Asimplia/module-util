@@ -21,20 +21,26 @@ class MockClass {
 describe("lockMethod", () => {
 	var methodLocker = new MethodLocker();
 
-	it("will lock unless method not callback", () => {
+	it("will lock unless method not callback", (done: () => void) => {
 		methodLocker.lockMethod(MockClass, 'someMethod');
 		var mockClass = new MockClass();
 		mockClass.someMethod(113, 'yeah!', (e: Error, someReturn1?: string) => {
-			mockClass.someMethod(114, 'no.', (e: Error, someReturn2?: string) => {
-				expect(e.message).toEqual(
-					'Method MockClass.someMethod:113,yeah! already running for #s. Try it again later.'
-				);
-				mockClass.doCallback(null, 'done');
-				mockClass.someMethod(115, 'maybe...', (e: Error, someReturn3?: string) => {
-					expect(someReturn3).toBe('done twice');
-				});
-				mockClass.doCallback(null, 'done twice');
+			expect(e).toBe(null);
+			expect(someReturn1).toBe('done');
+		});
+		mockClass.someMethod(113, 'yeah!', (e: Error, someReturn2?: string) => {
+			expect(e.message).toMatch(
+				/Method MockClass\.someMethod:113,yeah\! already running for \d+\.\d+s\. Try it again later./
+			);
+			expect(someReturn2).toBe(undefined);
+
+			mockClass.doCallback(null, 'done');
+			mockClass.someMethod(115, 'maybe...', (e: Error, someReturn3?: string) => {
+				expect(e).toBe(null);
+				expect(someReturn3).toBe('done twice');
+				done();
 			});
+			mockClass.doCallback(null, 'done twice');
 		});
 	});
 });
