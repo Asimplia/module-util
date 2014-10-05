@@ -42,14 +42,10 @@ class ErrorLogger {
 	}
 
 	setToObjectOnError() {
+		var properties = ['code', 'name', 'message', 'severity', 'stack', 'inner', 'causedBy'];
 		Object.defineProperty(Error.prototype, 'toObject', {
 			value: function () {
-			    var alt = {};
-			    Object.getOwnPropertyNames(this).forEach(function (key) {
-			        alt[key] = this[key];
-			    }, this);
-
-			    return alt;
+				return JSON.parse(JSON.stringify(this, properties, 2));
 			},
 			configurable: true
 		});

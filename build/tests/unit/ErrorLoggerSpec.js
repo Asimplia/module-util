@@ -66,3 +66,25 @@ describe("catchErrors", function () {
         process.emit('uncaughtException', e);
     });
 });
+
+describe("setToObjectOnError", function () {
+    var errorLogger = new ErrorLogger();
+    errorLogger.setToObjectOnError();
+
+    it("will be deep object from real error", function () {
+        errorLogger.setToObjectOnError();
+        try  {
+            var a = {};
+            a.noExists();
+        } catch (e) {
+            expect(e.toObject().message).toEqual("Object #<Object> has no method 'noExists'");
+        }
+    });
+
+    it("will be deep object", function () {
+        errorLogger.setToObjectOnError();
+        var e = new Error('abc');
+        e.message = 'ghi';
+        expect(e.toObject().message).toEqual('ghi');
+    });
+});

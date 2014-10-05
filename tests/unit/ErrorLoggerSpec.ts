@@ -71,3 +71,25 @@ describe("catchErrors", () => {
 		process.emit('uncaughtException', e);
 	});
 });
+
+describe("setToObjectOnError", () => {
+	var errorLogger = new ErrorLogger();
+	errorLogger.setToObjectOnError();
+
+	it("will be deep object from real error", () => {
+		errorLogger.setToObjectOnError();
+		try {
+			var a: any = {};
+			a.noExists();
+		} catch (e) {
+			expect(e.toObject().message).toEqual("Object #<Object> has no method 'noExists'");
+		}
+	});
+
+	it("will be deep object", () => {
+		errorLogger.setToObjectOnError();
+		var e = <IObjectableError>new Error('abc');
+		e.message = 'ghi';
+		expect(e.toObject().message).toEqual('ghi');
+	});
+});
