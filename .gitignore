@@ -14,7 +14,7 @@
 [Dd]ebug/
 [Rr]elease/
 x64/
-build/reports/
+build/
 [Bb]in/
 [Oo]bj/
 
@@ -162,5 +162,4 @@ $RECYCLE.BIN/
 node_modules/
 # TypeScript Definitions
 typings/
-*.js.map
 .npmignore
