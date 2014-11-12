@@ -1,8 +1,4 @@
 
-/// <reference path="../typings/node/node.d.ts" />
-/// <reference path="../typings/underscore/underscore.d.ts" />
-/// <reference path="../typings/moment/moment.d.ts" />
-
 import AlreadyRunningError = require('./Error/AlreadyRunningError');
 import AlreadyLockedError = require('./Error/AlreadyLockedError');
 import moment = require('moment');

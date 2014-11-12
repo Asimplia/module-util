@@ -1,6 +1,4 @@
 ﻿
-/// <reference path="../typings/express/express.d.ts" />
-
 import express = require('express');
 
 export = RequestManager;
