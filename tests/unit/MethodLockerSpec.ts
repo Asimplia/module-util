@@ -1,7 +1,4 @@
 
-/// <reference path="../../typings/jasmine/jasmine.d.ts" />
-/// <reference path="../../typings/node/node.d.ts" />
-
 import Util = require('../../src/index');
 import MethodLocker = Util.MethodLocker;
 import AlreadyLockedError = Util.Error.AlreadyLockedError;
