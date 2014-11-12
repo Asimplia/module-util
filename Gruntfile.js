@@ -18,7 +18,11 @@ module.exports = function (grunt) {
 					// true | false (default)
 					declaration: false,
 					// true (default) | false
-					removeComments: false
+					removeComments: false,
+					references: [
+						'typings/tsd.d.ts',
+						'typings_local/tsd.d.ts'
+					]
 				},
 				ignoreTypeCheck: true
 			}
@@ -33,11 +37,32 @@ module.exports = function (grunt) {
 		watch: {
 			ts: {
 				files: tsFiles,
-				tasks: ['typescript:build', 'jasmine_node:unit'],
+				tasks: ['tsd:reinstall', 'typescript:build', 'jasmine_node:unit'],
 				options: {
 					livereload: 35737,
 					debug: false,
 					debounceDelay: 100
+				}
+			}
+		},
+		tsd: {
+			reinstall: {
+				options: {
+					// execute a command
+					command: 'reinstall',
+					//optional: always get from HEAD
+					latest: true,
+					// specify config file
+					config: './tsd.json',
+					// experimental: options to pass to tsd.API
+					opts: {
+						// props from tsd.Options
+						saveBundle: false,
+						//overwriteFiles: true,
+						//saveToConfig: false,
+						addToBundles: [],
+						//resolveDependencies: false
+					}
 				}
 			}
 		}
@@ -46,12 +71,13 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-typescript');
 	grunt.loadNpmTasks('grunt-jasmine-node');
 	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-tsd');
 
 	grunt.registerTask('default', [
-		'typescript:build', 'jasmine_node:unit'
+		'tsd:reinstall', 'typescript:build', 'jasmine_node:unit'
 	]);
 	grunt.registerTask('dev', [
-		'typescript:build', 'jasmine_node:unit', 'watch:ts'
+		'tsd:reinstall', 'typescript:build', 'jasmine_node:unit', 'watch:ts'
 	]);
 	grunt.registerTask('test', [
 		'jasmine_node:unit'
