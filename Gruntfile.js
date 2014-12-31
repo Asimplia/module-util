@@ -20,9 +20,14 @@ module.exports = function (grunt) {
 	grunt.registerTask('default', [
 		'tsd:reinstall', 'typescript:build', 'jasmine_node:unit'
 	]);
-	grunt.registerTask('dev', [
-		'tsd:reinstall', 'typescript:build', 'jasmine_node:unit', 'watch:ts'
-	]);
+	grunt.registerTask('dev', function () {
+		GruntConfiguration.typescriptReferences(__dirname + '/build/references.ts', [
+			__dirname + '/src', 
+			__dirname + '/tests', 
+			__dirname + '/typings'
+		]);
+		grunt.task.run('tsd:reinstall', 'typescript:build', 'jasmine_node:unit', 'watch:ts');
+	});
 	grunt.registerTask('postinstall', function () {
 		if (!GruntConfiguration.isSubModule()) {
 			grunt.task.run('default');
