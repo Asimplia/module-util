@@ -88,7 +88,8 @@ module.exports = exports = function (
 				options: {
 					livereload: Math.floor(Math.random() * 10000) + 30000,
 					debug: false,
-					debounceDelay: 100
+					debounceDelay: 100,
+					spawn: false
 				}
 			}
 		},
@@ -169,6 +170,20 @@ module.exports = exports = function (
 					}
 					return 'echo "No ../module-util linked"';
 				}
+			}
+		},
+		subgrunt: {
+			'asimplia': [
+				'node_modules/asimplia-repository',
+				'node_modules/asimplia-util'
+			]
+		},
+		develop: {
+			server: {
+				file: 'build/src/app.js',
+				nodeArgs: [],
+				args: [],
+				env: {}
 			}
 		}
 	};
