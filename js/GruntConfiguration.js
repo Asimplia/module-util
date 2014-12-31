@@ -205,5 +205,5 @@ exports.typescriptReferences = function (referencesFile, paths) {
 };
 
 exports.isSubModule = function () {
-	return process.env.PWD.match(new RegExp('/node_modules/([\w\-]+)$')) !== null;
+	return process.env.PWD.match(new RegExp('/node_modules/([\\w\\-]+)$')) !== null;
 };
