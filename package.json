@@ -1,6 +1,6 @@
 {
   "name": "asimplia-util",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Util",
   "main": "build/src/index.js",
   "author": {
@@ -21,7 +21,7 @@
     "grunt-tsd": "~0.1.0"
   },
   "scripts": {
-    "postinstall": "",
+    "postinstall": "grunt postinstall",
     "test": "grunt test"
   },
   "readme": "﻿# Util\r\n\r\nmodule for work with special functions in global context\r\n",
