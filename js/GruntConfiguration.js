@@ -1,5 +1,6 @@
 
 var fs = require('fs');
+var path = require('path');
 
 module.exports = exports = function (
 	typescriptPublicFiles, 
@@ -221,4 +222,20 @@ exports.typescriptReferences = function (referencesFile, paths) {
 
 exports.isSubModule = function () {
 	return process.env.PWD.match(new RegExp('/node_modules/([\\w\\-]+)$')) !== null;
+};
+
+exports.loadParentNpmTasks = function (grunt, name) {
+	var root = path.resolve('node_modules');
+	var depth = 0;
+	while (depth < 10) {
+		var tasksdir = path.join(root, name, 'tasks');
+		if (grunt.file.exists(tasksdir)) {
+			grunt.loadNpmTasks(name);
+			return;
+		} else {
+			name = '../../node_modules/' + name;
+			depth++;
+		}
+	}
+	grunt.log.error('Parent Npm module "' + name + '" not found. Is it installed?');
 };

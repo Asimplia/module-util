@@ -10,12 +10,10 @@ module.exports = function (grunt) {
 	]);
 	grunt.initConfig(config);
 
-	if (!GruntConfiguration.isSubModule()) {
-		grunt.loadNpmTasks('grunt-typescript');
-		grunt.loadNpmTasks('grunt-jasmine-node');
-		grunt.loadNpmTasks('grunt-contrib-watch');
-		grunt.loadNpmTasks('grunt-tsd');
-	}
+	GruntConfiguration.loadParentNpmTasks(grunt, 'grunt-typescript');
+	GruntConfiguration.loadParentNpmTasks(grunt, 'grunt-jasmine-node');
+	GruntConfiguration.loadParentNpmTasks(grunt, 'grunt-contrib-watch');
+	GruntConfiguration.loadParentNpmTasks(grunt, 'grunt-tsd');
 
 	grunt.registerTask('default', [
 		'tsd:reinstall', 'typescript:build', 'jasmine_node:unit'
@@ -29,9 +27,7 @@ module.exports = function (grunt) {
 		grunt.task.run('tsd:reinstall', 'typescript:build', 'jasmine_node:unit', 'watch:ts');
 	});
 	grunt.registerTask('postinstall', function () {
-		if (!GruntConfiguration.isSubModule()) {
-			grunt.task.run('default');
-		}
+		grunt.task.run('default');
 	});
 	grunt.registerTask('test', [
 		'jasmine_node:unit'

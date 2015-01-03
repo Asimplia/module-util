@@ -6,19 +6,19 @@
   "bundle": "typings/tsd.d.ts",
   "installed": {
     "underscore/underscore.d.ts": {
-      "commit": "9872b853d6facd11ab4eba733b2408e249d85082"
+      "commit": "494b30d2327ab489fa5b5f082a3c9a299e4c5644"
     },
     "express/express.d.ts": {
-      "commit": "9872b853d6facd11ab4eba733b2408e249d85082"
+      "commit": "494b30d2327ab489fa5b5f082a3c9a299e4c5644"
     },
     "moment/moment.d.ts": {
-      "commit": "9872b853d6facd11ab4eba733b2408e249d85082"
+      "commit": "494b30d2327ab489fa5b5f082a3c9a299e4c5644"
     },
     "node/node.d.ts": {
-      "commit": "9872b853d6facd11ab4eba733b2408e249d85082"
+      "commit": "494b30d2327ab489fa5b5f082a3c9a299e4c5644"
     },
     "jasmine/jasmine.d.ts": {
-      "commit": "9872b853d6facd11ab4eba733b2408e249d85082"
+      "commit": "494b30d2327ab489fa5b5f082a3c9a299e4c5644"
     }
   }
 }
