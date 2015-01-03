@@ -1,5 +1,6 @@
 
-var GruntConfiguration = require('../../../js/GruntConfiguration');
+import Util = require('../../src/index');
+var GruntConfiguration = Util.GruntConfiguration;
 
 describe("isSubModule", () => {
 	var isSubModule = GruntConfiguration.isSubModule;
