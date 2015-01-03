@@ -62,7 +62,7 @@ module.exports = exports = function (
 				options: {
 					// baseUrl: "build",
 					mainConfigFile: "build/src/main.js",
-					name: "../../js/lib/almond",
+					name: "../../bower_components/almond/almond",
 					out: "build/src/main.optimized.js",
 					include: ['main'],
 					optimize: "uglify2",
