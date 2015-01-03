@@ -99,7 +99,8 @@ module.exports = exports = function (
 			dev: {
 				options: {
 					sourceMap: true,
-					sourceMapBasepath: '../../',
+					sourceMapFilename: 'build/css/debug.css.map',
+					sourceMapRootpath: '../../',
 					paths: "./css"
 				},
 				files: {
