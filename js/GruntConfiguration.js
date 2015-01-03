@@ -9,7 +9,8 @@ module.exports = exports = function (
 	watchTasks, 
 	watchFiles, 
 	typescriptBuildFiles, 
-	typescriptBuildReferences
+	typescriptBuildReferences,
+	basePath
 ) {
 	return {
 		typescript: {
@@ -97,8 +98,8 @@ module.exports = exports = function (
 		less: {
 			dev: {
 				options: {
-					paths: ["./css"],
 					sourceMap: true,
+					sourceMapBasepath: '../../',
 					paths: "./css"
 				},
 				files: {
@@ -153,23 +154,25 @@ module.exports = exports = function (
 			link_module_repository: {
 				command: function () {
 					if (
-						fs.existsSync(__dirname + '/../module-repository') 
-						&& !fs.existsSync(__dirname + '/node_modules/asimplia-repository/.git')
+						fs.existsSync(basePath + '/../module-repository') 
+						&& fs.existsSync(basePath + '/../module-repository/.git') 
+						&& !fs.existsSync(basePath + '/node_modules/asimplia-repository/.git')
 					) {
-						return 'mv ./node_modules/asimplia-repository ./node_modules/asimplia-repository.bak && ln -s ../../module-repository ./node_modules/asimplia-repository';
+						return 'mv ' + basePath + '/node_modules/asimplia-repository ' + basePath + '/node_modules/asimplia-repository.bak && ln -s ' + basePath + '/../module-repository ' + basePath + '/node_modules/asimplia-repository';
 					}
-					return 'echo "No ../module-repository linked"';
+					return 'echo "No ' + basePath + '/../module-repository linked"';
 				}
 			},
 			link_module_util: {
 				command: function () {
 					if (
-						fs.existsSync(__dirname + '/../module-util') 
-						&& !fs.existsSync(__dirname + '/node_modules/asimplia-util/.git')
+						fs.existsSync(basePath + '/../module-util') 
+						&& fs.existsSync(basePath + '/../module-util/.git') 
+						&& !fs.existsSync(basePath + '/node_modules/asimplia-util/.git')
 					) {
-						return 'mv ./node_modules/asimplia-util ./node_modules/asimplia-util.bak && ln -s ../../module-util ./node_modules/asimplia-util';
+						return 'mv ' + basePath + '/node_modules/asimplia-util ' + basePath + '/node_modules/asimplia-util.bak && ln -s ' + basePath + '/../module-util ' + basePath + '/node_modules/asimplia-util';
 					}
-					return 'echo "No ../module-util linked"';
+					return 'echo "No ' + basePath + '/../module-util linked"';
 				}
 			}
 		},
