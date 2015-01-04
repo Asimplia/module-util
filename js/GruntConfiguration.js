@@ -81,6 +81,11 @@ module.exports = exports = function (
 				options: {
 					specFolders: ['build/tests/unit/']
 				},
+			},
+			feature: {
+				options: {
+					specFolders: ['build/tests/feature/']
+				},
 			}
 		},
 		watch: {
