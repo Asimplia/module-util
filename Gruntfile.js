@@ -6,7 +6,7 @@ module.exports = function (grunt) {
 	var config = GruntConfiguration([], [], [], [
 		'tsd:reinstall', 'typescript:build', 'jasmine_node:unit'
 	], typescriptBuildFiles, typescriptBuildFiles, [
-		'typings_local/tsd.d.ts'
+		'typings/tsd.d.ts'
 	]);
 	grunt.initConfig(config);
 
