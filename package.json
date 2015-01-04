@@ -1,6 +1,6 @@
 {
   "name": "asimplia-util",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "description": "Util",
   "main": "build/src/index.js",
   "author": {
@@ -10,19 +10,22 @@
     "express": ">=4.1.1",
     "underscore": "^1.6.0",
     "hooker": "~0.2.3",
-    "moment": "~2.8.3",
+    "moment": "~2.8.3"
+  },
+  "buildDependencies": {
+    "tsd": "^0.5.7",
     "grunt": "^0.4.5",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-typescript": "~0.4.4",
     "grunt-cli": "^0.1.13",
-    "tsd": "^0.5.7",
-    "jasmine": "~2.0.1",
     "grunt-jasmine-node": "~0.2.1",
-    "grunt-tsd": "~0.1.0"
+    "grunt-tsd": "~0.1.0",
+    "jasmine": "~2.0.1"
   },
   "scripts": {
-    "postinstall": "grunt postinstall",
-    "test": "grunt test"
+    "preinstall": "node preinstall.js",
+    "postinstall": "./node_modules/.bin/grunt postinstall",
+    "test": "./node_modules/.bin/grunt test"
   },
   "readme": "﻿# Util\r\n\r\nmodule for work with special functions in global context\r\n",
   "readmeFilename": "README.md"
