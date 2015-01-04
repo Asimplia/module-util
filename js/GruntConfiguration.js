@@ -243,3 +243,16 @@ exports.loadParentNpmTasks = function (grunt, name) {
 	}
 	grunt.log.error('Parent Npm module "' + name + '" not found. Is it installed?');
 };
+
+exports.resolveNodeModulePath = function (nodeModuleFileRelativePath) {
+	nodeModuleFileRelativePath = 'node_modules/' + nodeModuleFileRelativePath;
+	var depth = 0;
+	while (depth < 10) {
+		if (fs.existsSync(nodeModuleFileRelativePath)) {
+			return nodeModuleFileRelativePath;
+		}
+		nodeModuleFileRelativePath = '../' + nodeModuleFileRelativePath;
+		depth++;
+	}
+	throw new Error('Parent Npm module file "' + nodeModuleFileRelativePath + '" not found. Is it exists?');
+};
