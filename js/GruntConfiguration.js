@@ -51,9 +51,7 @@ module.exports = exports = function (
 					declaration: false,
 					// true (default) | false
 					removeComments: false,
-					references: [
-						'typings/tsd.d.ts'
-					].concat(typescriptBuildReferences)
+					references: typescriptBuildReferences
 				},
 				ignoreTypeCheck: true
 			}
