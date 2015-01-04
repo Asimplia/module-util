@@ -80,9 +80,11 @@ module.exports = exports = function (
 					specFolders: ['build/tests/unit/']
 				},
 			},
+		},
+		protractor: {
 			feature: {
 				options: {
-					specFolders: ['build/tests/feature/']
+					configFile: 'tests/feature.conf.js'
 				},
 			}
 		},
