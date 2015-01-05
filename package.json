@@ -1,6 +1,6 @@
 {
   "name": "asimplia-util",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "description": "Util",
   "main": "build/src/index.js",
   "author": {
@@ -19,6 +19,7 @@
     "grunt-typescript": "~0.4.4",
     "grunt-cli": "^0.1.13",
     "grunt-jasmine-node": "~0.2.1",
+    "grunt-wait": "~0.1.0",
     "grunt-tsd": "~0.1.0",
     "jasmine": "~2.0.1"
   },

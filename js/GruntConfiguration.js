@@ -6,7 +6,6 @@ module.exports = exports = function (
 	typescriptPublicFiles, 
 	typescriptPublicReferences, 
 	requirejsDeps, 
-	watchTasks, 
 	watchFiles, 
 	typescriptBuildFiles, 
 	typescriptBuildReferences,
@@ -91,7 +90,7 @@ module.exports = exports = function (
 		watch: {
 			ts: {
 				files: watchFiles,
-				tasks: watchTasks,
+				tasks: ['dev'],
 				options: {
 					livereload: Math.floor(Math.random() * 10000) + 30000,
 					debug: false,
@@ -194,6 +193,18 @@ module.exports = exports = function (
 				nodeArgs: [],
 				args: [],
 				env: {}
+			}
+		},
+		wait: {
+			typings: {      
+				options: {
+					delay: 10,
+					after : function () {
+						if (!fs.existsSync(basePath + '/typings/tsd.d.ts')) {
+							return true;
+						}
+					}
+				}
 			}
 		}
 	};
