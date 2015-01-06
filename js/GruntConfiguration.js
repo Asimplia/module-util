@@ -163,7 +163,7 @@ module.exports = exports = function (
 						&& fs.existsSync(basePath + '/../module-repository/.git') 
 						&& !fs.existsSync(basePath + '/node_modules/asimplia-repository/.git')
 					) {
-						return 'rm ' + basePath + '/node_modules/asimplia-repository && ln -s ' + basePath + '/../module-repository ' + basePath + '/node_modules/asimplia-repository';
+						return 'rm -rf ' + basePath + '/node_modules/asimplia-repository && ln -s ' + basePath + '/../module-repository ' + basePath + '/node_modules/asimplia-repository';
 					}
 					return 'echo "No ' + basePath + '/../module-repository linked"';
 				}
@@ -175,7 +175,7 @@ module.exports = exports = function (
 						&& fs.existsSync(basePath + '/../module-util/.git') 
 						&& !fs.existsSync(basePath + '/node_modules/asimplia-util/.git')
 					) {
-						return 'rm ' + basePath + '/node_modules/asimplia-util && ln -s ' + basePath + '/../module-util ' + basePath + '/node_modules/asimplia-util';
+						return 'rm -rf ' + basePath + '/node_modules/asimplia-util && ln -s ' + basePath + '/../module-util ' + basePath + '/node_modules/asimplia-util';
 					}
 					return 'echo "No ' + basePath + '/../module-util linked"';
 				}
