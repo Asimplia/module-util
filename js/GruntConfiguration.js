@@ -74,9 +74,20 @@ module.exports = exports = function (
 			}
 		},
 		jasmine_node: {
+			options: {
+				jUnit: {
+					report: true,
+					savePath : "./build/reports/jasmine/",
+				}
+			},
 			unit: {
 				options: {
 					specFolders: ['build/tests/unit/']
+				},
+			},
+			integration: {
+				options: {
+					specFolders: ['build/tests/integration/']
 				},
 			},
 		},
