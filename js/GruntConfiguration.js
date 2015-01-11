@@ -16,7 +16,7 @@ module.exports = exports = function (
 			// A specific target
 			"public": {
 				src: typescriptPublicFiles,
-				dest: 'build/',
+				dest: 'build/public/',
 				options: {
 					// 'es3' (default) | 'es5'
 					target: 'es5',
@@ -59,9 +59,9 @@ module.exports = exports = function (
 			compile: {
 				options: {
 					// baseUrl: "build",
-					mainConfigFile: "build/src/main.js",
-					name: "../../bower_components/almond/almond",
-					out: "build/src/main.optimized.js",
+					mainConfigFile: "build/public/src/main.js",
+					name: "../../../bower_components/almond/almond",
+					out: "build/public/src/main.optimized.js",
 					include: ['main'],
 					optimize: "uglify2",
 					deps: requirejsDeps,
