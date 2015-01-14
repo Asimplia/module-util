@@ -147,7 +147,7 @@ module.exports = exports = function (
 					// experimental: options to pass to tsd.API
 					opts: {
 						// props from tsd.Options
-						saveBundle: false,
+						saveBundle: true,
 						//overwriteFiles: true,
 						saveToConfig: false,
 						addToBundles: [],
