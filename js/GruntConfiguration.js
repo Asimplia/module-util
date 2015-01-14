@@ -149,7 +149,7 @@ module.exports = exports = function (
 						// props from tsd.Options
 						saveBundle: false,
 						//overwriteFiles: true,
-						//saveToConfig: false,
+						saveToConfig: false,
 						addToBundles: [],
 						//resolveDependencies: false
 					}
