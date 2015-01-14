@@ -12,7 +12,7 @@
             "generate_source_map": false, 
             "map_files_root_path": "none", 
             "module_kind": "none", 
-            "no_implicit_any_warning": false, 
+            "no_implicit_any_warning": true, 
             "output_dir_path": "none", 
             "post_processing_commands": [], 
             "pre_processing_commands": [], 
