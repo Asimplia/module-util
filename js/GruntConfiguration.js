@@ -167,28 +167,20 @@ module.exports = exports = function (
 			}
 		},
 		shell: {
-			link_module_repository: {
-				command: function () {
-					if (
-						fs.existsSync(basePath + '/../module-repository') 
-						&& fs.existsSync(basePath + '/../module-repository/.git') 
-						&& !fs.existsSync(basePath + '/node_modules/asimplia-repository/.git')
-					) {
-						return 'rm -rf ' + basePath + '/node_modules/asimplia-repository && ln -s ' + basePath + '/../module-repository ' + basePath + '/node_modules/asimplia-repository';
+			link_module: {
+				command: function (depName) {
+					if (typeof process.env.NODE_ENV !== 'undefined') {
+						return 'echo "Link only in dev environment"';
 					}
-					return 'echo "No ' + basePath + '/../module-repository linked"';
-				}
-			},
-			link_module_util: {
-				command: function () {
+					var modulePath = exports.resolvePackagePath(depName, basePath);
 					if (
-						fs.existsSync(basePath + '/../module-util') 
-						&& fs.existsSync(basePath + '/../module-util/.git') 
-						&& !fs.existsSync(basePath + '/node_modules/asimplia-util/.git')
+						modulePath 
+						&& fs.existsSync(modulePath + '/.git') 
+						&& !fs.existsSync(basePath + '/node_modules/' + depName + '/.git')
 					) {
-						return 'rm -rf ' + basePath + '/node_modules/asimplia-util && ln -s ' + basePath + '/../module-util ' + basePath + '/node_modules/asimplia-util';
+						return 'rm -rf ' + basePath + '/node_modules/' + depName + ' && ln -s ' + modulePath + ' ' + basePath + '/node_modules/' + depName;
 					}
-					return 'echo "No ' + basePath + '/../module-util linked"';
+					return 'echo "No package ' + depName + ' linked"';
 				}
 			}
 		},
@@ -282,4 +274,33 @@ exports.resolveNodeModulePath = function (nodeModuleFileRelativePath) {
 		depth++;
 	}
 	throw new Error('Parent Npm module file "' + nodeModuleFileRelativePath + '" not found. Is it exists?');
+};
+
+exports.resolvePackagePath = function (depName, basePath) {
+	var depth = 0;
+	while (depth < 10) {
+		basePath = basePath + '/..';
+		var dirNames = exports.getDirectories(basePath);
+		for (var i in dirNames) {
+			var dirName = dirNames[i];
+			var modulePath = path.resolve(basePath + '/' + dirName);
+			var packageConfPath = modulePath + '/package.json';
+			if (!fs.existsSync(packageConfPath)) {
+				continue;
+			}
+			var packageConf = require(packageConfPath);
+			if (packageConf.name !== depName) {
+				continue;
+			}
+			return modulePath;
+		}
+		depth++;
+	}
+	return null;
+};
+
+exports.getDirectories = function (srcPath) {
+	return fs.readdirSync(srcPath).filter(function (file) {
+		return fs.statSync(path.join(srcPath, file)).isDirectory();
+	});
 };
