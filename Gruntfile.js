@@ -25,7 +25,7 @@ module.exports = function (grunt) {
 		]);
 		grunt.task.run('typescript:build', 'jasmine_node:unit', 'watch:ts');
 	});
-	grunt.registerTask('postinstall', function () {
+	grunt.registerTask('prepublish', function () {
 		grunt.task.run('default');
 	});
 	grunt.registerTask('test', [
