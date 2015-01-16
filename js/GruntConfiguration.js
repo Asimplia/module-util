@@ -73,6 +73,15 @@ module.exports = exports = function (
 				}
 			}
 		},
+		bower: {
+			install: {
+				options: {
+					targetDir: './bower_components',
+					copy: false,
+					verbose: true
+				}
+			}
+		},
 		jasmine_node: {
 			options: {
 				jUnit: {
@@ -169,8 +178,8 @@ module.exports = exports = function (
 		shell: {
 			link_module: {
 				command: function (depName) {
-					if (typeof process.env.NODE_ENV !== 'undefined') {
-						return 'echo "Link only in dev environment"';
+					if (typeof process.env.NODE_ENV !== 'dev') {
+						return 'echo "Link only in dev environment NODE_ENV"';
 					}
 					var modulePath = exports.resolvePackagePath(depName, basePath);
 					if (
