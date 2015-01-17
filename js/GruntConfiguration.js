@@ -76,8 +76,6 @@ module.exports = exports = function (
 		bower: {
 			install: {
 				options: {
-					targetDir: './bower_components',
-					copy: false,
 					verbose: true
 				}
 			}
