@@ -1,0 +1,9 @@
+node_modules/
+bower_components/
+tests/
+.gitignore
+.sublimets
+.travis.yml
+Gruntfile.js
+bower.json
+tsd.json
