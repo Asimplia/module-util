@@ -76,17 +76,15 @@ module.exports = exports = function (
 		bower: {
 			install: {
 				options: {
-					verbose: true
+					targetDir: "./build/lib",
+					layout: "byComponent",
+					verbose: true,
+					cleanTargetDir: true
 				}
 			}
 		},
 		jasmine_node: {
-			options: {
-				jUnit: {
-					report: true,
-					savePath : "./build/reports/jasmine/",
-				}
-			},
+			options: {},
 			unit: {
 				options: {
 					specFolders: ['build/tests/unit/']
@@ -165,12 +163,16 @@ module.exports = exports = function (
 		},
 		copy: {
 			fonts: {
-				src: 'fonts/*',
-				dest: 'build/',
+				expand: true,
+				cwd: "build/",
+				src: '**/fonts/*',
+				dest: 'build/fonts/',
+				flatten: true,
+				filter: 'isFile'
 			},
 			img: {
 				src: 'img/*',
-				dest: 'build/',
+				dest: 'build/'
 			}
 		},
 		shell: {
@@ -196,6 +198,9 @@ module.exports = exports = function (
 				'node_modules/asimplia-repository',
 				'node_modules/asimplia-util'
 			]
+		},
+		clean: {
+			build: "build/"
 		},
 		develop: {
 			server: {
