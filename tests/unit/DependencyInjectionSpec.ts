@@ -27,10 +27,11 @@ class Factoried {
 
 var defs: any = {
 	'NoDep': {
-		fn: NoDep,
+		class: NoDep,
 		args: [' 0113']
 	},
 	'Your.Service': your,
+	'Your2.Service': { world: 'country'},
     'My.Service': my,
     'Our.Service': Our,
     'Ctrl': Ctrl,
@@ -38,10 +39,14 @@ var defs: any = {
         factory: (ctrl: Ctrl, your: any) => {
             return new Factoried();
         },
-        inject: ['Ctrl', 'Your.Service'] // TODO
+        inject: ['Ctrl', 'Your.Service']
     },
     'Path.Service': {
         path: __dirname + '/MockCtrl',
+    },
+    'Ctrl2': {
+    	class: Ctrl,
+    	inject: ['My.Service', 'Your2.Service', 'Our.Service']
     }
 };
 
@@ -57,7 +62,7 @@ describe('DependencyInjection', () => {
 	it('should create service by constructor', () => {
 		var di = new DependencyInjection({
 			'NoDep': {
-				fn: NoDep
+				class: NoDep
 			}
 		});
 		expect(di.service('NoDep').hello()).toBe('hello');
@@ -66,7 +71,7 @@ describe('DependencyInjection', () => {
 	it('should create service by constructor with arg', () => {
 		var di = new DependencyInjection({
 			'NoDep': {
-				fn: NoDep,
+				class: NoDep,
 				args: [' 0113']
 			}
 		});
@@ -88,5 +93,10 @@ describe('DependencyInjection', () => {
 	it('should create service by path with dependencies', () => {
 		var di = new DependencyInjection(defs);
 		expect(di.service('Path.Service').logAll()).toBe('hello world to all');
+	});
+
+	it('should create service of same Class as other with other dependencies', () => {
+		var di = new DependencyInjection(defs);
+		expect(di.service('Ctrl2').logAll()).toBe('hello country to all');
 	});
 });

@@ -1,9 +1,10 @@
 
 interface IServiceDefinition {
 	path?: string;
-	fn?: IConstructor;
+	class?: IConstructor;
 	args?: string[]|Object[];
 	factory?: Function;
+	inject?: string[];
 }
 
 interface IConstructor {
@@ -24,27 +25,28 @@ class DependencyInjection {
 	}
 
 	private prepareServiceFactories(serviceDefs: {[name: string]: Object|IConstructor|IServiceDefinition}) {
-	    Object.keys(serviceDefs).forEach((name: string) => {
-	        var def = serviceDefs[name];
-	        if (typeof def === 'function') { // def instanceof IConstructor
-	            def = { fn: def };
+	    this.getKeys(serviceDefs).forEach((name: string) => {
+	        var def: any = serviceDefs[name];
+	        if (typeof def === 'function') {
+	            def = { class: def };
 	        }
-	        if (typeof def === 'object' && (
-	        	typeof (<IServiceDefinition>def).factory !== 'undefined' 
-	        	|| typeof (<IServiceDefinition>def).fn !== 'undefined' 
-	        	|| typeof (<IServiceDefinition>def).args !== 'undefined' 
-	        	|| typeof (<IServiceDefinition>def).path !== 'undefined'
-	        )) { // def instanceof IServiceDefinition
-            	this.serviceFactories[name] = this.createFactoryByDefinition(<IServiceDefinition>def);
+	        if (typeof def === 'object' && this.isServiceDefinition(def)) {
+            	this.serviceFactories[name] = this.createFactoryByDefinition(def);
             } else {
-                this.serviceFactories[name] = () => { return def; };
+                this.serviceFactories[name] = this.createFactorySimple(def);
             }
 	    });
 	}
 
-	private createFactoryByClass(Constructor: IConstructor, args: string[]|Object[]) {
+	private createFactorySimple(def: any) {
 		return () => {
-            var names = Constructor.$inject;
+			return def;
+		};
+	}
+
+	private createFactoryByClass(Constructor: IConstructor, args: string[]|Object[], inject: string[]) {
+		return () => {
+            var names = inject || Constructor.$inject;
             var injectServices = [];
             if (typeof names !== 'undefined') {
 	            names.forEach((name: string) => {
@@ -58,14 +60,14 @@ class DependencyInjection {
 	}
 
 	private createFactoryByDefinition(serviceDef: IServiceDefinition) {
-        if (typeof serviceDef.fn === 'undefined' && typeof serviceDef.path === 'undefined' && typeof serviceDef.factory === 'undefined') {
-            throw new Error('Class "fn" or "path" or "factory" should be specified');
+        if (typeof serviceDef['class'] === 'undefined' && typeof serviceDef.path === 'undefined' && typeof serviceDef.factory === 'undefined') {
+            throw new Error('Class "class" or "path" or "factory" should be specified');
         }
         if (typeof serviceDef.path !== 'undefined') {
         	if (typeof serviceDef.path !== 'string') {
         		throw new Error('"path" should be string');
         	}
-        	serviceDef.fn = require(serviceDef.path);
+        	serviceDef['class'] = require(serviceDef.path);
         }
         if (typeof serviceDef.factory !== 'undefined') {
         	if (typeof serviceDef.factory !== 'function') {
@@ -73,10 +75,21 @@ class DependencyInjection {
         	}
         	return serviceDef.factory;
         }
-        if (typeof serviceDef.fn === 'function') {
-	        return this.createFactoryByClass(serviceDef.fn, serviceDef.args || []);
+        if (typeof serviceDef['class'] === 'function') {
+	        return this.createFactoryByClass(serviceDef['class'], serviceDef.args || [], serviceDef.inject);
     	}
     	throw new Error('Invalid state');
+	}
+
+	private isServiceDefinition(def: any) {
+		return typeof def.factory !== 'undefined' 
+        	|| typeof def['class'] !== 'undefined' 
+        	|| typeof def.args !== 'undefined' 
+        	|| typeof def.path !== 'undefined';
+	}
+
+	private getKeys(object: any) {
+		return Object.keys(object);
 	}
 
 	service(name): any|Object {
