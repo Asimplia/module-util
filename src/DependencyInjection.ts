@@ -21,6 +21,7 @@ class DependencyInjection {
 		this.services = {};
 		this.serviceFactories = {};
 		this.prepareServiceFactories(serviceDefs);
+		this.addService('DependencyInjection', this);
 	}
 
 	private prepareServiceFactories(serviceDefs: {[name: string]: any|IConstructor|IServiceDefinition}) {

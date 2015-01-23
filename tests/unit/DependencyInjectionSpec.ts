@@ -122,4 +122,9 @@ describe('DependencyInjection', () => {
 		di.addService('added_service', addedService);
 		expect(di.service('added_service')).toBe(addedService);
 	});
+
+	it('should contains DependencyInjection self in container as service named DependencyInjection', () => {
+		var di = new DependencyInjection(defs);
+		expect(di.service('DependencyInjection')).toBe(di);
+	});
 });
