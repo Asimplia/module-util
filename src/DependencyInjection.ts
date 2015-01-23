@@ -14,7 +14,7 @@ interface IConstructor extends IServiceDefinition {
 export = DependencyInjection;
 class DependencyInjection {
 
-	private static DEPENDENCY_INJECTION_TO_SERVICE_DELIMITER = '.';
+	private static DEPENDENCY_INJECTION_TO_SERVICE_DELIMITER = ':';
 
 	private dependencyInjections: { [name: string]: DependencyInjection } = {};
 	private services: {[name: string]: any} = {};

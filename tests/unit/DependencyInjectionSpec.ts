@@ -145,8 +145,8 @@ describe('DependencyInjection', () => {
 		expect(di.service('My.Service')).toBe(my);
 		expect(di.service('sub1_service')).toBe(subService1);
 		expect(di.service('sub2_service')).toBe(subService2);
-		expect(di.service('sub2.sub1_service')).toBe(subService3Named1);
+		expect(di.service('sub2:sub1_service')).toBe(subService3Named1);
 		expect(di.service('Our.Service') instanceof Our).toBeTruthy();
-		expect(di.service('sub1.Our.Service')).toBe(subOur);
+		expect(di.service('sub1:Our.Service')).toBe(subOur);
 	});
 });
