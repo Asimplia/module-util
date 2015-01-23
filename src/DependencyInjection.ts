@@ -91,7 +91,7 @@ class DependencyInjection {
 		return Object.keys(object);
 	}
 
-	service(name): any|Object {
+	service(name: string): any|Object {
 		if (typeof this.services[name] === 'undefined') {
 			if (typeof this.serviceFactories[name] === 'undefined') {
 				throw new Error('Service ' + name + ' is not declared');
