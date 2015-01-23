@@ -8,11 +8,13 @@ describe("catchErrors", () => {
 	var defaultConsoleError = console.error;
 	var defaultConsoleWarn = console.warn;
 
-	beforeEach(() => {
+	var resetConsole = () => {
 		process.removeAllListeners('uncaughtException');
 		console.error = defaultConsoleError;
 		console.warn = defaultConsoleWarn;
-	});
+	};
+	beforeEach(resetConsole);
+	afterEach(resetConsole);
 
 	it("will create error.causedBy on console.error", () => {
 		errorLogger.catchErrors('uncaught', 'error', 'warn', (e: IObjectableError, type: string) => {
@@ -71,7 +73,12 @@ describe("catchErrors", () => {
 
 describe("setToObjectOnError", () => {
 	var errorLogger = new ErrorLogger();
-	errorLogger.setToObjectOnError();
+	var defaultToObject = (<any>Error).prototype.toObject;
+	var resetConsole = () => {
+		(<any>Error).prototype.toObject = defaultToObject;
+	};
+	beforeEach(resetConsole);
+	afterEach(resetConsole);
 
 	it("will be deep object from real error", () => {
 		errorLogger.setToObjectOnError();
