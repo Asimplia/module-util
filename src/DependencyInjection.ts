@@ -14,12 +14,23 @@ interface IConstructor extends IServiceDefinition {
 export = DependencyInjection;
 class DependencyInjection {
 
-	private services: {[name: string]: any};
-	private serviceFactories: {[name: string]: Function};
+	private static DEPENDENCY_INJECTION_TO_SERVICE_DELIMITER = '.';
 
-	constructor(serviceDefs: {[name: string]: any|IConstructor|IServiceDefinition}) {
-		this.services = {};
-		this.serviceFactories = {};
+	private dependencyInjections: { [name: string]: DependencyInjection } = {};
+	private services: {[name: string]: any} = {};
+	private serviceFactories: {[name: string]: Function} = {};
+
+	get Name() { return this.name; }
+
+	constructor(
+		private name: string, 
+		private serviceDefs: {[name: string]: any|IConstructor|IServiceDefinition},
+		dependencyInjections: DependencyInjection[] = []
+	) {
+		for (var i in dependencyInjections) {
+			var dependencyInjection = dependencyInjections[i];
+			this.dependencyInjections[dependencyInjection.Name] = dependencyInjection;
+		}
 		this.prepareServiceFactories(serviceDefs);
 		this.addService('DependencyInjection', this);
 	}
@@ -92,17 +103,63 @@ class DependencyInjection {
 		return Object.keys(object);
 	}
 
+	private subService(name: string) {
+		var dependencyInjectionNames = this.getKeys(this.dependencyInjections);
+		for (var i in dependencyInjectionNames) {
+			var dependencyInjectionName = dependencyInjectionNames[i];
+			var dependencyInjection = this.getDependencyInjection(dependencyInjectionName);
+			if (dependencyInjection.hasService(name)) {
+				return dependencyInjection.service(name);
+			}
+		}
+		throw new Error('Service ' + name + ' is not declared');
+	}
+
+	private hasSubService(name: string) {
+		for (var dependencyInjectionName in this.dependencyInjections) {
+			if (this.dependencyInjections[dependencyInjectionName].hasService(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	hasService(name: string) {
+		return typeof this.services[name] !== 'undefined' 
+			|| typeof this.serviceFactories[name] !== 'undefined'
+			|| this.hasSubService(name);
+	}
+
 	service(name: string) {
 		if (typeof this.services[name] === 'undefined') {
 			if (typeof this.serviceFactories[name] === 'undefined') {
-				throw new Error('Service ' + name + ' is not declared');
+				if (this.hasSubService(name)) {
+					this.services[name] = this.subService(name);
+				} else {
+					var parts = name.split(DependencyInjection.DEPENDENCY_INJECTION_TO_SERVICE_DELIMITER);
+					var dependencyInjectionName = parts.shift();
+					var subName = parts.join(DependencyInjection.DEPENDENCY_INJECTION_TO_SERVICE_DELIMITER);
+					var subDependencyInjection = this.getDependencyInjection(dependencyInjectionName);
+					if (subDependencyInjection.hasService(subName)) {
+						return subDependencyInjection.service(subName);
+					}
+					throw new Error('Service ' + name + ' is not declared');
+				}
+			} else {
+				this.services[name] = this.serviceFactories[name].apply(this);
 			}
-			this.services[name] = this.serviceFactories[name].apply(this);
 		}
 		return this.services[name];
 	}
 
 	addService(name: string, service: any) {
 		this.services[name] = service;
+	}
+
+	getDependencyInjection(name: string) {
+		if (typeof this.dependencyInjections[name] === 'undefined') {
+			throw new Error('DependencyInjection named "' + name + '" not found');
+		}
+		return this.dependencyInjections[name];
 	}
 }
