@@ -25,6 +25,13 @@ class Factoried {
 	hello() { return 'world' + this.arg1; }
 }
 
+module With {
+	export class Parameter {
+		static $inject = ['parameter.name'];
+		constructor(public param: string) {}
+	}
+}
+
 var defs: any = {
 	'NoDep': {
 		class: NoDep,
@@ -35,6 +42,7 @@ var defs: any = {
 	'My.Service': my,
 	'Our.Service': Our,
 	'Ctrl': Ctrl,
+	'parameter.name': 'some parameter injecting',
 	'Factoried': {
 		factory: (ctrl: Ctrl, your: any) => {
 			return new Factoried();
@@ -47,7 +55,8 @@ var defs: any = {
 	'Ctrl2': {
 		class: Ctrl,
 		inject: ['My.Service', 'Your2.Service', 'Our.Service']
-	}
+	},
+	'With.Parameter': With.Parameter
 };
 
 describe('DependencyInjection', () => {
@@ -98,5 +107,10 @@ describe('DependencyInjection', () => {
 	it('should create service of same Class as other with other dependencies', () => {
 		var di = new DependencyInjection(defs);
 		expect(di.service('Ctrl2').logAll()).toBe('hello country to all');
+	});
+
+	it('should create service with injected parameter', () => {
+		var di = new DependencyInjection(defs);
+		expect(di.service('With.Parameter').param).toBe('some parameter injecting');
 	});
 });
