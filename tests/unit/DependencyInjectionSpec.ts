@@ -113,4 +113,13 @@ describe('DependencyInjection', () => {
 		var di = new DependencyInjection(defs);
 		expect(di.service('With.Parameter').param).toBe('some parameter injecting');
 	});
+
+	it('should add service to container', () => {
+		var di = new DependencyInjection(defs);
+		var addedService = {
+			some: 'property'
+		};
+		di.addService('added_service', addedService);
+		expect(di.service('added_service')).toBe(addedService);
+	});
 });

@@ -14,16 +14,16 @@ interface IConstructor extends IServiceDefinition {
 export = DependencyInjection;
 class DependencyInjection {
 
-	private services: {[name: string]: Object};
+	private services: {[name: string]: any};
 	private serviceFactories: {[name: string]: Function};
 
-	constructor(serviceDefs: {[name: string]: Object|IConstructor|IServiceDefinition}) {
+	constructor(serviceDefs: {[name: string]: any|IConstructor|IServiceDefinition}) {
 		this.services = {};
 		this.serviceFactories = {};
 		this.prepareServiceFactories(serviceDefs);
 	}
 
-	private prepareServiceFactories(serviceDefs: {[name: string]: Object|IConstructor|IServiceDefinition}) {
+	private prepareServiceFactories(serviceDefs: {[name: string]: any|IConstructor|IServiceDefinition}) {
 		this.getKeys(serviceDefs).forEach((name: string) => {
 			var def: any = serviceDefs[name];
 			if (typeof def === 'function') {
@@ -91,7 +91,7 @@ class DependencyInjection {
 		return Object.keys(object);
 	}
 
-	service(name: string): any|Object {
+	service(name: string) {
 		if (typeof this.services[name] === 'undefined') {
 			if (typeof this.serviceFactories[name] === 'undefined') {
 				throw new Error('Service ' + name + ' is not declared');
@@ -99,5 +99,9 @@ class DependencyInjection {
 			this.services[name] = this.serviceFactories[name].apply(this);
 		}
 		return this.services[name];
+	}
+
+	addService(name: string, service: any) {
+		this.services[name] = service;
 	}
 }
