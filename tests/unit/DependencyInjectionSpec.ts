@@ -34,8 +34,8 @@ module With {
 
 var defs: any = {
 	'NoDep': {
-		class: NoDep,
-		args: [' 0113']
+		$class: NoDep,
+		$args: [' 0113']
 	},
 	'Your.Service': your,
 	'Your2.Service': { world: 'country'},
@@ -44,17 +44,17 @@ var defs: any = {
 	'Ctrl': Ctrl,
 	'parameter.name': 'some parameter injecting',
 	'Factoried': {
-		factory: (ctrl: Ctrl, your: any) => {
+		$factory: (ctrl: Ctrl, your: any) => {
 			return new Factoried();
 		},
-		inject: ['Ctrl', 'Your.Service']
+		$inject: ['Ctrl', 'Your.Service']
 	},
 	'Path.Service': {
-		path: __dirname + '/MockCtrl',
+		$path: __dirname + '/MockCtrl',
 	},
 	'Ctrl2': {
-		class: Ctrl,
-		inject: ['My.Service', 'Your2.Service', 'Our.Service']
+		$class: Ctrl,
+		$inject: ['My.Service', 'Your2.Service', 'Our.Service']
 	},
 	'With.Parameter': With.Parameter
 };
@@ -71,7 +71,7 @@ describe('DependencyInjection', () => {
 	it('should create service by constructor', () => {
 		var di = new DependencyInjection({
 			'NoDep': {
-				class: NoDep
+				$class: NoDep
 			}
 		});
 		expect(di.service('NoDep').hello()).toBe('hello');
@@ -80,8 +80,8 @@ describe('DependencyInjection', () => {
 	it('should create service by constructor with arg', () => {
 		var di = new DependencyInjection({
 			'NoDep': {
-				class: NoDep,
-				args: [' 0113']
+				$class: NoDep,
+				$args: [' 0113']
 			}
 		});
 		expect(di.service('NoDep').hello()).toBe('hello 0113');

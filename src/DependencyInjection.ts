@@ -1,14 +1,13 @@
 
 interface IServiceDefinition {
-	path?: string;
-	class?: IConstructor;
-	args?: string[]|Object[];
-	factory?: Function;
-	inject?: string[];
+	$path?: string;
+	$class?: IConstructor;
+	$args?: string[]|Object[];
+	$factory?: Function;
+	$inject?: string[];
 }
 
-interface IConstructor {
-	$inject: string[];
+interface IConstructor extends IServiceDefinition {
 	new (): Object;
 }
 
@@ -28,7 +27,7 @@ class DependencyInjection {
 		this.getKeys(serviceDefs).forEach((name: string) => {
 			var def: any = serviceDefs[name];
 			if (typeof def === 'function') {
-				def = { class: def };
+				def = { $class: def };
 			}
 			if (typeof def === 'object' && this.isServiceDefinition(def)) {
 				this.serviceFactories[name] = this.createFactoryByDefinition(def);
@@ -60,32 +59,32 @@ class DependencyInjection {
 	}
 
 	private createFactoryByDefinition(serviceDef: IServiceDefinition) {
-		if (typeof serviceDef['class'] === 'undefined' && typeof serviceDef.path === 'undefined' && typeof serviceDef.factory === 'undefined') {
-			throw new Error('Class "class" or "path" or "factory" should be specified');
+		if (typeof serviceDef['$class'] === 'undefined' && typeof serviceDef.$path === 'undefined' && typeof serviceDef.$factory === 'undefined') {
+			throw new Error('Class "$class" or "$path" or "$factory" should be specified');
 		}
-		if (typeof serviceDef.path !== 'undefined') {
-			if (typeof serviceDef.path !== 'string') {
-				throw new Error('"path" should be string');
+		if (typeof serviceDef.$path !== 'undefined') {
+			if (typeof serviceDef.$path !== 'string') {
+				throw new Error('"$path" should be string');
 			}
-			serviceDef['class'] = require(serviceDef.path);
+			serviceDef['$class'] = require(serviceDef.$path);
 		}
-		if (typeof serviceDef.factory !== 'undefined') {
-			if (typeof serviceDef.factory !== 'function') {
-				throw new Error('"factory" should be function');
+		if (typeof serviceDef.$factory !== 'undefined') {
+			if (typeof serviceDef.$factory !== 'function') {
+				throw new Error('"$factory" should be function');
 			}
-			return serviceDef.factory;
+			return serviceDef.$factory;
 		}
-		if (typeof serviceDef['class'] === 'function') {
-			return this.createFactoryByClass(serviceDef['class'], serviceDef.args || [], serviceDef.inject);
+		if (typeof serviceDef['$class'] === 'function') {
+			return this.createFactoryByClass(serviceDef['$class'], serviceDef.$args || [], serviceDef.$inject);
 		}
 		throw new Error('Invalid state');
 	}
 
 	private isServiceDefinition(def: any) {
-		return typeof def.factory !== 'undefined' 
-			|| typeof def['class'] !== 'undefined' 
-			|| typeof def.args !== 'undefined' 
-			|| typeof def.path !== 'undefined';
+		return typeof def.$factory !== 'undefined' 
+			|| typeof def['$class'] !== 'undefined' 
+			|| typeof def.$args !== 'undefined' 
+			|| typeof def.$path !== 'undefined';
 	}
 
 	private getKeys(object: any) {
