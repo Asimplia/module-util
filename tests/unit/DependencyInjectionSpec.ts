@@ -7,9 +7,9 @@ var my = { hello: 'hello' };
 var your = { world: 'world', to: 'to' };
 
 var Our = function (your) {
-    this.all = function () { 
-        return your.to + ' all'
-    };
+	this.all = function () { 
+		return your.to + ' all'
+	};
 };
 (<any>Our).$inject = ['Your.Service'];
 
@@ -32,22 +32,22 @@ var defs: any = {
 	},
 	'Your.Service': your,
 	'Your2.Service': { world: 'country'},
-    'My.Service': my,
-    'Our.Service': Our,
-    'Ctrl': Ctrl,
-    'Factoried': {
-        factory: (ctrl: Ctrl, your: any) => {
-            return new Factoried();
-        },
-        inject: ['Ctrl', 'Your.Service']
-    },
-    'Path.Service': {
-        path: __dirname + '/MockCtrl',
-    },
-    'Ctrl2': {
-    	class: Ctrl,
-    	inject: ['My.Service', 'Your2.Service', 'Our.Service']
-    }
+	'My.Service': my,
+	'Our.Service': Our,
+	'Ctrl': Ctrl,
+	'Factoried': {
+		factory: (ctrl: Ctrl, your: any) => {
+			return new Factoried();
+		},
+		inject: ['Ctrl', 'Your.Service']
+	},
+	'Path.Service': {
+		path: __dirname + '/MockCtrl',
+	},
+	'Ctrl2': {
+		class: Ctrl,
+		inject: ['My.Service', 'Your2.Service', 'Our.Service']
+	}
 };
 
 describe('DependencyInjection', () => {
