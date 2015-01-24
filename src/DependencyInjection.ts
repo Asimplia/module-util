@@ -3,7 +3,7 @@ interface IServiceDefinition {
 	$path?: string;
 	$class?: IConstructor;
 	$args?: string[]|Object[];
-	$factory?: Function;
+	$factory?: (...args: any[]) => any;
 	$inject?: string[];
 }
 
@@ -57,17 +57,28 @@ class DependencyInjection {
 
 	private createFactoryByClass(Constructor: IConstructor, args: string[]|Object[], inject: string[]) {
 		return () => {
-			var names = inject || Constructor.$inject;
-			var injectServices = [];
-			if (typeof names !== 'undefined') {
-				names.forEach((name: string) => {
-					var service = this.service(name);
-					injectServices.push(service);
-				});
-			}
-			injectServices = args.concat(injectServices);
+			var injectServices = this.getInjectServices(args, inject || Constructor.$inject);
 			return new (Constructor.bind.apply(Constructor, [Constructor].concat(injectServices)))();
 		};
+	}
+
+	private createFactoryByFactory(factory: (...args: any[]) => any, args: string[]|Object[], inject: string[]) {
+		return () => {
+			var injectServices = this.getInjectServices(args, inject);
+			return factory.apply(factory, injectServices);
+		};
+	}
+
+	private getInjectServices(args: string[]|Object[], inject: string[]) {
+		var injectServices = [];
+		if (typeof inject !== 'undefined') {
+			inject.forEach((name: string) => {
+				var service = this.service(name);
+				injectServices.push(service);
+			});
+		}
+		injectServices = args.concat(injectServices);
+		return injectServices;
 	}
 
 	private createFactoryByDefinition(serviceDef: IServiceDefinition) {
@@ -84,7 +95,7 @@ class DependencyInjection {
 			if (typeof serviceDef.$factory !== 'function') {
 				throw new Error('"$factory" should be function');
 			}
-			return serviceDef.$factory;
+			return this.createFactoryByFactory(serviceDef.$factory, serviceDef.$args || [], serviceDef.$inject || []);
 		}
 		if (typeof serviceDef['$class'] === 'function') {
 			return this.createFactoryByClass(serviceDef['$class'], serviceDef.$args || [], serviceDef.$inject);

@@ -20,9 +20,7 @@ class NoDep {
 }
 
 class Factoried {
-	constructor(private arg1: string = '') {}
-
-	hello() { return 'world' + this.arg1; }
+	constructor(public your: any, public ctrl: Ctrl) {}
 }
 
 module With {
@@ -45,7 +43,7 @@ var defs: any = {
 	'parameter.name': 'some parameter injecting',
 	'Factoried': {
 		$factory: (ctrl: Ctrl, your: any) => {
-			return new Factoried();
+			return new Factoried(your, ctrl);
 		},
 		$inject: ['Ctrl', 'Your.Service']
 	},
@@ -148,5 +146,39 @@ describe('DependencyInjection', () => {
 		expect(di.service('sub2:sub1_service')).toBe(subService3Named1);
 		expect(di.service('Our.Service') instanceof Our).toBeTruthy();
 		expect(di.service('sub1:Our.Service')).toBe(subOur);
+	});
+
+	it('should create service by factory with inject services', () => {
+		var di = new DependencyInjection('asimplia-util', defs);
+		expect(di.service('Factoried') instanceof Factoried).toBeTruthy();
+		expect(di.service('Factoried').ctrl instanceof Ctrl).toBeTruthy();
+		expect(di.service('Factoried').your).toBe(your);
+	});
+
+	it('should create service by factory with args', () => {
+		function A(arg1, arg2) { this.arg1 = arg1; this.arg2 = arg2; }
+		var di = new DependencyInjection('asimplia-util', {
+			a: {
+				$factory: (arg1, arg2) => { return new A(arg1, arg2); },
+				$args: [1, '2']
+			}
+		});
+		expect(di.service('a').arg1).toBe(1);
+		expect(di.service('a').arg2).toBe('2');
+	});
+
+	it('should create service by factory with inject & args', () => {
+		function A(arg1, ser2) { this.arg1 = arg1; this.ser2 = ser2; }
+		var serv2 = { any: true };
+		var di = new DependencyInjection('asimplia-util', {
+			a: {
+				$factory: (arg1, arg2) => { return new A(arg1, arg2); },
+				$inject: ['serv2'],
+				$args: [1]
+			},
+			serv2: serv2
+		});
+		expect(di.service('a').arg1).toBe(1);
+		expect(di.service('a').ser2).toBe(serv2);
 	});
 });
