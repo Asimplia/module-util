@@ -139,9 +139,11 @@ class DependencyInjection {
 					var parts = name.split(DependencyInjection.DEPENDENCY_INJECTION_TO_SERVICE_DELIMITER);
 					var dependencyInjectionName = parts.shift();
 					var subName = parts.join(DependencyInjection.DEPENDENCY_INJECTION_TO_SERVICE_DELIMITER);
-					var subDependencyInjection = this.getDependencyInjection(dependencyInjectionName);
-					if (subDependencyInjection.hasService(subName)) {
-						return subDependencyInjection.service(subName);
+					if (subName) {
+						var subDependencyInjection = this.getDependencyInjection(dependencyInjectionName);
+						if (subDependencyInjection.hasService(subName)) {
+							return subDependencyInjection.service(subName);
+						}
 					}
 					throw new Error('Service ' + name + ' is not declared');
 				}
