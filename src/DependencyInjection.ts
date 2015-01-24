@@ -153,7 +153,7 @@ class DependencyInjection {
 	}
 
 	addService(name: string, service: any) {
-		this.services[name] = service;
+		this.serviceFactories[name] = this.createFactorySimple(service);
 	}
 
 	getDependencyInjection(name: string) {
