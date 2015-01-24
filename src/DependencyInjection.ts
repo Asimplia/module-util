@@ -162,6 +162,9 @@ class DependencyInjection {
 				this.services[name] = this.serviceFactories[name].apply(this);
 			}
 		}
+		if (typeof this.services[name] === 'undefined' || this.services[name] === null) {
+			throw new Error('Service must be not null nor undefined of name "' + name + '"');
+		}
 		return this.services[name];
 	}
 
