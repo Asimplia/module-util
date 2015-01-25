@@ -178,7 +178,7 @@ module.exports = exports = function (
 		shell: {
 			link_module: {
 				command: function (depName) {
-					if (typeof process.env.NODE_ENV !== 'dev') {
+					if (process.env.NODE_ENV !== 'dev') {
 						return 'echo "Link only in dev environment NODE_ENV"';
 					}
 					var modulePath = exports.resolvePackagePath(depName, basePath);
