@@ -1,6 +1,6 @@
 {
   "name": "asimplia-util",
-  "version": "0.2.30",
+  "version": "0.2.31",
   "description": "Util",
   "main": "build/src/index.js",
   "author": {
