@@ -1,7 +1,8 @@
 
-import AspectInterception = require('../../src/AspectInterception');
+import Util = require('../../../src/index');
+import AspectInterception = Util.AOP.AspectInterception;
 
-describe('AspectInterception', () => {
+describe('AOP.AspectInterception', () => {
 
 	it('should apply aspect by simple IAspect object', () => {
 		var ran = false;
