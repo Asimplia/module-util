@@ -11,6 +11,7 @@
     "underscore": "^1.6.0",
     "hooker": "~0.2.3",
     "moment": "~2.8.3",
+    "fs-finder": "~1.8.0",
     "object-hash": "~0.4.0"
   },
   "devDependencies": {
