@@ -7,6 +7,7 @@ export = DependencyInjection;
 class DependencyInjection {
 
 	private static DEPENDENCY_INJECTION_TO_SERVICE_DELIMITER = ':';
+	private static HASH_KEY = '$.__DependencyInjection__.HASH_KEY';
 
 	private dependencyInjections: { [name: string]: DependencyInjection } = {};
 	private services: {[name: string]: any} = {};
@@ -141,19 +142,31 @@ class DependencyInjection {
 	private getNameByConstructor(constructor: IConstructor) {
 		var name = this.serviceNamesByContructor[this.getHash(constructor)];
 		if (!name) {
-			throw new Error('Service not found by constructor ' + constructor);
+			for (var diName in this.dependencyInjections) {
+				var subName = this.dependencyInjections[diName].getNameByConstructor(constructor);
+				if (subName) {
+					name = diName + DependencyInjection.DEPENDENCY_INJECTION_TO_SERVICE_DELIMITER + subName;
+					break;
+				}
+			}
+			if (!name) {
+				throw new Error('Service not found by constructor ' + constructor);
+			}
 		}
 		return name;
 	}
 
 	private getHash(object: any): string {
-		return hash(object);
+		if (typeof object[DependencyInjection.HASH_KEY] === 'undefined') {
+			object[DependencyInjection.HASH_KEY] = hash(object);
+		}
+		return object[DependencyInjection.HASH_KEY];
 	}
 
 	private getName(nameOrConstructor: string|IConstructor) {
 		var name: string;
 		if (typeof nameOrConstructor !== 'string') {
-			name = this.getNameByConstructor(<IConstructor>nameOrConstructor);
+			name = this.getNameByConstructor(nameOrConstructor);
 		} else {
 			name = <string>nameOrConstructor;
 		}
