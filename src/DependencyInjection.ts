@@ -1,4 +1,6 @@
 
+var hash = require('object-hash');
+
 interface IServiceDefinition {
 	$path?: string;
 	$class?: IConstructor;
@@ -19,6 +21,7 @@ class DependencyInjection {
 	private dependencyInjections: { [name: string]: DependencyInjection } = {};
 	private services: {[name: string]: any} = {};
 	private serviceFactories: {[name: string]: Function} = {};
+	private serviceNamesByContructor: {[constructorHash: string]: string} = {};
 
 	get Name() { return this.name; }
 
@@ -42,11 +45,18 @@ class DependencyInjection {
 				def = { $class: def };
 			}
 			if (typeof def === 'object' && this.isServiceDefinition(def)) {
-				this.serviceFactories[name] = this.createFactoryByDefinition(def);
+				this.addServiceFactory(name, this.createFactoryByDefinition(def), def.$class);
 			} else {
-				this.serviceFactories[name] = this.createFactorySimple(def);
+				this.addServiceFactory(name, this.createFactorySimple(def));
 			}
 		});
+	}
+
+	private addServiceFactory(name: string, factory: Function, clazz?: IConstructor) {
+		this.serviceFactories[name] = factory;
+		if (typeof clazz === 'function') {
+			this.serviceNamesByContructor[this.getHash(clazz)] = name;
+		}
 	}
 
 	private createFactorySimple(def: any) {
@@ -135,13 +145,33 @@ class DependencyInjection {
 		return false;
 	}
 
-	hasService(name: string) {
+	private getNameByConstructor(constructor: IConstructor) {
+		return this.serviceNamesByContructor[this.getHash(constructor)] || null;
+	}
+
+	private getHash(object: any): string {
+		return hash(object);
+	}
+
+	private getName(nameOrConstructor: string|IConstructor) {
+		var name: string;
+		if (typeof nameOrConstructor !== 'string') {
+			name = this.getNameByConstructor(<IConstructor>nameOrConstructor);
+		} else {
+			name = <string>nameOrConstructor;
+		}
+		return name;
+	}
+
+	hasService(nameOrConstructor: string|IConstructor) {
+		var name = this.getName(nameOrConstructor);
 		return typeof this.services[name] !== 'undefined' 
 			|| typeof this.serviceFactories[name] !== 'undefined'
 			|| this.hasSubService(name);
 	}
 
-	service(name: string) {
+	service(nameOrConstructor: string|IConstructor) {
+		var name = this.getName(nameOrConstructor);
 		if (typeof this.services[name] === 'undefined') {
 			if (typeof this.serviceFactories[name] === 'undefined') {
 				if (this.hasSubService(name)) {
@@ -169,7 +199,7 @@ class DependencyInjection {
 	}
 
 	addService(name: string, service: any) {
-		this.serviceFactories[name] = this.createFactorySimple(service);
+		this.addServiceFactory(name, this.createFactorySimple(service));
 	}
 
 	getDependencyInjection(name: string) {

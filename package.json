@@ -10,7 +10,8 @@
     "express": ">=4.1.1",
     "underscore": "^1.6.0",
     "hooker": "~0.2.3",
-    "moment": "~2.8.3"
+    "moment": "~2.8.3",
+    "object-hash": "~0.4.0"
   },
   "devDependencies": {
     "tsd": "^0.5.7",

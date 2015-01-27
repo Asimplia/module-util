@@ -181,4 +181,29 @@ describe('DependencyInjection', () => {
 		expect(di.service('a').arg1).toBe(1);
 		expect(di.service('a').ser2).toBe(serv2);
 	});
+
+	it('should create service by constructor and inject by class', () => {
+		var di = new DependencyInjection('asimplia-util', {
+			'NoDep': {
+				$class: NoDep
+			}
+		});
+		expect(di.service(NoDep).hello()).toBe('hello');
+	});
+
+	it('should create service by constructor and inject by class', () => {
+		var emptyStr = true;
+		function Dep(noDep) { emptyStr = noDep.arg1; };
+		var di = new DependencyInjection('asimplia-util', {
+			'NoDep': {
+				$class: NoDep
+			},
+			'DepClass': {
+				$class: <any>Dep,
+				$inject: [NoDep]
+			}
+		});
+		di.service(<any>Dep);
+		expect(emptyStr).toBe('');
+	});
 });
