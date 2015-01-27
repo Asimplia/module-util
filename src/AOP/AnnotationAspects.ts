@@ -19,6 +19,7 @@ class AnnotationAspects implements IAspect {
 		if (typeof paths === 'string') {
 			this.paths = [paths];
 		}
+		this.aspectInterception.addAspect('AOP.AnnotationAspects', this);
 	}
 
 	intercept() {
@@ -37,7 +38,7 @@ class AnnotationAspects implements IAspect {
 			if (!this.dependencyInjection.hasService(Static)) {
 				throw new Error('Aspect annotated with $aspect needs to be a service in DependencyInjection container');
 			}
-			var aspect = this.dependencyInjection.service(Static);
+			var aspect = this.dependencyInjection.get<any>(Static);
 			this.aspectInterception.addAspect(aspectName, aspect);
 		});
 	}
