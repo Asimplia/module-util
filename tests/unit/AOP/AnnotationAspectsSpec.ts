@@ -2,7 +2,7 @@
 import Util = require('../../../src/index');
 import AspectInterception = Util.AOP.AspectInterception;
 import AnnotationAspects = Util.AOP.AnnotationAspects;
-import DependencyInjection = Util.DependencyInjection;
+import DependencyInjection = Util.DI.DependencyInjection;
 import TestAspect = require('./Mock/TestAspect');
 
 describe('AOP.AnnotationAspects', () => {

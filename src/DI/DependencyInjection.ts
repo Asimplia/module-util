@@ -1,17 +1,7 @@
 
+import IConstructor = require('./IConstructor');
+import IServiceDefinition = require('./IServiceDefinition');
 var hash = require('object-hash');
-
-interface IServiceDefinition {
-	$path?: string;
-	$class?: IConstructor;
-	$args?: string[]|Object[];
-	$factory?: (...args: any[]) => any;
-	$inject?: string[];
-}
-
-interface IConstructor extends IServiceDefinition {
-	new (...args: any[]): Object;
-}
 
 export = DependencyInjection;
 class DependencyInjection {

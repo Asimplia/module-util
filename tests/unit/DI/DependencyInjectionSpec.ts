@@ -1,5 +1,6 @@
 
-import DependencyInjection = require('../../src/DependencyInjection');
+import Util = require('../../../src/index');
+import DependencyInjection = Util.DI.DependencyInjection;
 import Ctrl = require('./MockCtrl');
 
 var my = { hello: 'hello' };

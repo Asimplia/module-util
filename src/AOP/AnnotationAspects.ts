@@ -1,7 +1,7 @@
 
 import IAspect = require('./IAspect');
 import AspectInterception = require('./AspectInterception');
-import DependencyInjection = require('../DependencyInjection');
+import DependencyInjection = require('../DI/DependencyInjection');
 import _ = require('underscore');
 var Finder = require('fs-finder');
 
