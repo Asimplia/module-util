@@ -118,4 +118,17 @@ describe('AOP.AspectInterception', () => {
 		expect(ran).toBeFalsy();
 		expect(ranInterceptor).toBeTruthy();
 	});
+
+	it('should apply aspect added by addAspect', () => {
+		var ran = false;
+		function MyAspect() {
+			this.intercept = () => {
+				ran = true;
+			};
+		}
+		var myAspect = new MyAspect();
+		var ai = new AspectInterception('asimplia-util', {});
+		ai.addAspect('MyAspect', myAspect);
+		expect(ran).toBeTruthy();
+	});
 });

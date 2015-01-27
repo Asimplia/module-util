@@ -97,8 +97,8 @@ class AspectInterception {
 	}
 
 	addAspect(name: string, aspect: IAspect) {
-		this.aspects[name] = aspect;
 		this.aspectDefs[name] = this.createAspectDefinition(aspect, {});
+		this.aspects[name] = this.createAspectByDefinition(this.aspectDefs[name]);
 		this.runAspects([name]);
 	}
 
