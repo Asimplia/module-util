@@ -203,7 +203,7 @@ class DependencyInjection {
 		return this.service(name);
 	}
 
-	get<Service>(constructor: IConstructor): Service {;
+	get<Service>(constructor: any): Service {;
 		return this.service(constructor);
 	}
 
