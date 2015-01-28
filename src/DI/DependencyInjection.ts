@@ -32,14 +32,7 @@ class DependencyInjection {
 	private prepareServiceFactories(serviceDefs: {[name: string]: any|IConstructor|IServiceDefinition}) {
 		this.getKeys(serviceDefs).forEach((name: string) => {
 			var def: any = serviceDefs[name];
-			if (typeof def === 'function') {
-				def = { $class: def };
-			}
-			if (typeof def === 'object' && this.isServiceDefinition(def)) {
-				this.addServiceFactory(name, this.createFactoryByDefinition(def), def.$class);
-			} else {
-				this.addServiceFactory(name, this.createFactorySimple(def));
-			}
+			this.addServiceDefinition(name, def);
 		});
 	}
 
@@ -232,6 +225,17 @@ class DependencyInjection {
 
 	addService(name: string, service: any) {
 		this.addServiceFactory(name, this.createFactorySimple(service));
+	}
+
+	addServiceDefinition(name: string, def: any|IConstructor|IServiceDefinition) {
+		if (typeof def === 'function') {
+			def = { $class: def };
+		}
+		if (typeof def === 'object' && this.isServiceDefinition(def)) {
+			this.addServiceFactory(name, this.createFactoryByDefinition(def), def.$class);
+		} else {
+			this.addServiceFactory(name, this.createFactorySimple(def));
+		}
 	}
 
 	getDependencyInjection(name: string) {
