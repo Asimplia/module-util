@@ -266,4 +266,47 @@ describe('DependencyInjection', () => {
 		expect(car.wheel instanceof Wheel).toBeTruthy();
 		expect(car.wheel.pneu).toBe(true);
 	});
+
+	it('should run service automatically by flag $run = true', () => {
+		var ran = false;
+		function Autorun() {
+			ran = true;
+		}
+		var di = new DependencyInjection('autosalon', {
+			'Autorun': {
+				$class: Autorun,
+				$run: true
+			}
+		});
+		expect(ran).toBeTruthy();
+	});
+
+	it('should run service automatically by flag $run = true from $run annotation', () => {
+		var ran = false;
+		function Autorun() {
+			ran = true;
+		}
+		(<any>Autorun).$run = true;
+		var di = new DependencyInjection('autosalon', {
+			'Autorun': {
+				$class: Autorun
+			}
+		});
+		expect(ran).toBeTruthy();
+	});
+
+	it('should not run service automatically by flag $run = true from $run annotation if definition has $run = false', () => {
+		var ran = false;
+		function Autorun() {
+			ran = true;
+		}
+		(<any>Autorun).$run = true;
+		var di = new DependencyInjection('autosalon', {
+			'Autorun': {
+				$class: Autorun,
+				$run: false
+			}
+		});
+		expect(ran).toBeFalsy();
+	});
 });

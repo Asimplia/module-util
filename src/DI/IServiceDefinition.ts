@@ -8,4 +8,5 @@ interface IServiceDefinition {
 	$args?: string[]|Object[];
 	$factory?: (...args: any[]) => any;
 	$inject?: string[];
+	$run?: boolean;
 }

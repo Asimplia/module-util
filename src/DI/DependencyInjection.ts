@@ -114,7 +114,8 @@ class DependencyInjection {
 		return typeof def.$factory !== 'undefined' 
 			|| typeof def['$class'] !== 'undefined' 
 			|| typeof def.$args !== 'undefined' 
-			|| typeof def.$path !== 'undefined';
+			|| typeof def.$path !== 'undefined' 
+			|| typeof def.$run !== 'undefined';
 	}
 
 	private getKeys(object: any) {
@@ -233,6 +234,9 @@ class DependencyInjection {
 		}
 		if (typeof def === 'object' && this.isServiceDefinition(def)) {
 			this.addServiceFactory(name, this.createFactoryByDefinition(def), def.$class);
+			if (def.$run === true || (def.$run !== false && typeof def.$class !== 'undefined' && def.$class.$run === true)) {
+				this.service(name);
+			}
 		} else {
 			this.addServiceFactory(name, this.createFactorySimple(def));
 		}
