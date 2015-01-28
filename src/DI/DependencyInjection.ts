@@ -61,7 +61,7 @@ class DependencyInjection {
 
 	private createFactoryByClass(Constructor: IConstructor, args: string[]|Object[], inject: string[]) {
 		return () => {
-			var injectServices = this.getInjectServices(args, inject || Constructor.$inject);
+			var injectServices = this.getInjectServices(args, inject);
 			return new (Constructor.bind.apply(Constructor, [Constructor].concat(injectServices)))();
 		};
 	}
@@ -81,7 +81,9 @@ class DependencyInjection {
 				injectServices.push(service);
 			});
 		}
-		injectServices = args.concat(injectServices);
+		if (typeof args !== 'undefined') {
+			injectServices = args.concat(injectServices);
+		}
 		return injectServices;
 	}
 
@@ -99,10 +101,18 @@ class DependencyInjection {
 			if (typeof serviceDef.$factory !== 'function') {
 				throw new Error('"$factory" should be function');
 			}
-			return this.createFactoryByFactory(serviceDef.$factory, serviceDef.$args || [], serviceDef.$inject || []);
+			return this.createFactoryByFactory(
+				serviceDef.$factory, 
+				serviceDef.$args || (serviceDef['$class'] ? serviceDef['$class'].$args : []), 
+				serviceDef.$inject || (serviceDef['$class'] ? serviceDef['$class'].$inject : [])
+			);
 		}
 		if (typeof serviceDef['$class'] === 'function') {
-			return this.createFactoryByClass(serviceDef['$class'], serviceDef.$args || [], serviceDef.$inject);
+			return this.createFactoryByClass(
+				serviceDef['$class'], 
+				serviceDef.$args || serviceDef['$class'].$args, 
+				serviceDef.$inject || serviceDef['$class'].$inject
+			);
 		}
 		throw new Error('Invalid state');
 	}

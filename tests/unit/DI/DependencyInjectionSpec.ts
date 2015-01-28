@@ -31,6 +31,15 @@ module With {
 	}
 }
 
+class Wheel {
+	public pneu = true;
+}
+class Car {
+	static $args = ['Bently'];
+	static $inject = [Wheel];
+	constructor(public name: string, public wheel: Wheel) {}
+}
+
 var defs: any = {
 	'NoDep': {
 		$class: NoDep,
@@ -206,5 +215,37 @@ describe('DependencyInjection', () => {
 		});
 		di.service(<any>Dep);
 		expect(emptyStr).toBe('');
+	});
+
+	it('should create service by constructor and inject by class from sub DI', () => {
+		var emptyStr: any = true;
+		function Dep(noDep) { emptyStr = ''; };
+		var subDi = new DependencyInjection('sub-util', {
+			'DepClass': {
+				$class: <any>Dep
+			}
+		});
+		var di = new DependencyInjection('asimplia-util', {
+			'NoDep': {
+				$class: NoDep
+			}
+		}, [
+			subDi
+		]);
+		var dep = di.service(<any>Dep);
+		expect(emptyStr).toBe('');
+		expect(dep instanceof Dep).toBeTruthy();
+	});
+
+	it('should create service by constructor with $inject and $args annotation', () => {
+		var di = new DependencyInjection('autosalon', {
+			'Bently': Car,
+			'Wheel': Wheel
+		});
+		var car = di.get<Car>(Car);
+		expect(car instanceof Car).toBeTruthy();
+		expect(car.name).toBe('Bently');
+		expect(car.wheel instanceof Wheel).toBeTruthy();
+		expect(car.wheel.pneu).toBe(true);
 	});
 });
