@@ -25,15 +25,45 @@ class DependencyInjection {
 			var dependencyInjection = dependencyInjections[i];
 			this.dependencyInjections[dependencyInjection.Name] = dependencyInjection;
 		}
-		this.prepareServiceFactories(serviceDefs);
 		this.addServiceFactory('DependencyInjection', this.createFactorySimple(this), DependencyInjection);
+		this.addServiceDefinitions(serviceDefs);
 	}
 
-	private prepareServiceFactories(serviceDefs: {[name: string]: any|IConstructor|IServiceDefinition}) {
+	addServiceDefinitions(serviceDefs: {[name: string]: any|IConstructor|IServiceDefinition}) {
 		this.getKeys(serviceDefs).forEach((name: string) => {
 			var def: any = serviceDefs[name];
-			this.addServiceDefinition(name, def);
+			this.prepareServiceDefinition(name, def);
 		});
+		this.getKeys(serviceDefs).forEach((name: string) => {
+			var def: any = serviceDefs[name];
+			this.afterPrepared(name, def);
+		});
+	}
+
+	private prepareServiceDefinition(name: string, def: any|IConstructor|IServiceDefinition) {
+		if (typeof def === 'function') {
+			def = { $class: def };
+		}
+		if (typeof def === 'object' && this.isServiceDefinition(def)) {
+			this.addServiceFactory(name, this.createFactoryByDefinition(def), def.$class);
+		} else {
+			this.addServiceFactory(name, this.createFactorySimple(def));
+		}
+	}
+
+	private afterPrepared(name: string, def: any|IConstructor|IServiceDefinition) {
+		if (typeof def === 'function') {
+			def = { $class: def };
+		}
+		if (
+			typeof def === 'object' && this.isServiceDefinition(def) 
+			&& (
+				def.$run === true 
+				|| (def.$run !== false && typeof def.$class !== 'undefined' && def.$class.$run === true)
+			)
+		) {
+			this.service(name);
+		}
 	}
 
 	private addServiceFactory(name: string, factory: Function, clazz?: IConstructor) {
@@ -226,20 +256,6 @@ class DependencyInjection {
 
 	addService(name: string, service: any) {
 		this.addServiceFactory(name, this.createFactorySimple(service));
-	}
-
-	addServiceDefinition(name: string, def: any|IConstructor|IServiceDefinition) {
-		if (typeof def === 'function') {
-			def = { $class: def };
-		}
-		if (typeof def === 'object' && this.isServiceDefinition(def)) {
-			this.addServiceFactory(name, this.createFactoryByDefinition(def), def.$class);
-			if (def.$run === true || (def.$run !== false && typeof def.$class !== 'undefined' && def.$class.$run === true)) {
-				this.service(name);
-			}
-		} else {
-			this.addServiceFactory(name, this.createFactorySimple(def));
-		}
 	}
 
 	getDependencyInjection(name: string) {

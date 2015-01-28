@@ -29,6 +29,7 @@ class ServiceAutoload {
 	}
 
 	intercept() {
+		var serviceDefinitions: {[name: string]: any} = {};
 		var classes = this.getClasses();
 		classes.forEach((Static: any) => {
 			if (typeof Static !== 'function') {
@@ -41,8 +42,9 @@ class ServiceAutoload {
 			if (typeof serviceName !== 'string') {
 				throw new Error(ServiceAutoload.ANNOTATION_SERVICE + ' annotation must be string. ' + serviceName + ' given.');
 			}
-			this.dependencyInjection.addServiceDefinition(serviceName, Static);
+			serviceDefinitions[serviceName] = Static;
 		});
+		this.dependencyInjection.addServiceDefinitions(serviceDefinitions);
 	}
 
 	private getClasses() {
