@@ -248,4 +248,22 @@ describe('DependencyInjection', () => {
 		expect(car.wheel instanceof Wheel).toBeTruthy();
 		expect(car.wheel.pneu).toBe(true);
 	});
+
+	it('should create service by factory with $inject and $args annotation ignored', () => {
+		var di = new DependencyInjection('autosalon', {
+			'Bently': {
+				$class: Car,
+				$factory: (wheel: Wheel) => {
+					return new Car('AUDI', wheel);
+				},
+				$inject: [Wheel]
+			},
+			'Wheel': Wheel
+		});
+		var car = di.get<Car>(Car);
+		expect(car instanceof Car).toBeTruthy();
+		expect(car.name).toBe('AUDI');
+		expect(car.wheel instanceof Wheel).toBeTruthy();
+		expect(car.wheel.pneu).toBe(true);
+	});
 });

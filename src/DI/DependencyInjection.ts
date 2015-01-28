@@ -103,8 +103,8 @@ class DependencyInjection {
 			}
 			return this.createFactoryByFactory(
 				serviceDef.$factory, 
-				serviceDef.$args || (serviceDef['$class'] ? serviceDef['$class'].$args : []), 
-				serviceDef.$inject || (serviceDef['$class'] ? serviceDef['$class'].$inject : [])
+				serviceDef.$args || [], 
+				serviceDef.$inject || []
 			);
 		}
 		if (typeof serviceDef['$class'] === 'function') {
