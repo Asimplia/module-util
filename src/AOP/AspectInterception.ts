@@ -17,6 +17,7 @@ class AspectInterception {
 	
 	get Name() { return this.name; }
 
+	static $run = true;
 	constructor(
 		private name: string,
 		aspectDefs: {[name: string]: any|IAspect|IAspectDefinition}
