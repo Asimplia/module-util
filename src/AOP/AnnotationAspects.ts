@@ -11,6 +11,8 @@ class AnnotationAspects implements IAspect {
 	static ANNOTATION_ASPECT = '$aspect';
 	static FILES_PATTERN = '*.js';
 
+	static $args = [null];
+	static $inject = [AspectInterception, DependencyInjection];
 	constructor(
 		private paths: string|string[],
 		private aspectInterception: AspectInterception,
