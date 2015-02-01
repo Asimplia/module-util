@@ -208,6 +208,12 @@ module.exports = exports = function (
 				nodeArgs: [],
 				args: [],
 				env: {}
+			},
+			app: {
+				file: 'app.js',
+				nodeArgs: [],
+				args: [],
+				env: {}
 			}
 		},
 		wait: {
