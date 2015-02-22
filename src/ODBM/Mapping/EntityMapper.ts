@@ -43,6 +43,9 @@ class EntityMapper<Entity, EntityObject> {
 		var keys = this.getKeys();
 		_.forEach(keys, (key: string) => {
 			var propertyAnnotation = <IPropertyAnnotation>entityAnnotation[key];
+			if (propertyAnnotation instanceof Type || this.isTypeStatic(propertyAnnotation)) {
+				propertyAnnotation = <IPropertyAnnotation><any>{ $type: propertyAnnotation };
+			}
 			if (!(propertyAnnotation.$type instanceof Type)) {
 				propertyAnnotation.$type = new (<ITypeStatic>propertyAnnotation.$type)();
 			}
@@ -53,6 +56,13 @@ class EntityMapper<Entity, EntityObject> {
 				propertyAnnotation.$name = key;
 			}
 		});
+	}
+
+	private isTypeStatic(
+		propertyAnnotation: IPropertyAnnotation|Type|ITypeStatic|DatabaseSystem|string
+	) {
+		return typeof propertyAnnotation === 'function'
+			&& (new (<ITypeStatic>propertyAnnotation)()) instanceof Type;
 	}
 
 	getIdKey(): string {
@@ -123,7 +133,7 @@ class EntityMapper<Entity, EntityObject> {
 		return this.EntityStatic.$entity.$object;
 	}
 
-	private isPropertyAnnotation(propertyAnnotation: string|DatabaseSystem|IPropertyAnnotation) {
+	private isPropertyAnnotation(propertyAnnotation: Type|ITypeStatic|string|DatabaseSystem|IPropertyAnnotation) {
 		return typeof propertyAnnotation === 'object'
 			&& typeof (<IPropertyAnnotation>propertyAnnotation).$name !== 'undefined'
 			&& typeof (<IPropertyAnnotation>propertyAnnotation).$type !== 'undefined';
