@@ -4,16 +4,14 @@ import _ = require('underscore');
 
 export = List;
 class List<Entity> {
-	private entities: Entity[] = [];
+	protected entities: Entity[];
 	private indexedBy: {[propertyName: string]: {[index: string]: Entity} } = {};
 
-	constructor(items?: any[], entityFactory?: (o: any) => Entity) {
-		if (typeof items !== 'undefined') {
-			this.pushArray(items, entityFactory);
-		}
+	constructor(items: Entity[]) {
+		this.entities = items;
 	}
 
-	pushArray(items: any[], entityFactory?: (o: any) => Entity) {
+	protected pushArray(items: any[], entityFactory?: (o: any) => Entity) {
 		if (typeof entityFactory === 'undefined') {
 			entityFactory = (entity: Entity) => { return entity; };
 		}
@@ -30,12 +28,12 @@ class List<Entity> {
 		return this;
 	}
 
-	push(item: Entity): List<Entity> {
+	protected push(item: Entity): List<Entity> {
 		this.entities.push(item);
 		return this;
 	}
 
-	remove(item: Entity): void {
+	protected remove(item: Entity): void {
 		var i = _.indexOf(this.entities, item);
 		if (i === null) {
 			throw new Error('Item ' + item + ' not exists in List');
@@ -59,7 +57,7 @@ class List<Entity> {
 	}
 
 	filter(cb: (entity: Entity) => boolean) {
-		return new List<Entity>(_.filter(this.entities, cb), this.returnValue);
+		return new List<Entity>(_.filter(this.entities, cb));
 	}
 
 	find(cb: (entity: Entity) => boolean): Entity {
@@ -78,7 +76,7 @@ class List<Entity> {
 	}
 
 	map(cb: (entity: Entity) => any) {
-		return new List<any>(_.map(this.entities, cb), this.returnValue);
+		return new List<any>(_.map(this.entities, cb));
 	}
 
 	max(cb: (entity: Entity) => number) {
@@ -86,7 +84,7 @@ class List<Entity> {
 	}
 
 	sortBy(cb: (entity: Entity) => number) {
-		return new List<Entity>(_.sortBy(this.entities, cb), this.returnValue);
+		return new List<Entity>(_.sortBy(this.entities, cb));
 	}
 
 	getListByMax(cb: (entity: Entity) => number): List<Entity> {
@@ -122,7 +120,7 @@ class List<Entity> {
 	}
 
 	firstList(n: number): List<Entity> {
-		return new List<Entity>(_.first(this.entities, n), this.returnValue);
+		return new List<Entity>(_.first(this.entities, n));
 	}
 
 	createEach() {
@@ -141,9 +139,5 @@ class List<Entity> {
 
 	get(i: number) {
 		return this.entities[i];
-	}
-
-	private returnValue(entity: Entity) {
-		return entity;
 	}
 }
