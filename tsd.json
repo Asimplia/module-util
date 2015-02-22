@@ -19,6 +19,9 @@
     },
     "jasmine/jasmine.d.ts": {
       "commit": "8c53f63533b852de581c2e28aed28061cffcbe85"
+    },
+    "each/each.d.ts": {
+      "commit": "6058006487c42e88d06292918aac136d71e1f16f"
     }
   }
 }
