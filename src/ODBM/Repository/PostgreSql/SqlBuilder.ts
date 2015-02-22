@@ -21,7 +21,7 @@ class SqlBuilder<Entity> {
 			var placeholders = [];
 			var object = this.converter.toObject(entity);
 			var entityKeys = this.entityMapper.getKeys();
-			_.each(entityKeys, (key: string) => {
+			entityKeys.forEach((key: string) => {
 				var value = object[key];
 				if (this.entityMapper.getTypeByKey(key) instanceof Id && this.isEmpty(value)) {
 					placeholders.push('DEFAULT');
