@@ -7,7 +7,9 @@ import IIdentificableType = require('./IIdentificableType');
 export = Id;
 class Id extends Type {
 
-	private type: Type; 
+	private type: Type;
+
+	get Type() { return this.type; }
 	
 	constructor(
 		type: Type|ITypeStatic|IIdentificableType = AnnotationInteger
@@ -21,7 +23,7 @@ class Id extends Type {
 		if ((<IIdentificableType>type).isIdentificable !== true) {
 			throw new Error('Identification type must implements IIdentificableType');
 		}
-
+		(<any>type).nullable = true; // id is hardcored nullable to allow autoincrement (sequence)
 		this.type = <Type>type;
 		super(false);
 	}

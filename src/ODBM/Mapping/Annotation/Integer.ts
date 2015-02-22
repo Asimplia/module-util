@@ -6,6 +6,8 @@ export = Integer;
 class Integer extends Type implements IIdentificableType {
 
 	isIdentificable = true;
+
+	get Length() { return this.length; }
 	
 	constructor(
 		private length: number = 8, 

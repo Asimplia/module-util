@@ -59,6 +59,16 @@ class EntityMapper<Entity, EntityObject> {
 		});
 	}
 
+	getPropertyNameByKey(key: string): string {
+		var propertyAnnotation = this.getPropertyAnnotationByKey(key);
+		return propertyAnnotation.$name;
+	}
+
+	getPropertyTypeByKey(key: string): Type {
+		var propertyAnnotation = this.getPropertyAnnotationByKey(key);
+		return <Type>propertyAnnotation.$type;
+	}
+
 	getPropertyAnnotationByKey(key: string): IPropertyAnnotation {
 		var entityAnnotation = this.EntityStatic.$entity;
 		var propertyAnnotation = entityAnnotation[key];
