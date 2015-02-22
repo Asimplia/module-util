@@ -4,7 +4,7 @@ import IPropertyAnnotation = require('./IPropertyAnnotation');
 
 export = IEntityAnnotation;
 interface IEntityAnnotation {
-	$dbs?: DatabaseSystem;
+	$dbs: DatabaseSystem;
 	$name?: string;
 	$object?: string;
 	[propertyName: string]: IPropertyAnnotation

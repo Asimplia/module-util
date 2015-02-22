@@ -4,7 +4,7 @@ import ITypeStatic = require('../../Mapping/Annotation/ITypeStatic');
 
 export = IPropertyAnnotation;
 interface IPropertyAnnotation {
-	$name: string;
+	$name?: string;
 	$type: Type|ITypeStatic;
 	[propertyName: string]: IPropertyAnnotation
 		|Type|ITypeStatic|string;
