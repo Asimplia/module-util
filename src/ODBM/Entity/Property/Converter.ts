@@ -48,7 +48,7 @@ class Converter {
 		if (value === null) {
 			return null;
 		}
-		var size = 2 ^ type.Length;
+		var size = Math.pow(2, type.Length * 8); // 8bits on every byte
 		var range = { min: - size / 2, max: size / 2 - 1 };
 		var integerValue = parseInt(value);
 		if (integerValue < range.min || integerValue > range.max) {
