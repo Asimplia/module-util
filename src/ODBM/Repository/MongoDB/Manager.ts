@@ -1,5 +1,5 @@
 
-import mongoose = require('mongoose');
+import mongoose = require('mongoose'); // only for typing
 import each = require('each');
 import IManager = require('../IManager');
 import ModelBuilder = require('./ModelBuilder');
@@ -32,7 +32,7 @@ class Manager<Entity, EntityObject> implements IManager<Entity, EntityObject> {
 		this.converter = new Converter<Entity, EntityObject>(EntityStatic);
 		this.entityMapper = new EntityMapper<Entity, EntityObject>(EntityStatic);
 		this.entityUpdater = new Updater<Entity, EntityObject>(this.entityMapper);
-		var modelBuilder = new ModelBuilder<Entity, EntityObject>(this.entityMapper);
+		var modelBuilder = new ModelBuilder<Entity, EntityObject>(this.entityMapper, this.connection);
 		this.model = modelBuilder.create();
 	}
 

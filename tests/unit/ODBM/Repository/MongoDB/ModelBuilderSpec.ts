@@ -7,7 +7,8 @@ import MyEntityObject = My.MyEntityObject;
 
 describe('ODBM.Repository.MongoDB.ModelBuilder', () => {
 	var entityMapper = new EntityMapper<MyEntity, MyEntityObject>(MyEntity);
-	var modelBuilder = new ModelBuilder<MyEntity, MyEntityObject>(entityMapper);
+	var connectionMock = <any>{};
+	var modelBuilder = new ModelBuilder<MyEntity, MyEntityObject>(entityMapper, connectionMock);
 
 	describe('getEmbeddedDefinition', () => {
 		var definition = (<any>modelBuilder).getEmbeddedDefinition([]); // test private, becouse create is depend on mongoose

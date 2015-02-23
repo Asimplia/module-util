@@ -1,6 +1,5 @@
 
-import mongoose = require('mongoose');
-import Schema = mongoose.Schema;
+import mongoose = require('mongoose'); // only for typing
 import EntityMapper = require('../../Mapping/EntityMapper');
 import Type = require('../../Mapping/Annotation/Type');
 import AnnotationBoolean = require('../../Mapping/Annotation/Boolean');
@@ -9,21 +8,28 @@ import AnnotationId = require('../../Mapping/Annotation/Id');
 import AnnotationInteger = require('../../Mapping/Annotation/Integer');
 import AnnotationString = require('../../Mapping/Annotation/String');
 
+
+// should be in mongoose.d.ts, but missing now
+interface MongooseSchemableMongoose extends mongoose.Mongoose {
+	Schema: new (...args: any[]) => mongoose.Schema;
+}
+
 export = ModelBuilder;
 class ModelBuilder<Entity, EntityObject> {
 
 	private static cachedModel: {[modelName: string]: mongoose.Model<mongoose.Document>} = {};
 
 	constructor(
-		private entityMapper: EntityMapper<Entity, EntityObject>
+		private entityMapper: EntityMapper<Entity, EntityObject>,
+		private connection: mongoose.Mongoose
 	) {}
 	
 	create(): mongoose.Model<mongoose.Document> {
 		var modelName = this.entityMapper.getName();
 		if (typeof ModelBuilder.cachedModel[modelName] === 'undefined') {
 			var definition = this.getEmbeddedDefinition([]);
-			var schema = new Schema(definition);
-			var Model = mongoose.model(modelName, schema);
+			var schema = new (<MongooseSchemableMongoose>this.connection).Schema(definition);
+			var Model = this.connection.model(modelName, schema);
 			ModelBuilder.cachedModel[modelName] = Model;
 		}
 		return ModelBuilder.cachedModel[modelName];
