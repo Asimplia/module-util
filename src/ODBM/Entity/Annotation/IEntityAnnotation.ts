@@ -1,5 +1,5 @@
 
-import DatabaseSystem = require('../../DBS/DatabaseSystem');
+import DatabaseSystem = require('../../Repository/DatabaseSystem');
 import IPropertyAnnotation = require('./IPropertyAnnotation');
 import Type = require('../../Mapping/Annotation/Type');
 import ITypeStatic = require('../../Mapping/Annotation/ITypeStatic');

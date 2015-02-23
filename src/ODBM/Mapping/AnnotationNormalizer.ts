@@ -4,7 +4,7 @@ import Type = require('./Annotation/Type');
 import ITypeStatic = require('./Annotation/ITypeStatic');
 import IPropertyAnnotation = require('../Entity/Annotation/IPropertyAnnotation');
 import IEmbeddedAnnotation = require('../Entity/Annotation/IEmbeddedAnnotation');
-import DatabaseSystem = require('../DBS/DatabaseSystem');
+import DatabaseSystem = require('../Repository/DatabaseSystem');
 
 export = AnnotationNormalizer;
 class AnnotationNormalizer<Entity, EntityObject> {

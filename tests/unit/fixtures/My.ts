@@ -1,5 +1,5 @@
 
-import DatabaseSystem = require('../../../src/ODBM/DBS/DatabaseSystem');
+import DatabaseSystem = require('../../../src/ODBM/Repository/DatabaseSystem');
 import IEntityAnnotation = require('../../../src/ODBM/Entity/Annotation/IEntityAnnotation');
 import Type = require('../../../src/ODBM/Mapping/Type');
 

@@ -3,9 +3,7 @@ import _ = require('underscore');
 import IEntityStatic = require('../Entity/IEntityStatic');
 import Id = require('./Annotation/Id');
 import Type = require('./Annotation/Type');
-import ITypeStatic = require('./Annotation/ITypeStatic');
 import IPropertyAnnotation = require('../Entity/Annotation/IPropertyAnnotation');
-import DatabaseSystem = require('../DBS/DatabaseSystem');
 import AnnotationNormalizer = require('./AnnotationNormalizer');
 
 export = EntityMapper;
