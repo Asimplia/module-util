@@ -58,26 +58,58 @@ class Converter<Entity, EntityObject> {
 	fromRow(
 		row: any
 	): Entity {
-		var keys = this.entityMapper.getKeys();
-		var object = <EntityObject>{};
-		keys.forEach((key: string) => {
-			var name = this.entityMapper.getPropertyNameByKey(key);
-			object[key] = row[name];
-		});
+		var object = this.convertRowToObject(row, []);
 		return this.fromObject(object);
+	}
+
+	private convertRowToObject(
+		row: any,
+		keyPath: string[]
+	): any {
+		var keys = this.entityMapper.getEmbeddedKeys.apply(this.entityMapper, keyPath);
+		var object: any = {};
+		keys.forEach((key: string) => {
+			var embeddedKeyPath = [].concat(keyPath, [key]);
+			var name = this.entityMapper.getPropertyNameByKey.apply(
+				this.entityMapper,
+				embeddedKeyPath
+			);
+			if (this.entityMapper.isEmbeddedByKey.apply(this.entityMapper, embeddedKeyPath)) {
+				object[key] = this.convertRowToObject(row[name], embeddedKeyPath);
+			} else {
+				object[key] = row[name];
+			}
+		});
+		return object;
 	}
 
 	toRow(
 		entity: Entity
 	): any {
-		var keys = this.entityMapper.getKeys();
-		var object = this.toObject(entity);
-		var convertedRow: any = {};
-		keys.forEach((key: string) => {
-			var name = this.entityMapper.getPropertyNameByKey(key);
-			convertedRow[name] = object[key];
-		});
+		var converterObject = this.toObject(entity);
+		var convertedRow = this.convertObjectToRow(converterObject, []);
 		return convertedRow;
+	}
+
+	private convertObjectToRow(
+		object: any,
+		keyPath: string[]
+	): any {
+		var keys = this.entityMapper.getEmbeddedKeys.apply(this.entityMapper, keyPath);
+		var row: any = {};
+		keys.forEach((key: string) => {
+			var embeddedKeyPath = [].concat(keyPath, [key]);
+			var name = this.entityMapper.getPropertyNameByKey.apply(
+				this.entityMapper,
+				embeddedKeyPath
+			);
+			if (this.entityMapper.isEmbeddedByKey.apply(this.entityMapper, embeddedKeyPath)) {
+				row[name] = this.convertObjectToRow(object[key], embeddedKeyPath);
+			} else {
+				row[name] = object[key];
+			}
+		});
+		return row;
 	}
 	
 }
