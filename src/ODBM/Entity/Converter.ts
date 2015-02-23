@@ -19,12 +19,7 @@ class Converter<Entity, EntityObject> {
 	fromObject(
 		object: EntityObject
 	): Entity {
-		var keys = this.entityMapper.getKeys();
-		var convertedObject = <EntityObject>{};
-		keys.forEach((key: string) => {
-			var type = this.entityMapper.getPropertyTypeByKey(key);
-			convertedObject[key] = this.propertyConverter.convertByType(type, object[key]);
-		});
+		var convertedObject = this.convertObject(object, []);
 		return new this.EntityStatic(convertedObject);
 	}
 
@@ -32,7 +27,32 @@ class Converter<Entity, EntityObject> {
 		entity: Entity
 	): EntityObject {
 		var objectPropertyName = this.entityMapper.getObjectPropertyName();
-		return entity[objectPropertyName];
+		var object = entity[objectPropertyName];
+		return this.convertObject(object, []);
+	}
+
+	private convertObject(
+		object: EntityObject,
+		keyPath: string[]
+	): EntityObject {
+		var keys = this.entityMapper.getEmbeddedKeys.apply(this.entityMapper, keyPath);
+		var convertedObject = <EntityObject>{};
+		keys.forEach((key: string) => {
+			var embeddedKeyPath = [].concat(keyPath, [key]);
+			if (this.entityMapper.isEmbeddedByKey.apply(this.entityMapper, embeddedKeyPath)) {
+				convertedObject[key] = this.convertObject(
+					object[key],
+					embeddedKeyPath
+				);
+			} else {
+				var type = this.entityMapper.getPropertyTypeByKey.apply(this.entityMapper, embeddedKeyPath);
+				convertedObject[key] = this.propertyConverter.convertByType(
+					type,
+					object[key]
+				);
+			}
+		});
+		return convertedObject;
 	}
 
 	fromRow(
@@ -41,10 +61,23 @@ class Converter<Entity, EntityObject> {
 		var keys = this.entityMapper.getKeys();
 		var object = <EntityObject>{};
 		keys.forEach((key: string) => {
-			var columnName = this.entityMapper.getPropertyNameByKey(key);
-			object[key] = row[columnName];
+			var name = this.entityMapper.getPropertyNameByKey(key);
+			object[key] = row[name];
 		});
 		return this.fromObject(object);
+	}
+
+	toRow(
+		entity: Entity
+	): any {
+		var keys = this.entityMapper.getKeys();
+		var object = this.toObject(entity);
+		var convertedRow: any = {};
+		keys.forEach((key: string) => {
+			var name = this.entityMapper.getPropertyNameByKey(key);
+			convertedRow[name] = object[key];
+		});
+		return convertedRow;
 	}
 	
 }

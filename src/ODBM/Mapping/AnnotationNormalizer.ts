@@ -3,6 +3,7 @@ import IEntityStatic = require('../Entity/IEntityStatic');
 import Type = require('./Annotation/Type');
 import ITypeStatic = require('./Annotation/ITypeStatic');
 import IPropertyAnnotation = require('../Entity/Annotation/IPropertyAnnotation');
+import IEmbeddedAnnotation = require('../Entity/Annotation/IEmbeddedAnnotation');
 import DatabaseSystem = require('../DBS/DatabaseSystem');
 
 export = AnnotationNormalizer;
@@ -31,25 +32,32 @@ class AnnotationNormalizer<Entity, EntityObject> {
 		if (testEntity[entityAnnotation.$object] !== testObject) {
 			throw new Error('Object passed by constructor must be accessible by propertyName from annotation $object');
 		}
-		this.normalizePropertyAnnotations();
+		this.normalizePropertyAnnotations(entityAnnotation);
 	}
 
-	private normalizePropertyAnnotations() {
-		var entityAnnotation = this.EntityStatic.$entity;
-		var keys = Object.keys(entityAnnotation);
+	private normalizePropertyAnnotations(
+		embeddedAnnotation: IEmbeddedAnnotation
+	) {
+		var keys = Object.keys(embeddedAnnotation);
 		keys.forEach((key: string) => {
 			if (key.substr(0, 1) === '$') {
 				return;
 			}
-			var propertyAnnotation = <IPropertyAnnotation>entityAnnotation[key];
+			var propertyAnnotation = <IPropertyAnnotation>embeddedAnnotation[key];
 			if (propertyAnnotation instanceof Type || this.isTypeStatic(propertyAnnotation)) {
-				propertyAnnotation = <IPropertyAnnotation><any>{ $type: propertyAnnotation };
+				embeddedAnnotation[key] = propertyAnnotation = <IPropertyAnnotation><any>{
+					$type: propertyAnnotation
+				};
 			}
-			if (!(propertyAnnotation.$type instanceof Type)) {
-				propertyAnnotation.$type = new (<ITypeStatic>propertyAnnotation.$type)();
-			}
-			if (!(propertyAnnotation.$type instanceof Type)) {
-				throw new Error('Type must be instance of Type or constructor of Type');
+			if (typeof propertyAnnotation.$type === 'undefined') {
+				this.normalizePropertyAnnotations(propertyAnnotation);
+			} else {
+				if (!(propertyAnnotation.$type instanceof Type)) {
+					propertyAnnotation.$type = new (<ITypeStatic>propertyAnnotation.$type)();
+				}
+				if (!(propertyAnnotation.$type instanceof Type)) {
+					throw new Error('Type must be instance of Type or constructor of Type');
+				}
 			}
 			if (typeof propertyAnnotation.$name === 'undefined') {
 				propertyAnnotation.$name = key;

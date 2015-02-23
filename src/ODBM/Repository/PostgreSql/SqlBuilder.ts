@@ -23,7 +23,7 @@ class SqlBuilder<Entity> {
 			var entityKeys = this.entityMapper.getKeys();
 			entityKeys.forEach((key: string) => {
 				var value = object[key];
-				if (this.entityMapper.getTypeByKey(key) instanceof Id && this.isEmpty(value)) {
+				if (this.entityMapper.getPropertyTypeByKey(key) instanceof Id && this.isEmpty(value)) {
 					placeholders.push('DEFAULT');
 				} else {
 					placeholderIndex++;

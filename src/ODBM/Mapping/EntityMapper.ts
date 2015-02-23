@@ -40,34 +40,44 @@ class EntityMapper<Entity, EntityObject> {
 	}
 
 	getKeys(): string[] {
-		var entityAnnotation = this.EntityStatic.$entity;
-		var annotationKeys = Object.keys(entityAnnotation);
+		return this.getEmbeddedKeys();
+	}
+
+	getEmbeddedKeys(...keys: string[]) {
+		var annotation: any = this.EntityStatic.$entity;
+		keys.forEach((key: string) => {
+			annotation = annotation[key];
+		});
+		var annotationKeys = Object.keys(annotation);
 		return _.filter(annotationKeys, (annotationKey: string) => {
-			return this.isPropertyAnnotation(entityAnnotation[annotationKey]);
+			return annotationKey.substr(0, 1) !== '$';
 		});
 	}
 
-	getPropertyNameByKey(key: string): string {
-		var propertyAnnotation = this.getPropertyAnnotationByKey(key);
+	private getAnnotationByKey(...keys: string[]): IPropertyAnnotation {
+		var entityAnnotation = this.EntityStatic.$entity;
+		var annotation = <any>entityAnnotation;
+		keys.forEach((key: string) => {
+			annotation = annotation[key];
+		});
+		if (!this.isAnnotation(annotation)) {
+			throw new Error('Getting by keys ' + keys + ' is not proper Annotation of $entity');
+		}
+		return <IPropertyAnnotation>annotation;
+	}
+
+	getPropertyNameByKey(...keys: string[]): string {
+		var propertyAnnotation = this.getAnnotationByKey.apply(this, keys);
 		return propertyAnnotation.$name;
 	}
 
-	getPropertyTypeByKey(key: string): Type {
-		var propertyAnnotation = this.getPropertyAnnotationByKey(key);
+	getPropertyTypeByKey(...keys: string[]): Type {
+		var propertyAnnotation = this.getAnnotationByKey.apply(this, keys);
 		return <Type>propertyAnnotation.$type;
 	}
 
-	getPropertyAnnotationByKey(key: string): IPropertyAnnotation {
-		var entityAnnotation = this.EntityStatic.$entity;
-		var propertyAnnotation = entityAnnotation[key];
-		if (!this.isPropertyAnnotation(propertyAnnotation)) {
-			throw new Error('Getting key is not IPropertyAnnotation');
-		}
-		return <IPropertyAnnotation>propertyAnnotation;
-	}
-
-	getTypeByKey(key: string): Type {
-		return <Type>this.getPropertyAnnotationByKey(key).$type;
+	isEmbeddedByKey(...keys: string[]): boolean {
+		return typeof this.getAnnotationByKey.apply(this, keys).$type === 'undefined';
 	}
 
 	getPropertyNames(): string[] {
@@ -86,9 +96,8 @@ class EntityMapper<Entity, EntityObject> {
 		return this.EntityStatic.$entity.$object;
 	}
 
-	private isPropertyAnnotation(propertyAnnotation: Type|ITypeStatic|string|DatabaseSystem|IPropertyAnnotation) {
-		return typeof propertyAnnotation === 'object'
-			&& typeof (<IPropertyAnnotation>propertyAnnotation).$name !== 'undefined'
-			&& typeof (<IPropertyAnnotation>propertyAnnotation).$type !== 'undefined';
+	private isAnnotation(annotation: any) {
+		return typeof annotation === 'object'
+			&& typeof annotation.$name !== 'undefined';
 	}
 }

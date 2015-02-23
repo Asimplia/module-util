@@ -24,7 +24,7 @@ class Converter {
 			case type instanceof AnnotationString:
 				return this.convertString(<AnnotationString>type, value);
 		}
-		throw new Error('Specified Type is not implemented');
+		throw new Error('Specified Type ' + (<any>type).constructor.name + ' is not implemented');
 	}
 
 	convertBoolean(type: AnnotationBoolean, value: any): boolean {

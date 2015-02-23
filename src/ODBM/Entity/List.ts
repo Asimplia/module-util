@@ -137,6 +137,10 @@ class List<Entity> {
 		return this.indexedBy[propertyName];
 	}
 
+	index(cb: (entity: Entity) => string|number) {
+		return _.indexBy(this.entities, cb);
+	}
+
 	get(i: number) {
 		return this.entities[i];
 	}

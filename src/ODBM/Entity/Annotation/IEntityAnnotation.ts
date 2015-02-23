@@ -3,12 +3,10 @@ import DatabaseSystem = require('../../DBS/DatabaseSystem');
 import IPropertyAnnotation = require('./IPropertyAnnotation');
 import Type = require('../../Mapping/Annotation/Type');
 import ITypeStatic = require('../../Mapping/Annotation/ITypeStatic');
+import IEmbeddedAnnotation = require('./IEmbeddedAnnotation');
 
 export = IEntityAnnotation;
-interface IEntityAnnotation {
+interface IEntityAnnotation extends IEmbeddedAnnotation {
 	$dbs: DatabaseSystem;
-	$name?: string;
 	$object?: string;
-	[propertyName: string]: IPropertyAnnotation|Type|ITypeStatic
-		|DatabaseSystem|string;
 }
