@@ -10,21 +10,21 @@ describe('ODBM.Entity.Updater', () => {
 	var updater = new Updater<MyEntity, MyEntityObject>(entityMapper);
 
 	describe('get', () => {
-
+		var d1 = new Date();
 		it('should get proper value of entity object', () => {
 			var entity = new MyEntity({
 				id: 113,
 				name: 'Hello',
 				embedded: {
 					description: 'World',
-					createdAt: new Date()
+					createdAt: d1
 				}
 			});
 			expect(updater.get(entity, 'id')).toBe(113);
 			expect(updater.get(entity, 'name')).toBe('Hello');
 			expect(updater.get(entity, 'embedded')).toEqual({
 				description: 'World',
-				createdAt: new Date()
+				createdAt: d1
 			});
 		});
 	});
