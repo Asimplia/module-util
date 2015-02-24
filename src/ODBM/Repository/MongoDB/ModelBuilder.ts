@@ -6,6 +6,7 @@ import AnnotationBoolean = require('../../Mapping/Annotation/Boolean');
 import AnnotationDate = require('../../Mapping/Annotation/Date');
 import AnnotationId = require('../../Mapping/Annotation/Id');
 import AnnotationInteger = require('../../Mapping/Annotation/Integer');
+import AnnotationFloat = require('../../Mapping/Annotation/Float');
 import AnnotationString = require('../../Mapping/Annotation/String');
 
 
@@ -64,6 +65,7 @@ class ModelBuilder<Entity, EntityObject> {
 			case type instanceof AnnotationId:
 				return this.getDefinitionByType((<AnnotationId>type).Type);
 			case type instanceof AnnotationInteger:
+			case type instanceof AnnotationFloat:
 				return Number;
 			case type instanceof AnnotationString:
 				return String;

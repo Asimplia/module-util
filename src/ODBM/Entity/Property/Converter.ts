@@ -6,6 +6,7 @@ import AnnotationBoolean = require('../../Mapping/Annotation/Boolean');
 import AnnotationDate = require('../../Mapping/Annotation/Date');
 import AnnotationId = require('../../Mapping/Annotation/Id');
 import AnnotationInteger = require('../../Mapping/Annotation/Integer');
+import AnnotationFloat = require('../../Mapping/Annotation/Float');
 import AnnotationString = require('../../Mapping/Annotation/String');
 
 export = Converter;
@@ -21,6 +22,8 @@ class Converter {
 				return this.convertId(<AnnotationId>type, value);
 			case type instanceof AnnotationInteger:
 				return this.convertInteger(<AnnotationInteger>type, value);
+			case type instanceof AnnotationFloat:
+				return this.convertFloat(<AnnotationFloat>type, value);
 			case type instanceof AnnotationString:
 				return this.convertString(<AnnotationString>type, value);
 		}
@@ -55,6 +58,15 @@ class Converter {
 			throw new Error('Integer is out of type range');
 		}
 		return integerValue;
+	}
+
+	convertFloat(type: AnnotationFloat, value: any): number {
+		value = this.getNullOrValue(type, value);
+		if (value === null) {
+			return null;
+		}
+		var floatValue = parseFloat(value);
+		return floatValue;
 	}
 
 	convertString(type: AnnotationString, value: any): string {

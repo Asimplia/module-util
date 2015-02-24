@@ -47,6 +47,16 @@ describe('ODBM.Entity.Property.Converter', () => {
 		});
 	});
 
+	describe('convertFloat', () => {
+		it('should return value in specified type', () => {
+			expect(converter.convertFloat(new Type.Float(), 1.13)).toBe(1.13);
+			expect(converter.convertFloat(new Type.Float(), 1)).toBe(1.0);
+			expect(converter.convertFloat(new Type.Float(8, true), null)).toBeNull();
+			expect(() => { converter.convertFloat(new Type.Float(), null); }).toThrow('Specified type is not nullable, then should not be null or undefined');
+			expect(() => { converter.convertFloat(new Type.Float(), undefined); }).toThrow('Specified type is not nullable, then should not be null or undefined');
+		});
+	});
+
 	describe('convertString', () => {
 		it('should return value in specified type', () => {
 			expect(converter.convertString(new Type.String(), 'Hi world')).toBe('Hi world');
@@ -79,6 +89,7 @@ describe('ODBM.Entity.Property.Converter', () => {
 			var d1 = new Date();
 			expect(converter.convertByType(new Type.String, 'myId')).toBe('myId');
 			expect(converter.convertByType(new Type.Integer, 113)).toBe(113);
+			expect(converter.convertByType(new Type.Float, 1.13)).toBe(1.13);
 			expect(converter.convertByType(new Type.Boolean, true)).toBe(true);
 			expect(converter.convertByType(new Type.Date, d1)).toEqual(d1);
 			expect(converter.convertByType(new Type.Id, 10)).toBe(10);
