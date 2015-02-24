@@ -46,10 +46,17 @@ class Converter<Entity, EntityObject> {
 				);
 			} else {
 				var type = this.entityMapper.getPropertyTypeByKey.apply(this.entityMapper, embeddedKeyPath);
-				convertedObject[key] = this.propertyConverter.convertByType(
-					type,
-					object[key]
-				);
+				try {
+					convertedObject[key] = this.propertyConverter.convertByType(
+						type,
+						object[key]
+					);
+				} catch (e) {
+					e.object = object;
+					e.keyPath = keyPath;
+					e.key = key;
+					throw e;
+				}
 			}
 		});
 		return convertedObject;
