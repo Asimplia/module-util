@@ -40,8 +40,8 @@ describe('ODBM.Entity.Property.Converter', () => {
 			expect(converter.convertInteger(new Type.Integer(), true)).toBeNaN();
 			expect(converter.convertInteger(new Type.Integer(), false)).toBeNaN();
 			expect(converter.convertInteger(new Type.Integer(8, true), null)).toBeNull();
-			expect(() => { converter.convertInteger(new Type.Integer(1), 128); }).toThrow('Integer is out of type range');
-			expect(() => { converter.convertInteger(new Type.Integer(1), -129); }).toThrow('Integer is out of type range');
+			expect(() => { converter.convertInteger(new Type.Integer(1), 128); }).toThrow('Integer is out of type range. Should be between <-128;127> but 128 given.');
+			expect(() => { converter.convertInteger(new Type.Integer(1), -129); }).toThrow('Integer is out of type range. Should be between <-128;127> but -129 given.');
 			expect(() => { converter.convertInteger(new Type.Integer(), null); }).toThrow('Specified type is not nullable, then should not be null or undefined');
 			expect(() => { converter.convertInteger(new Type.Integer(), undefined); }).toThrow('Specified type is not nullable, then should not be null or undefined');
 		});
@@ -64,8 +64,8 @@ describe('ODBM.Entity.Property.Converter', () => {
 			expect(converter.convertString(new Type.String(), '')).toBe('');
 			expect(converter.convertString(new Type.String(50, true), null)).toBe(null);
 			expect(converter.convertString(new Type.String(50, true), undefined)).toBe(null);
-			expect(() => { converter.convertString(new Type.String(4), '12345'); }).toThrow('String is out of size');
-			expect(() => { converter.convertString(new Type.String(4), 'abcdef'); }).toThrow('String is out of size');
+			expect(() => { converter.convertString(new Type.String(4), '12345'); }).toThrow('String is out of size. Should be 4 but 5 given.');
+			expect(() => { converter.convertString(new Type.String(4), 'abcdef'); }).toThrow('String is out of size. Should be 4 but 6 given.');
 			expect(() => { converter.convertString(new Type.String(), null); }).toThrow('Specified type is not nullable, then should not be null or undefined');
 			expect(() => { converter.convertString(new Type.String(), undefined); }).toThrow('Specified type is not nullable, then should not be null or undefined');
 		});
@@ -80,7 +80,7 @@ describe('ODBM.Entity.Property.Converter', () => {
 			expect(converter.convertId(new Type.Id(Type.String), undefined)).toBe(null);
 			expect(converter.convertId(new Type.Id(), null)).toBe(null);
 			expect(converter.convertId(new Type.Id(), undefined)).toBe(null);
-			expect(() => { converter.convertId(new Type.Id(new Type.String(4)), '12345'); }).toThrow('String is out of size');
+			expect(() => { converter.convertId(new Type.Id(new Type.String(4)), '12345'); }).toThrow('String is out of size. Should be 4 but 5 given.');
 		});
 	});
 

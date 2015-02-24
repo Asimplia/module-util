@@ -55,7 +55,7 @@ class Converter {
 		var range = { min: - size / 2, max: size / 2 - 1 };
 		var integerValue = parseInt(value);
 		if (integerValue < range.min || integerValue > range.max) {
-			throw new Error('Integer is out of type range');
+			throw new Error('Integer is out of type range. Should be between <' + range.min + ';' + range.max + '> but ' + integerValue + ' given.');
 		}
 		return integerValue;
 	}
@@ -76,7 +76,7 @@ class Converter {
 		}
 		var stringValue = "" + value;
 		if (stringValue.length > type.Length) {
-			throw new Error('String is out of size');
+			throw new Error('String is out of size. Should be ' + type.Length + ' but ' + stringValue.length + ' given.');
 		}
 		return stringValue;
 	}
