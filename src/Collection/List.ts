@@ -117,4 +117,13 @@ class List<Item, ItemList extends CommonItemList> {
 	get(i: number) {
 		return this.items[i];
 	}
+
+	chunk(batchLength: number): ItemList[] {
+		var batches = _.groupBy(this.items, (item: Item, index: number) => {
+			return Math.floor(index / batchLength);
+		});
+		return _.map(_.toArray(batches), (items: Item[]) => {
+			return new this.ListStatic(items);
+		});
+	}
 }

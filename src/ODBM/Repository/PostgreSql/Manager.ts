@@ -7,6 +7,7 @@ import Converter = require('../../Entity/Converter');
 import EntityMapper = require('../../Mapping/EntityMapper');
 import Updater = require('../../Entity/Updater');
 import List = require('../../Entity/List');
+import each = require('each');
 
 export = Manager;
 class Manager<Entity, EntityObject, EntityList extends List<any/*Entity*/>> implements IManager<Entity, EntityObject, EntityList> {
@@ -40,23 +41,29 @@ class Manager<Entity, EntityObject, EntityList extends List<any/*Entity*/>> impl
 			callback(null, entityList);
 			return;
 		}
-		var queryParamsPair = this.sqlBuilder.createInsertList(entityList);
-		this.connection.query(
-			queryParamsPair.query, 
-			queryParamsPair.params, 
-			(e: Error, result: any) =>
-		{
-			if (e) return callback(e);
-			result.rows.forEach((row: any, i: number) => {
-				var entity = entityList.get(i);
-				this.entityUpdater.set(
-					entity,
-					this.entityMapper.getIdKey(), 
-					row[this.entityMapper.getIdName()]
-				);
+		var entityLists = entityList.chunk(1000);
+		each(entityLists)
+		.on('item', (batchEntityList: EntityList, next: Function) => {
+			var queryParamsPair = this.sqlBuilder.createInsertList(batchEntityList);
+			this.connection.query(
+				queryParamsPair.query, 
+				queryParamsPair.params, 
+				(e: Error, result: any) =>
+			{
+				if (e) return callback(e);
+				result.rows.forEach((row: any, i: number) => {
+					var entity = batchEntityList.get(i);
+					this.entityUpdater.set(
+						entity,
+						this.entityMapper.getIdKey(), 
+						row[this.entityMapper.getIdName()]
+					);
+				});
+				next(null, batchEntityList);
 			});
-			callback(null, entityList);
-		});
+		})
+		.on('error', (e: Error) => callback(e))
+		.on('end', () => callback(null, entityList));
 
 		return this;
 	}
