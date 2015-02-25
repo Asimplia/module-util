@@ -4,6 +4,7 @@ import each = require('each');
 import IManager = require('../IManager');
 import ModelBuilder = require('./ModelBuilder');
 import IEntityStatic = require('../../Entity/IEntityStatic');
+import IEntityListStatic = require('../../Entity/IEntityListStatic');
 import Converter = require('../../Entity/Converter');
 import EntityMapper = require('../../Mapping/EntityMapper');
 import Updater = require('../../Entity/Updater');
@@ -15,7 +16,7 @@ interface MongooseCollection {
 }
 
 export = Manager;
-class Manager<Entity, EntityObject> implements IManager<Entity, EntityObject> {
+class Manager<Entity, EntityObject, EntityList extends List<any/*Entity*/>> implements IManager<Entity, EntityObject, EntityList> {
 
 	private converter: Converter<Entity, EntityObject>;
 	private entityMapper: EntityMapper<Entity, EntityObject>;
@@ -27,6 +28,7 @@ class Manager<Entity, EntityObject> implements IManager<Entity, EntityObject> {
 
 	constructor(
 		private EntityStatic: IEntityStatic<Entity, EntityObject>,
+		private EntityListStatic: IEntityListStatic<EntityList, Entity>,
 		private connection: mongoose.Mongoose
 	) {
 		this.converter = new Converter<Entity, EntityObject>(EntityStatic);
@@ -53,7 +55,7 @@ class Manager<Entity, EntityObject> implements IManager<Entity, EntityObject> {
 		});
 	}
 
-	insertList(entityList: List<Entity>, callback: (e: Error, entityList?: List<Entity>) => void): IManager<Entity, EntityObject> {
+	insertList(entityList: List<Entity>, callback: (e: Error, entityList?: List<Entity>) => void): IManager<Entity, EntityObject, EntityList> {
 		this.autoIncrementIdsOfList(entityList, (e: Error, entityList?: List<Entity>) => {
 			if (e) return callback(e);
 			var objects = entityList.toArray(this.converter.toObject);
@@ -78,7 +80,7 @@ class Manager<Entity, EntityObject> implements IManager<Entity, EntityObject> {
 		return ids;
 	}
 
-	updateList(entityList: List<Entity>, callback: (e: Error, entityList?: List<Entity>) => void): IManager<Entity, EntityObject> {
+	updateList(entityList: List<Entity>, callback: (e: Error, entityList?: List<Entity>) => void): IManager<Entity, EntityObject, EntityList> {
 		var idKey = this.entityMapper.getIdKey();
 		var idName = this.entityMapper.getIdName();
 		var ids = this.getIds(entityList);
@@ -110,7 +112,7 @@ class Manager<Entity, EntityObject> implements IManager<Entity, EntityObject> {
 		return this;
 	}
 
-	insertOrUpdateList(entityList: List<Entity>, callback: (e: Error, entityList?: List<Entity>) => void): IManager<Entity, EntityObject> {
+	insertOrUpdateList(entityList: List<Entity>, callback: (e: Error, entityList?: List<Entity>) => void): IManager<Entity, EntityObject, EntityList> {
 		var idKey = this.entityMapper.getIdKey();
 		var idName = this.entityMapper.getIdName();
 		var ids = this.getIds(entityList);
@@ -160,7 +162,7 @@ class Manager<Entity, EntityObject> implements IManager<Entity, EntityObject> {
 		return this;
 	}
 
-	insertOrUpdate(entity: Entity, callback: (e: Error, entity?: Entity) => void): IManager<Entity, EntityObject> {
+	insertOrUpdate(entity: Entity, callback: (e: Error, entity?: Entity) => void): IManager<Entity, EntityObject, EntityList> {
 		var idKey = this.entityMapper.getIdKey();
 		var idName = this.entityMapper.getIdName();
 		var id = this.entityUpdater.get(entity, idKey);
@@ -182,7 +184,7 @@ class Manager<Entity, EntityObject> implements IManager<Entity, EntityObject> {
 		return this;
 	}
 
-	update(entity: Entity, callback: (e: Error, entity?: Entity) => void): IManager<Entity, EntityObject> {
+	update(entity: Entity, callback: (e: Error, entity?: Entity) => void): IManager<Entity, EntityObject, EntityList> {
 		var idKey = this.entityMapper.getIdKey();
 		var idName = this.entityMapper.getIdName();
 		var id = this.entityUpdater.get(entity, idKey);
@@ -211,7 +213,7 @@ class Manager<Entity, EntityObject> implements IManager<Entity, EntityObject> {
 		});
 	}
 
-	insert(entity: Entity, callback: (e: Error, entity?: Entity) => void): IManager<Entity, EntityObject> {
+	insert(entity: Entity, callback: (e: Error, entity?: Entity) => void): IManager<Entity, EntityObject, EntityList> {
 		var idKey = this.entityMapper.getIdKey();
 		var id = this.entityUpdater.get(entity, idKey);
 		if (id) {
