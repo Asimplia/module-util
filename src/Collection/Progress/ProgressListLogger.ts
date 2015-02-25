@@ -6,7 +6,7 @@ var hooker = require('hooker');
 export = ProgressListLogger;
 class ProgressListLogger implements IAspect {
 
-	static $args = [200];
+	static $args = [5000];
 	constructor(
 		private logProgressOverCount: number
 	) {}
