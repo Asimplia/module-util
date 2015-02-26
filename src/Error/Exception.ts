@@ -1,4 +1,5 @@
 
+import _ = require('underscore');
 import IObjectableError = require('./IObjectableError');
 
 declare class ErrorClass implements Error {
@@ -13,7 +14,9 @@ class Exception extends ErrorClass implements IObjectableError {
 
 	private _name: string;
 	private _message: string;
-	private _causedBy: IObjectableError;
+	private _code: number;
+	private _causedBy: Error;
+	private _errors: Error[];
 	
 	get name() { return this._name; }
 	get message() { return this._message; }
@@ -23,33 +26,50 @@ class Exception extends ErrorClass implements IObjectableError {
 	get Code() { return this._code; }
 
 	constructor(
-		e: IObjectableError|Error|string,
-		private _code?: number,
-		causedBy?: IObjectableError|Error|string
+		e: Error|string|Error[],
+		code?: number,
+		causedBy?: Error
 	) {
-		super(<any>(e ? (<any>e).message : e));
-		if (typeof e === 'object' && (
-			typeof e.name !== 'undefined' || typeof e.message !== 'undefined'
-		)) {
-			this._message = e.message;
-			this._name = e.name;
-			if (typeof causedBy === 'undefined') {
-				this._causedBy = <any>e;
-			}
+		if (this.isError(e)) {
+			var error = <Error>e;
+			this._name = error.name || this.getClassName(error);;
+			this._message = error.message;
+			this._errors = [error];
+		} else if (_.isArray(e)) {
+			var errors = <Error[]>e;
+			this._message = _.map(<any>e, (e: Error) => { return e.message; }).join(', ');
+			this._errors = errors;
 		} else {
-			this._name = <any>e;
 			this._message = <any>e;
+			this._errors = [];
 		}
+		if (!this._name) {
+			this._name = this.getClassName();
+		}
+		super(this._message);
+		this._causedBy = causedBy;
+		this._code = code;
+	}
+
+	private isError(e: any) {
+		return typeof e === 'object' && (
+			typeof e.name !== 'undefined' || typeof e.message !== 'undefined'
+		);
+	}
+
+	private getClassName(error: any = this) {
+		return error.__proto__.constructor.name;
 	}
 
 	toObject() {
+		var causedBy = <any>this._causedBy;
 		return {
 			name: this._name,
 			message: this._message,
 			code: this._code,
-			causedBy: this._causedBy && typeof this._causedBy.toObject === 'function' 
-				? this._causedBy.toObject()
-				: this._causedBy
+			causedBy: this._causedBy && typeof causedBy.toObject === 'function' 
+				? causedBy.toObject()
+				: causedBy
 		};
 	}
 }
