@@ -1,6 +1,6 @@
 {
   "version": "v4",
-  "repo": "borisyankov/DefinitelyTyped",
+  "repo": "misak113/DefinitelyTyped",
   "ref": "master",
   "path": "typings",
   "bundle": "typings/tsd.d.ts",
@@ -25,6 +25,9 @@
     },
     "mongoose/mongoose.d.ts": {
       "commit": "2272849a06f2b68205611665e6b86ffec58c1e10"
+    },
+    "hooker/hooker.d.ts": {
+      "commit": "f9341f81d08e9f8d778a2cc944060321f325e28c"
     }
   }
 }

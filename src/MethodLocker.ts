@@ -3,7 +3,7 @@ import AlreadyRunningError = require('./Error/AlreadyRunningError');
 import AlreadyLockedError = require('./Error/AlreadyLockedError');
 import moment = require('moment');
 import _ = require('underscore');
-var hooker = require('hooker');
+import hooker = require('hooker');
 
 export = MethodLocker;
 class MethodLocker {
@@ -44,7 +44,7 @@ class MethodLocker {
 		var lockKey = this.getMethodKey(className, methodName);
 		this.lockedMethod[lockKey] = true;
 		var _this = this;
-		return function () {
+		return function (): any {
 			var callback = _.last(arguments);
 			var args = _.initial(arguments);
 			var key = _this.getMethodKey(className, methodName) + args.join(',');

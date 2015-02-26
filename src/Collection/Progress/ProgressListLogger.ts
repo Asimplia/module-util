@@ -1,7 +1,7 @@
 
 import IAspect = require('../../AOP/IAspect');
 import List = require('../List');
-var hooker = require('hooker');
+import hooker = require('hooker');
 
 export = ProgressListLogger;
 class ProgressListLogger implements IAspect {
