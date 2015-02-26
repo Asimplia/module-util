@@ -8,6 +8,7 @@ import EntityMapper = require('../../Mapping/EntityMapper');
 import Updater = require('../../Entity/Updater');
 import List = require('../../Entity/List');
 import each = require('each');
+import MoreThenOneResultException = require('../Exception/MoreThenOneResultException');
 
 export = Manager;
 class Manager<Entity, EntityObject, EntityList extends List<any/*Entity*/>> implements IManager<Entity, EntityObject, EntityList> {
@@ -68,7 +69,7 @@ class Manager<Entity, EntityObject, EntityList extends List<any/*Entity*/>> impl
 		return this;
 	}
 
-	getListBy(conditions: any, callback: (e: Error, entityList?: EntityList) => void): IManager<Entity, EntityObject, EntityList> {
+	fetchListBy(conditions: any, callback: (e: Error, entityList?: EntityList) => void): IManager<Entity, EntityObject, EntityList> {
 		var queryParamsPair = this.sqlBuilder.createSelectByConditions(conditions);
 		this.connection.query(
 			queryParamsPair.query, 
@@ -82,6 +83,23 @@ class Manager<Entity, EntityObject, EntityList extends List<any/*Entity*/>> impl
 				entities.push(entity);
 			});
 			callback(null, new this.EntityListStatic(entities));
+		});
+
+		return this;
+	}
+
+	fetchBy(conditions: any, callback: (e: Error, entity?: Entity) => void): IManager<Entity, EntityObject, EntityList> {
+		var queryParamsPair = this.sqlBuilder.createSelectByConditions(conditions);
+		this.connection.query(
+			queryParamsPair.query, 
+			queryParamsPair.params, 
+			(e: Error, result: any) =>
+		{
+			if (e) return callback(e);
+			if (result.rows.length > 1) return callback(new MoreThenOneResultException(result.rows));
+			if (result.rows.length == 0) return callback(null, null);
+			var entity = this.converter.fromRow(result.rows[0]);
+			callback(null, entity);
 		});
 
 		return this;
