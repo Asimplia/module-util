@@ -17,6 +17,7 @@ class Exception extends ErrorClass implements IObjectableError {
 	private _code: number;
 	private _causedBy: Error;
 	private _errors: Error[];
+	private _stack: string;
 	
 	get name() { return this._name; }
 	get message() { return this._message; }
@@ -24,6 +25,7 @@ class Exception extends ErrorClass implements IObjectableError {
 	get Message() { return this._message; }
 	get Name() { return this._name; }
 	get Code() { return this._code; }
+	get Stack() { return this._stack; }
 
 	constructor(
 		e: Error|string|Error[],
@@ -49,6 +51,7 @@ class Exception extends ErrorClass implements IObjectableError {
 		super(this._message);
 		this._causedBy = causedBy;
 		this._code = code;
+		this._stack = (<any>new Error()).stack;
 	}
 
 	private isError(e: any) {
@@ -69,7 +72,8 @@ class Exception extends ErrorClass implements IObjectableError {
 			code: this._code,
 			causedBy: this._causedBy && typeof causedBy.toObject === 'function' 
 				? causedBy.toObject()
-				: causedBy
+				: causedBy,
+			stack: this._stack
 		};
 	}
 }

@@ -15,7 +15,10 @@ describe('Error.Exception', () => {
 	
 	it('should create by first string', () => {
 		var e = new Exception('Hello world');
-		expect(e.toObject()).toEqual({
+		var obj = e.toObject();
+		expect(typeof obj.stack).toBe('string');
+		delete obj.stack;
+		expect(obj).toEqual({
 			name: 'Exception',
 			message: 'Hello world',
 			code: undefined,
@@ -26,7 +29,10 @@ describe('Error.Exception', () => {
 	it('should create by first Error instance', () => {
 		var err = new Error('message');
 		var e = new Exception(err);
-		expect(e.toObject()).toEqual({
+		var obj = e.toObject();
+		expect(typeof obj.stack).toBe('string');
+		delete obj.stack;
+		expect(obj).toEqual({
 			name: 'Error',
 			message: 'message',
 			code: undefined,
@@ -37,7 +43,10 @@ describe('Error.Exception', () => {
 	it('should create by first Error instance of child error class', () => {
 		var err = new MyError('message');
 		var e = new Exception(err);
-		expect(e.toObject()).toEqual({
+		var obj = e.toObject();
+		expect(typeof obj.stack).toBe('string');
+		delete obj.stack;
+		expect(obj).toEqual({
 			name: 'MyError',
 			message: 'message',
 			code: undefined,
@@ -48,7 +57,10 @@ describe('Error.Exception', () => {
 	it('should create by first Error instance of child error class', () => {
 		var err = new MyError('message');
 		var e = new Exception(err);
-		expect(e.toObject()).toEqual({
+		var obj = e.toObject();
+		expect(typeof obj.stack).toBe('string');
+		delete obj.stack;
+		expect(obj).toEqual({
 			name: 'MyError',
 			message: 'message',
 			code: undefined,
@@ -59,7 +71,10 @@ describe('Error.Exception', () => {
 	it('should create specific by first Error instance of child error class', () => {
 		var err = new MyError('message');
 		var e = new MyException(err);
-		expect(e.toObject()).toEqual({
+		var obj = e.toObject();
+		expect(typeof obj.stack).toBe('string');
+		delete obj.stack;
+		expect(obj).toEqual({
 			name: 'MyError',
 			message: 'message',
 			code: undefined,
@@ -69,7 +84,10 @@ describe('Error.Exception', () => {
 	
 	it('should create specific by first string', () => {
 		var e = new MyException('my message');
-		expect(e.toObject()).toEqual({
+		var obj = e.toObject();
+		expect(typeof obj.stack).toBe('string');
+		delete obj.stack;
+		expect(obj).toEqual({
 			name: 'MyException',
 			message: 'my message',
 			code: undefined,
@@ -80,7 +98,10 @@ describe('Error.Exception', () => {
 	it('should create specific by first string & code & causedBy', () => {
 		var err = new Error('message');
 		var e = new MyException('my message', 113, err);
-		expect(e.toObject()).toEqual({
+		var obj = e.toObject();
+		expect(typeof obj.stack).toBe('string');
+		delete obj.stack;
+		expect(obj).toEqual({
 			name: 'MyException',
 			message: 'my message',
 			code: 113,
@@ -91,7 +112,10 @@ describe('Error.Exception', () => {
 	it('should create specific by first specific Exception', () => {
 		var exc = new YourException('message');
 		var e = new MyException(exc);
-		expect(e.toObject()).toEqual({
+		var obj = e.toObject();
+		expect(typeof obj.stack).toBe('string');
+		delete obj.stack;
+		expect(obj).toEqual({
 			name: 'YourException',
 			message: 'message',
 			code: undefined,
@@ -102,7 +126,12 @@ describe('Error.Exception', () => {
 	it('should create specific with causedBy Exception', () => {
 		var exc = new YourException('message your');
 		var e = new MyException('message my', undefined, exc);
-		expect(e.toObject()).toEqual({
+		var obj = e.toObject();
+		expect(typeof obj.stack).toBe('string');
+		expect(typeof obj.causedBy.stack).toBe('string');
+		delete obj.stack;
+		delete obj.causedBy.stack;
+		expect(obj).toEqual({
 			name: 'MyException',
 			message: 'message my',
 			code: undefined,
@@ -121,7 +150,10 @@ describe('Error.Exception', () => {
 			new Error('his')
 		];
 		var e = new MyException(errs);
-		expect(e.toObject()).toEqual({
+		var obj = e.toObject();
+		expect(typeof obj.stack).toBe('string');
+		delete obj.stack;
+		expect(obj).toEqual({
 			name: 'MyException',
 			message: 'my, his',
 			code: undefined,
