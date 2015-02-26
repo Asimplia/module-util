@@ -213,7 +213,9 @@ module.exports = exports = function (
 				file: 'app.js',
 				nodeArgs: [],
 				args: [],
-				env: {}
+				env: {
+					NODE_ENV: 'dev'
+				}
 			}
 		},
 		wait: {
