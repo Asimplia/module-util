@@ -1,9 +1,11 @@
 module.exports = function (grunt) {
 	var GruntConfiguration = require('./js/GruntConfiguration');
 
-	var typescriptBuildFiles = ["src/**/*.ts", "tests/**/*.ts", "!node_modules/**/*.ts"];
+	var typescriptBuildFiles = ["src/**/*.ts", "tests/**/*.ts"];
 	// Project configuration.
-	var config = GruntConfiguration([], [], [], typescriptBuildFiles, typescriptBuildFiles, [
+	var config = GruntConfiguration(typescriptBuildFiles, [
+		'typings/tsd.d.ts'
+	], [], typescriptBuildFiles, typescriptBuildFiles, [
 		'typings/tsd.d.ts'
 	], __dirname);
 	grunt.initConfig(config);
@@ -16,7 +18,7 @@ module.exports = function (grunt) {
 	GruntConfiguration.loadParentNpmTasks(grunt, 'grunt-wait');
 
 	grunt.registerTask('default', [
-		'clean:build', 'tsd:reinstall', 'wait:typings', 'typescript:build', 'jasmine_node:unit'
+		'clean:build', 'tsd:reinstall', 'wait:typings', 'typescript:build', 'typescript:public', 'jasmine_node:unit'
 	]);
 	grunt.registerTask('dev', function () {
 		GruntConfiguration.typescriptReferences(__dirname + '/build/references.ts', [
