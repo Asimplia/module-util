@@ -1,11 +1,6 @@
 
 import IAspect = require('./IAspect');
-
-interface IAspectDefinition {
-	$aspect?: any|IAspect;
-	$method?: string;
-	$interceptor?: Function;
-}
+import IAspectDefinition = require('./IAspectDefinition');
 
 export = AspectInterception;
 class AspectInterception {

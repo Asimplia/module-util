@@ -1,5 +1,5 @@
 
 declare module "asimplia-util" {
-	import index = require('src/index.amd');
+	import index = require('build/src/index.amd');
 	export = index;
 }

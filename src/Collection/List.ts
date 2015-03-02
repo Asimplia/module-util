@@ -1,8 +1,7 @@
 
 import each = require('each');
 import _ = require('underscore');
-
-type CommonItemList = List<any, any>;
+import CommonItemList = require('./CommonItemList');
 
 export = List;
 class List<Item, ItemList extends CommonItemList> {

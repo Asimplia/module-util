@@ -1,5 +1,5 @@
 
-type ComparableTypes = number|Date;
+import ComparableTypes = require('./ComparableTypes');
 
 export = IComparableConditions;
 interface IComparableConditions {

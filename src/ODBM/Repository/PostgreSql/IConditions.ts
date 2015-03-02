@@ -1,7 +1,7 @@
 
 import IComparableConditions = require('./IComparableConditions');
 
-type CommonTypes = string|number|Date|boolean;
+import CommonTypes = require('./CommonTypes');
 
 export = IConditions;
 interface IConditions {

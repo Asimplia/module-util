@@ -1,13 +1,7 @@
 
 import _ = require('underscore');
 import IObjectableError = require('./IObjectableError');
-
-declare class ErrorClass implements Error {
-	public name: string;
-	public message: string;
-	constructor(message?: string);
-}
-eval('ErrorClass = Error');
+import ErrorClass = require('./ErrorClass');
 
 export = Exception;
 class Exception extends ErrorClass implements IObjectableError {

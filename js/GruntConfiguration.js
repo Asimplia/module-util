@@ -47,7 +47,7 @@ module.exports = exports = function (
 					// true (default) | false
 					sourceMap: false,
 					// true | false (default)
-					declaration: false,
+					declaration: true,
 					// true (default) | false
 					removeComments: false,
 					references: typescriptBuildReferences
