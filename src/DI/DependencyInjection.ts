@@ -179,7 +179,11 @@ class DependencyInjection {
 			for (var diName in this.dependencyInjections) {
 				var subName = this.dependencyInjections[diName].getNameByConstructor(constructor);
 				if (subName) {
-					name = diName + DependencyInjection.DEPENDENCY_INJECTION_TO_SERVICE_DELIMITER + subName;
+					if (subName.indexOf(DependencyInjection.DEPENDENCY_INJECTION_TO_SERVICE_DELIMITER) === -1) {
+						name = diName + DependencyInjection.DEPENDENCY_INJECTION_TO_SERVICE_DELIMITER + subName;
+					} else {
+						name = subName;
+					}
 					break;
 				}
 			}
@@ -258,10 +262,31 @@ class DependencyInjection {
 		this.addServiceFactory(name, this.createFactorySimple(service));
 	}
 
+	private hasDependencyInjection(name: string) {
+		if (typeof this.dependencyInjections[name] !== 'undefined') {
+			return true;
+		}
+		for (var subDiName in this.dependencyInjections) {
+			var subDi = this.dependencyInjections[subDiName];
+			if (subDi.hasDependencyInjection(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	getDependencyInjection(name: string) {
-		if (typeof this.dependencyInjections[name] === 'undefined') {
+		if (!this.hasDependencyInjection(name)) {
 			throw new Error('DependencyInjection named "' + name + '" not found');
 		}
-		return this.dependencyInjections[name];
+		if (typeof this.dependencyInjections[name] !== 'undefined') {
+			return this.dependencyInjections[name];
+		}
+		for (var subDiName in this.dependencyInjections) {
+			var subDi = this.dependencyInjections[subDiName];
+			if (subDi.hasDependencyInjection(name)) {
+				return subDi.getDependencyInjection(name);
+			}
+		}
 	}
 }

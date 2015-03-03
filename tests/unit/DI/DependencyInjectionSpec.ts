@@ -309,4 +309,27 @@ describe('DependencyInjection', () => {
 		});
 		expect(ran).toBeFalsy();
 	});
+
+	it('should create service by constructor and inject by class from double-sub DI', () => {
+		var emptyStr: any = true;
+		function Dep(noDep) { emptyStr = ''; };
+		var subSubDi = new DependencyInjection('sub-sub-util', {
+			'SubDepClass': {
+				$class: <any>Dep
+			}
+		});
+		var subDi = new DependencyInjection('sub-util', {
+			'DepClass': { any: true }
+		}, [subSubDi]);
+		var di = new DependencyInjection('asimplia-util', {
+			'NoDep': {
+				$class: NoDep
+			}
+		}, [
+			subDi
+		]);
+		var dep = di.service(<any>Dep);
+		expect(emptyStr).toBe('');
+		expect(dep instanceof Dep).toBeTruthy();
+	});
 });
