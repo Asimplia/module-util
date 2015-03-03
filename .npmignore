@@ -7,3 +7,4 @@ tests/
 Gruntfile.js
 bower.json
 tsd.json
+.env.json
