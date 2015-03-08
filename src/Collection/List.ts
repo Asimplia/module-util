@@ -51,6 +51,10 @@ class List<Item, ItemList extends CommonItemList> {
 		return new List<any, CommonItemList>(_.map(this.items, cb));
 	}
 
+	mapList<MappedItem, MappedItemList extends CommonItemList>(cb: (item: Item) => MappedItem) {
+		return new List<MappedItem, MappedItemList>(_.map(this.items, cb));
+	}
+
 	max(cb: (item: Item) => number) {
 		return _.max(this.items, cb);
 	}
@@ -124,5 +128,9 @@ class List<Item, ItemList extends CommonItemList> {
 		return _.map(_.toArray(batches), (items: Item[]) => {
 			return new this.ListStatic(items);
 		});
+	}
+
+	merge(mergeList: ItemList) {
+		return new this.ListStatic([].concat(this.items, mergeList.toArray()));
 	}
 }
