@@ -9,7 +9,8 @@ module.exports = exports = function (
 	watchFiles, 
 	typescriptBuildFiles, 
 	typescriptBuildReferences,
-	basePath
+	basePath,
+	typescriptPublicBasePath
 ) {
 	return {
 		typescript: {
@@ -29,7 +30,7 @@ module.exports = exports = function (
 					// true (default) | false
 					removeComments: false,
 					noImplicitAny: false,
-					basePath: '',
+					basePath: typescriptPublicBasePath || '',
 					references: [
 						'typings/tsd.d.ts'
 					].concat(typescriptPublicReferences)
