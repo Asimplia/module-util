@@ -10,7 +10,7 @@ module.exports = exports = function (
 	typescriptBuildFiles, 
 	typescriptBuildReferences,
 	basePath,
-	typescriptPublicBasePath
+	publicBasePath
 ) {
 	return {
 		typescript: {
@@ -30,7 +30,7 @@ module.exports = exports = function (
 					// true (default) | false
 					removeComments: false,
 					noImplicitAny: false,
-					basePath: typescriptPublicBasePath || '',
+					basePath: publicBasePath || '',
 					references: [
 						'typings/tsd.d.ts'
 					].concat(typescriptPublicReferences)
@@ -77,7 +77,7 @@ module.exports = exports = function (
 		bower: {
 			install: {
 				options: {
-					targetDir: "./build/lib",
+					targetDir: "./build/" + (publicBasePath || '') + "lib",
 					layout: "byComponent",
 					verbose: true,
 					cleanTargetDir: true
@@ -120,13 +120,16 @@ module.exports = exports = function (
 			dev: {
 				options: {
 					sourceMap: true,
-					sourceMapFilename: 'build/css/debug.css.map',
+					sourceMapFilename: 'build/' + (publicBasePath || '') + 'css/debug.css.map',
 					sourceMapRootpath: '../../',
 					paths: "./css"
 				},
-				files: {
-					"build/css/debug.css": "css/main.less"
-				}
+				files: [
+					{
+						dest: "build/" + (publicBasePath || '') + "css/debug.css",
+						src: (publicBasePath || '') + "css/main.less"
+					}
+				]
 			},
 			prod: {
 				options: {
@@ -136,9 +139,12 @@ module.exports = exports = function (
 						// imgPath: '"http://mycdn.com/path/to/images"'
 					}
 				},
-				files: {
-					"build/css/index.css": "css/main.less"
-				}
+				files: [
+					{
+						dest: "build/" + (publicBasePath || '') + "css/index.css",
+						src: (publicBasePath || '') + "css/main.less"
+					}
+				]
 			}
 		},
 		tsd: {
@@ -167,12 +173,13 @@ module.exports = exports = function (
 				expand: true,
 				cwd: "build/",
 				src: '**/fonts/*',
-				dest: 'build/fonts/',
+				dest: 'build/' + (publicBasePath || '') + 'fonts/',
 				flatten: true,
 				filter: 'isFile'
 			},
 			img: {
-				src: 'img/*',
+				basePath: publicBasePath,
+				src: (publicBasePath || '') + 'img/*',
 				dest: 'build/'
 			}
 		},
