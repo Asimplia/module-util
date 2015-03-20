@@ -34,6 +34,11 @@
     "quotemark": [true, "single"],
     "radix": true,
     "semicolon": true,
+    "typedef": [true,
+        "index-signature",
+        "parameter",
+        "property-declaration"
+    ],
     "typedef-whitespace": [true, {
         "call-signature": "nospace",
         "index-signature": "nospace",

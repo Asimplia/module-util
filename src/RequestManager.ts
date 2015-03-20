@@ -9,7 +9,7 @@ class RequestManager  {
 			// REST post.
 			var content = '';
 
-			req.on('data', function (data) {
+			req.on('data', function (data: any) {
 				if (content.length > 1e6) {
 					// Flood attack or faulty client, nuke request.
 					res.status(413);

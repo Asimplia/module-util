@@ -7,7 +7,7 @@ var my = { hello: 'hello' };
 
 var your = { world: 'world', to: 'to' };
 /* tslint:disable:variable-name */
-var Our = function (your) {
+var Our = function (your: any) {
 	this.all = function () {
 		return your.to + ' all';
 	};
@@ -169,10 +169,10 @@ describe('DependencyInjection', () => {
 	});
 
 	it('should create service by factory with args', () => {
-		function A(arg1, arg2) { this.arg1 = arg1; this.arg2 = arg2; }
+		function A(arg1: any, arg2: any) { this.arg1 = arg1; this.arg2 = arg2; }
 		var di = new DependencyInjection('asimplia-util', {
 			a: {
-				$factory: (arg1, arg2) => { return new A(arg1, arg2); },
+				$factory: (arg1: any, arg2: any) => { return new A(arg1, arg2); },
 				$args: [1, '2']
 			}
 		});
@@ -181,11 +181,11 @@ describe('DependencyInjection', () => {
 	});
 
 	it('should create service by factory with inject & args', () => {
-		function A(arg1, ser2) { this.arg1 = arg1; this.ser2 = ser2; }
+		function A(arg1: any, ser2: any) { this.arg1 = arg1; this.ser2 = ser2; }
 		var serv2 = { any: true };
 		var di = new DependencyInjection('asimplia-util', {
 			a: {
-				$factory: (arg1, arg2) => { return new A(arg1, arg2); },
+				$factory: (arg1: any, arg2: any) => { return new A(arg1, arg2); },
 				$inject: ['serv2'],
 				$args: [1]
 			},
@@ -206,7 +206,7 @@ describe('DependencyInjection', () => {
 
 	it('should create service by constructor and inject by class', () => {
 		var emptyStr = true;
-		function Dep(noDep) { emptyStr = noDep.arg1; };
+		function Dep(noDep: any) { emptyStr = noDep.arg1; };
 		var di = new DependencyInjection('asimplia-util', {
 			'NoDep': {
 				$class: NoDep
@@ -222,7 +222,7 @@ describe('DependencyInjection', () => {
 
 	it('should create service by constructor and inject by class from sub DI', () => {
 		var emptyStr: any = true;
-		function Dep(noDep) { emptyStr = ''; };
+		function Dep(noDep: any) { emptyStr = ''; };
 		var subDi = new DependencyInjection('sub-util', {
 			'DepClass': {
 				$class: <any>Dep
@@ -315,7 +315,7 @@ describe('DependencyInjection', () => {
 
 	it('should create service by constructor and inject by class from double-sub DI', () => {
 		var emptyStr: any = true;
-		function Dep(noDep) { emptyStr = ''; };
+		function Dep(noDep: any) { emptyStr = ''; };
 		var subSubDi = new DependencyInjection('sub-sub-util', {
 			'SubDepClass': {
 				$class: <any>Dep
