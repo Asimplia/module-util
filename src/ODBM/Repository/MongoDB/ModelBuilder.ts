@@ -11,9 +11,11 @@ import AnnotationString = require('../../Mapping/Annotation/String');
 
 
 // should be in mongoose.d.ts, but missing now
+/* tslint:disable */
 interface IMongooseSchemableMongoose extends mongoose.Mongoose {
 	Schema: new (...args: any[]) => mongoose.Schema;
 }
+/* tslint:enable */
 
 export = ModelBuilder;
 class ModelBuilder<Entity, EntityObject> {
@@ -30,8 +32,8 @@ class ModelBuilder<Entity, EntityObject> {
 		if (typeof ModelBuilder.cachedModel[modelName] === 'undefined') {
 			var definition = this.getEmbeddedDefinition([]);
 			var schema = new (<IMongooseSchemableMongoose>this.connection).Schema(definition);
-			var Model = this.connection.model(modelName, schema);
-			ModelBuilder.cachedModel[modelName] = Model;
+			var model = this.connection.model(modelName, schema);
+			ModelBuilder.cachedModel[modelName] = model;
 		}
 		return ModelBuilder.cachedModel[modelName];
 	}

@@ -6,13 +6,14 @@ import Ctrl = require('./MockCtrl');
 var my = { hello: 'hello' };
 
 var your = { world: 'world', to: 'to' };
-
+/* tslint:disable:variable-name */
 var Our = function (your) {
 	this.all = function () {
 		return your.to + ' all';
 	};
 };
 (<any>Our).$inject = ['Your.Service'];
+/* tslint:enable */
 
 class NoDep {
 	constructor(private arg1: string = '') {}

@@ -4,7 +4,7 @@ import AspectInterception = require('./AspectInterception');
 import DependencyInjection = require('../DI/DependencyInjection');
 import _ = require('underscore');
 import fs = require('fs');
-var Finder = require('fs-finder');
+var finder = require('fs-finder');
 
 export = AnnotationAspects;
 class AnnotationAspects implements IAspect {
@@ -55,7 +55,7 @@ class AnnotationAspects implements IAspect {
 			if (fs.lstatSync(path).isFile()) { // TODO check pattern FILES_PATTERN
 				return path;
 			}
-			return Finder.from(path).findFiles(AnnotationAspects.FILES_PATTERN);
+			return finder.from(path).findFiles(AnnotationAspects.FILES_PATTERN);
 		})), (file: string) => {
 			return require(file);
 		});

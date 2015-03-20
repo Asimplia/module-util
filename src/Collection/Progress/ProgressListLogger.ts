@@ -12,10 +12,10 @@ class ProgressListLogger implements IAspect {
 	) {}
 
 	intercept() {
-		var _this = this;
+		var self = this;
 		hooker.hook(List.prototype, 'forEach', {
 			pre: function (cb: (item: any, i?: number) => any) {
-				return _this.handleIterations(this, cb);
+				return self.handleIterations(this, cb);
 			}
 		});
 	}

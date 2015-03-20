@@ -11,6 +11,7 @@ export import ODBM = require('./ODBM/index');
 export import Collection = require('./Collection/index');
 export import Console = require('./Console/index');
 export import DateTime = require('./DateTime/index');
+/* tslint:disable:variable-name */
 export var GruntConfiguration: any;
 exports.GruntConfiguration = require('../../js/GruntConfiguration');
 /* tslint:disable */

@@ -6,20 +6,20 @@ import ErrorClass = require('./ErrorClass');
 export = Exception;
 class Exception extends ErrorClass implements IObjectableError {
 
-	private _name: string;
-	private _message: string;
-	private _code: number;
-	private _causedBy: Error;
-	private _errors: Error[];
-	private _stack: string;
+	private exName: string;
+	private exMessage: string;
+	private exCode: number;
+	private exCausedBy: Error;
+	private originalErrors: Error[];
+	private stackTrace: string;
 
-	get name() { return this._name; }
-	get message() { return this._message; }
-	get causedBy(): Error { return <any>this._causedBy; }
-	get Message() { return this._message; }
-	get Name() { return this._name; }
-	get Code() { return this._code; }
-	get Stack() { return this._stack; }
+	get name() { return this.exName; }
+	get message() { return this.exMessage; }
+	get causedBy(): Error { return <any>this.exCausedBy; }
+	get Message() { return this.exMessage; }
+	get Name() { return this.exName; }
+	get Code() { return this.exCode; }
+	get Stack() { return this.stackTrace; }
 
 	constructor(
 		e: Error|string|Error[],
@@ -28,24 +28,24 @@ class Exception extends ErrorClass implements IObjectableError {
 	) {
 		if (this.isError(e)) {
 			var error = <Error>e;
-			this._name = error.name || this.getClassName(error);
-			this._message = error.message;
-			this._errors = [error];
+			this.exName = error.name || this.getClassName(error);
+			this.exMessage = error.message;
+			this.originalErrors = [error];
 		} else if (_.isArray(e)) {
 			var errors = <Error[]>e;
-			this._message = _.map(<any>e, (e: Error) => { return e.message; }).join(', ');
-			this._errors = errors;
+			this.exMessage = _.map(<any>e, (e: Error) => { return e.message; }).join(', ');
+			this.originalErrors = errors;
 		} else {
-			this._message = <any>e;
-			this._errors = [];
+			this.exMessage = <any>e;
+			this.originalErrors = [];
 		}
-		if (!this._name) {
-			this._name = this.getClassName();
+		if (!this.exName) {
+			this.exName = this.getClassName();
 		}
-		super(this._message);
-		this._causedBy = causedBy;
-		this._code = code;
-		this._stack = (<any>new Error()).stack;
+		super(this.exMessage);
+		this.exCausedBy = causedBy;
+		this.exCode = code;
+		this.stackTrace = (<any>new Error()).stack;
 	}
 
 	private isError(e: any) {
@@ -59,15 +59,15 @@ class Exception extends ErrorClass implements IObjectableError {
 	}
 
 	toObject() {
-		var causedBy = <any>this._causedBy;
+		var causedBy = <any>this.exCausedBy;
 		return {
-			name: this._name,
-			message: this._message,
-			code: this._code,
-			causedBy: this._causedBy && typeof causedBy.toObject === 'function'
+			name: this.exName,
+			message: this.exMessage,
+			code: this.exCode,
+			causedBy: this.exCausedBy && typeof causedBy.toObject === 'function'
 				? causedBy.toObject()
 				: causedBy,
-			stack: this._stack
+			stack: this.stackTrace
 		};
 	}
 }

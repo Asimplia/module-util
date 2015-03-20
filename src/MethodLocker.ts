@@ -43,26 +43,26 @@ class MethodLocker {
 	private getLockMethodFunction(className: string, methodName: string) {
 		var lockKey = this.getMethodKey(className, methodName);
 		this.lockedMethod[lockKey] = true;
-		var _this = this;
+		var self = this;
 		return function (): any {
 			var callback = _.last(arguments);
 			var args = _.initial(arguments);
-			var key = _this.getMethodKey(className, methodName) + args.join(',');
-			if (_this.processing[key]) {
+			var key = self.getMethodKey(className, methodName) + args.join(',');
+			if (self.processing[key]) {
 				callback(new AlreadyRunningError(
 					'Method ' + key + ' already running for '
-					+ (_this.now() - _this.processingStartTime[key]) + 's. '
+					+ (self.now() - self.processingStartTime[key]) + 's. '
 					+ 'Try it again later.'
 				));
 				return hooker.preempt(null);
 			}
 
-			_this.processingStartTime[key] = _this.now();
-			_this.processing[key] = true;
-			var hookedCallback = _this.processingHookedCallback[key] = function () {
-				delete _this.processing[key];
-				delete _this.processingStartTime[key];
-				delete _this.processingHookedCallback[key];
+			self.processingStartTime[key] = self.now();
+			self.processing[key] = true;
+			var hookedCallback = self.processingHookedCallback[key] = function () {
+				delete self.processing[key];
+				delete self.processingStartTime[key];
+				delete self.processingHookedCallback[key];
 				callback.apply(this, arguments);
 			};
 			return hooker.filter(this, args.concat([hookedCallback]));

@@ -2,7 +2,7 @@
 import DependencyInjection = require('./DependencyInjection');
 import _ = require('underscore');
 import fs = require('fs');
-var Finder = require('fs-finder');
+var finder = require('fs-finder');
 
 export = ServiceAutoload;
 class ServiceAutoload {
@@ -52,7 +52,7 @@ class ServiceAutoload {
 			if (fs.lstatSync(path).isFile()) { // TODO check pattern FILES_PATTERN
 				return path;
 			}
-			return Finder.from(path).findFiles(ServiceAutoload.FILES_PATTERN);
+			return finder.from(path).findFiles(ServiceAutoload.FILES_PATTERN);
 		})), (file: string) => {
 			return require(file);
 		});

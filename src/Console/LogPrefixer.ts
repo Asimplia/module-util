@@ -23,15 +23,15 @@ class LogPrefixer {
 	) {}
 
 	intercept() {
-		var _this = this;
+		var self = this;
 		Object.keys(this.colors).forEach((name: string) => {
-			var color = _this.colors[name];
+			var color = self.colors[name];
 			var defaultFunction = console[name];
 			console[name] = function (...args: any[]) {
-				var formatedDate = moment(_this.dateFactory.now())
+				var formatedDate = moment(self.dateFactory.now())
 					.format('YYYY-MM-DD\xA0HH:mm:ss');
 				args.unshift(
-					_this.start(color) + formatedDate + _this.end(color)
+					self.start(color) + formatedDate + self.end(color)
 				);
 				defaultFunction.apply(this, args);
 			};

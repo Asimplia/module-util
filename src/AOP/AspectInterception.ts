@@ -84,10 +84,10 @@ class AspectInterception {
 	}
 
 	private createAspectDefinition(aspect: IAspect, defaultDef: IAspectDefinition) {
-		var AspectStatic = (<any>aspect).__proto__.constructor || {};
+		var constructorAspectStatic = (<any> aspect).__proto__.constructor || {};
 		return {
 			$aspect: defaultDef.$aspect || aspect,
-			$method: defaultDef.$method || AspectStatic.$method,
+			$method: defaultDef.$method || constructorAspectStatic.$method,
 			$interceptor: defaultDef.$interceptor
 		};
 	}

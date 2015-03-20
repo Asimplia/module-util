@@ -1,6 +1,8 @@
 
 import Util = require('../../src/index');
+/* tslint:disable:variable-name */
 var GruntConfiguration = Util.GruntConfiguration;
+/* tslint:enable */
 
 describe('isSubModule', () => {
 	var isSubModule = GruntConfiguration.isSubModule;
