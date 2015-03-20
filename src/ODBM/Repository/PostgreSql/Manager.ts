@@ -28,7 +28,7 @@ class Manager<Entity, EntityObject, EntityList extends List<any/*Entity*/>> impl
 		this.entityUpdater = new Updater<Entity, EntityObject>(this.entityMapper);
 		this.sqlBuilder = new SqlBuilder<Entity>(this.converter, this.entityMapper);
 	}
-	
+
 	insert(entity: Entity, callback: (e: Error, entity?: Entity) => void): IManager<Entity, EntityObject, EntityList> {
 		this.insertList(new this.EntityListStatic([entity]), (e: Error, entityList?: EntityList) => {
 			if (e) return callback(e);
@@ -47,16 +47,15 @@ class Manager<Entity, EntityObject, EntityList extends List<any/*Entity*/>> impl
 		.on('item', (batchEntityList: EntityList, next: Function) => {
 			var queryParamsPair = this.sqlBuilder.createInsertList(batchEntityList);
 			this.connection.query(
-				queryParamsPair.query, 
-				queryParamsPair.params, 
-				(e: Error, result: any) =>
-			{
+				queryParamsPair.query,
+				queryParamsPair.params,
+				(e: Error, result: any) => {
 				if (e) return callback(e);
 				result.rows.forEach((row: any, i: number) => {
 					var entity = batchEntityList.get(i);
 					this.entityUpdater.set(
 						entity,
-						this.entityMapper.getIdKey(), 
+						this.entityMapper.getIdKey(),
 						row[this.entityMapper.getIdName()]
 					);
 				});
@@ -72,10 +71,9 @@ class Manager<Entity, EntityObject, EntityList extends List<any/*Entity*/>> impl
 	fetchListBy(conditions: any, callback: (e: Error, entityList?: EntityList) => void): IManager<Entity, EntityObject, EntityList> {
 		var queryParamsPair = this.sqlBuilder.createSelectByConditions(conditions);
 		this.connection.query(
-			queryParamsPair.query, 
-			queryParamsPair.params, 
-			(e: Error, result: any) =>
-		{
+			queryParamsPair.query,
+			queryParamsPair.params,
+			(e: Error, result: any) => {
 			if (e) return callback(e);
 			var entities = [];
 			result.rows.forEach((row: any, i: number) => {
@@ -91,10 +89,9 @@ class Manager<Entity, EntityObject, EntityList extends List<any/*Entity*/>> impl
 	fetchBy(conditions: any, callback: (e: Error, entity?: Entity) => void): IManager<Entity, EntityObject, EntityList> {
 		var queryParamsPair = this.sqlBuilder.createSelectByConditions(conditions);
 		this.connection.query(
-			queryParamsPair.query, 
-			queryParamsPair.params, 
-			(e: Error, result: any) =>
-		{
+			queryParamsPair.query,
+			queryParamsPair.params,
+			(e: Error, result: any) => {
 			if (e) return callback(e);
 			if (result.rows.length > 1) return callback(new MoreThenOneResultException(result.rows));
 			if (result.rows.length == 0) return callback(null, null);
@@ -108,10 +105,9 @@ class Manager<Entity, EntityObject, EntityList extends List<any/*Entity*/>> impl
 	removeBy(conditions: any, callback: (e: Error) => void): IManager<Entity, EntityObject, EntityList> {
 		var queryParamsPair = this.sqlBuilder.createDeleteByConditions(conditions);
 		this.connection.query(
-			queryParamsPair.query, 
-			queryParamsPair.params, 
-			(e: Error, result: any) =>
-		{
+			queryParamsPair.query,
+			queryParamsPair.params,
+			(e: Error, result: any) => {
 			if (e) return callback(e);
 			callback(null);
 		});

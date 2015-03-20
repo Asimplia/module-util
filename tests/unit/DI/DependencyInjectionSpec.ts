@@ -8,8 +8,8 @@ var my = { hello: 'hello' };
 var your = { world: 'world', to: 'to' };
 
 var Our = function (your) {
-	this.all = function () { 
-		return your.to + ' all'
+	this.all = function () {
+		return your.to + ' all';
 	};
 };
 (<any>Our).$inject = ['Your.Service'];
@@ -58,7 +58,7 @@ var defs: any = {
 		$inject: ['Ctrl', 'Your.Service']
 	},
 	'Path.Service': {
-		$path: __dirname + '/MockCtrl',
+		$path: __dirname + '/MockCtrl'
 	},
 	'Ctrl2': {
 		$class: Ctrl,

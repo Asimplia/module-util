@@ -21,11 +21,11 @@ module My {
 		get Object() { return this.object; }
 
 		constructor(
-			private object: MyEntityObject
+			private object: IMyEntityObject
 		) {}
 	}
 
-	export interface MyEntityObject {
+	export interface IMyEntityObject {
 		id: number;
 		name: string;
 		embedded: {

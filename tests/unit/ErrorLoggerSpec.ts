@@ -3,7 +3,7 @@ import Util = require('../../src/index');
 import ErrorLogger = Util.ErrorLogger;
 import IObjectableError = Util.Error.IObjectableError;
 
-describe("catchErrors", () => {
+describe('catchErrors', () => {
 	var errorLogger = new ErrorLogger();
 	var defaultConsoleError = console.error;
 	var defaultConsoleWarn = console.warn;
@@ -16,7 +16,7 @@ describe("catchErrors", () => {
 	beforeEach(resetConsole);
 	afterEach(resetConsole);
 
-	it("will create error.causedBy on console.error", () => {
+	it('will create error.causedBy on console.error', () => {
 		errorLogger.catchErrors('uncaught', 'error', 'warn', (e: IObjectableError, type: string) => {
 			expect(e.causedBy).toEqual('Some text');
 			expect(type).toBe('error');
@@ -25,7 +25,7 @@ describe("catchErrors", () => {
 		console.error(e);
 	});
 
-	it("will log Error on console.error", () => {
+	it('will log Error on console.error', () => {
 		errorLogger.catchErrors('uncaught', 'error', 'warn', (e: IObjectableError, type: string) => {
 			expect(e.name).toEqual('Error');
 			expect(type).toBe('error');
@@ -34,7 +34,7 @@ describe("catchErrors", () => {
 		console.error(e);
 	});
 
-	it("will create error.causedBy on console.warn", () => {
+	it('will create error.causedBy on console.warn', () => {
 		errorLogger.catchErrors('uncaught', 'error', 'warn', (e: IObjectableError, type: string) => {
 			expect(e.causedBy).toEqual('Some warning');
 			expect(type).toBe('warn');
@@ -43,7 +43,7 @@ describe("catchErrors", () => {
 		console.warn(e);
 	});
 
-	it("will log Error on console.warn", () => {
+	it('will log Error on console.warn', () => {
 		errorLogger.catchErrors('uncaught', 'error', 'warn', (e: IObjectableError, type: string) => {
 			expect(e.name).toEqual('Error');
 			expect(type).toBe('warn');
@@ -52,7 +52,7 @@ describe("catchErrors", () => {
 		console.warn(e);
 	});
 
-	it("will create error.causedBy on uncaughtException", () => {
+	it('will create error.causedBy on uncaughtException', () => {
 		errorLogger.catchErrors('uncaught', 'error', 'warn', (e: IObjectableError, type: string) => {
 			expect(e.causedBy).toEqual('Some warning');
 			expect(type).toBe('uncaught');
@@ -61,7 +61,7 @@ describe("catchErrors", () => {
 		process.emit('uncaughtException', e);
 	});
 
-	it("will log Error on uncaughtException", () => {
+	it('will log Error on uncaughtException', () => {
 		errorLogger.catchErrors('uncaught', 'error', 'warn', (e: IObjectableError, type: string) => {
 			expect(e.name).toEqual('Error');
 			expect(type).toBe('uncaught');
@@ -71,7 +71,7 @@ describe("catchErrors", () => {
 	});
 });
 
-describe("setToObjectOnError", () => {
+describe('setToObjectOnError', () => {
 	var errorLogger = new ErrorLogger();
 	var defaultToObject = (<any>Error).prototype.toObject;
 	var resetConsole = () => {
@@ -80,17 +80,17 @@ describe("setToObjectOnError", () => {
 	beforeEach(resetConsole);
 	afterEach(resetConsole);
 
-	it("will be deep object from real error", () => {
+	it('will be deep object from real error', () => {
 		errorLogger.setToObjectOnError();
 		try {
 			var a: any = {};
 			a.noExists();
 		} catch (e) {
-			expect(e.toObject().message).toEqual("Object #<Object> has no method 'noExists'");
+			expect(e.toObject().message).toEqual('Object #<Object> has no method \'noExists\'');
 		}
 	});
 
-	it("will be deep object", () => {
+	it('will be deep object', () => {
 		errorLogger.setToObjectOnError();
 		var e = <IObjectableError>new Error('abc');
 		e.message = 'ghi';

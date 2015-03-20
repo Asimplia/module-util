@@ -4,7 +4,7 @@ import fs = require('fs');
 
 export = EnvConfigOverrider;
 class EnvConfigOverrider {
-	
+
 	static $aspect = 'Env.EnvConfigOverrider';
 	static $service = 'Env.EnvConfigOverrider';
 	static $args = [null];

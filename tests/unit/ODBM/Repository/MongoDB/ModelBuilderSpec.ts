@@ -3,12 +3,12 @@ import ModelBuilder = require('../../../../../src/ODBM/Repository/MongoDB/ModelB
 import EntityMapper = require('../../../../../src/ODBM/Mapping/EntityMapper');
 import My = require('../../../fixtures/My');
 import MyEntity = My.MyEntity;
-import MyEntityObject = My.MyEntityObject;
+import IMyEntityObject = My.IMyEntityObject;
 
 describe('ODBM.Repository.MongoDB.ModelBuilder', () => {
-	var entityMapper = new EntityMapper<MyEntity, MyEntityObject>(MyEntity);
+	var entityMapper = new EntityMapper<MyEntity, IMyEntityObject>(MyEntity);
 	var connectionMock = <any>{};
-	var modelBuilder = new ModelBuilder<MyEntity, MyEntityObject>(entityMapper, connectionMock);
+	var modelBuilder = new ModelBuilder<MyEntity, IMyEntityObject>(entityMapper, connectionMock);
 
 	describe('getEmbeddedDefinition', () => {
 		var definition = (<any>modelBuilder).getEmbeddedDefinition([]); // test private, becouse create is depend on mongoose

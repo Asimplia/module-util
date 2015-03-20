@@ -9,7 +9,7 @@ class AspectInterception {
 
 	private aspects: {[name: string]: any} = {};
 	private aspectDefs: {[name: string]: any|IAspect|IAspectDefinition} = {};
-	
+
 	get Name() { return this.name; }
 
 	static $run = true;
@@ -45,8 +45,8 @@ class AspectInterception {
 			throw new Error('Needs to declare $aspect or $interceptor in definition of aspect');
 		}
 		var aspect = def.$aspect || {};
-		if (typeof def.$interceptor !== 'function' 
-			&& typeof aspect.intercept !== 'function' 
+		if (typeof def.$interceptor !== 'function'
+			&& typeof aspect.intercept !== 'function'
 			&& (typeof def.$method !== 'string' || typeof aspect[def.$method] !== 'function')) {
 			throw new Error('Interceptor in $aspect or $method of $aspect is not function');
 		}
@@ -57,8 +57,8 @@ class AspectInterception {
 	}
 
 	private isAspectDefinition(def: any) {
-		return typeof def.$aspect !== 'undefined' 
-			|| typeof def.$method !== 'undefined' 
+		return typeof def.$aspect !== 'undefined'
+			|| typeof def.$method !== 'undefined'
 			|| typeof def.$interceptor !== 'undefined';
 	}
 

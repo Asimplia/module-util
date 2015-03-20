@@ -4,11 +4,11 @@ import _ = require('underscore');
 
 export = ErrorLogger;
 class ErrorLogger {
-	
+
 	catchErrors(
-		uncaughtErrorType: any, 
-		errorType: any, 
-		warningType: any, 
+		uncaughtErrorType: any,
+		errorType: any,
+		warningType: any,
 		onError: (e: IObjectableError, type: any) => void
 	) {
 		var consoleError = console.error;
@@ -54,6 +54,6 @@ class ErrorLogger {
 	}
 
 	private isError(e: any) {
-		return (''+e).substr(0, 5) == 'Error';
+		return ('' + e).substr(0, 5) == 'Error';
 	}
 }

@@ -13,6 +13,7 @@ export import Console = require('./Console/index');
 export import DateTime = require('./DateTime/index');
 export var GruntConfiguration: any;
 exports.GruntConfiguration = require('../../js/GruntConfiguration');
+/* tslint:disable */
 Error;
 MethodLocker;
 ParamDefinition;

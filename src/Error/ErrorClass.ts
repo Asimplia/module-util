@@ -6,4 +6,5 @@ declare class ErrorClass implements Error {
 	constructor(message?: string);
 }
 // Setup ErrorClass static by Error
+/* tslint:disable */
 eval('ErrorClass = Error');

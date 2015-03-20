@@ -26,7 +26,7 @@ describe('DependencyInjection', () => {
 				$class: ServiceAutoload
 			}
 		});
-		
+
 		var ai = di.get<AspectInterception>(AspectInterception);
 		var aa = di.get<AnnotationAspects>(AnnotationAspects);
 		var car = di.get<Car>(Car);

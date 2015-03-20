@@ -1,7 +1,7 @@
 
 import Converter = require('../../../../../src/ODBM/Entity/Property/Converter');
 import Type = require('../../../../../src/ODBM/Mapping/Type');
-
+/* tslint:disable:max-line-length */
 describe('ODBM.Entity.Property.Converter', () => {
 	var converter = new Converter();
 

@@ -10,7 +10,7 @@ class LogPrefixer {
 		info: [32, 39], // green
 		error: [31, 39], // red
 		warn: [33, 39], // yellow
-		debug: [35, 39], // magenta
+		debug: [35, 39] // magenta
 	};
 
 	static $aspect = 'Console.LogPrefixer';
@@ -21,7 +21,7 @@ class LogPrefixer {
 	constructor(
 		private dateFactory: DateFactory
 	) {}
-	
+
 	intercept() {
 		var _this = this;
 		Object.keys(this.colors).forEach((name: string) => {
@@ -39,10 +39,10 @@ class LogPrefixer {
 	}
 
 	private start(color: number[]) {
-		return "\033[" + color[0] + "m";
+		return '\033[' + color[0] + 'm';
 	}
 
 	private end(color: number[]) {
-		return "\033[" + color[1] + "m";
+		return '\033[' + color[1] + 'm';
 	}
 }

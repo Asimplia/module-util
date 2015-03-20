@@ -3,7 +3,7 @@ import EntityMapper = require('../Mapping/EntityMapper');
 
 export = Updater;
 class Updater<Entity, EntityObject> {
-	
+
 	constructor(
 		private entityMapper: EntityMapper<Entity, EntityObject>
 	) {}

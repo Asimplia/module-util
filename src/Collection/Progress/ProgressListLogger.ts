@@ -10,7 +10,7 @@ class ProgressListLogger implements IAspect {
 	constructor(
 		private logProgressOverCount: number
 	) {}
-	
+
 	intercept() {
 		var _this = this;
 		hooker.hook(List.prototype, 'forEach', {
@@ -21,7 +21,7 @@ class ProgressListLogger implements IAspect {
 	}
 
 	private handleIterations(
-		list: List<any, List<any, any>>, 
+		list: List<any, List<any, any>>,
 		defaultCb: (item: any, i?: number) => any
 	): any {
 		var totalCount = list.count();

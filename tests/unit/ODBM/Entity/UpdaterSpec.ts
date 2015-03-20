@@ -3,11 +3,11 @@ import Updater = require('../../../../src/ODBM/Entity/Updater');
 import EntityMapper = require('../../../../src/ODBM/Mapping/EntityMapper');
 import My = require('../../fixtures/My');
 import MyEntity = My.MyEntity;
-import MyEntityObject = My.MyEntityObject;
+import IMyEntityObject = My.IMyEntityObject;
 
 describe('ODBM.Entity.Updater', () => {
-	var entityMapper = new EntityMapper<MyEntity, MyEntityObject>(MyEntity);
-	var updater = new Updater<MyEntity, MyEntityObject>(entityMapper);
+	var entityMapper = new EntityMapper<MyEntity, IMyEntityObject>(MyEntity);
+	var updater = new Updater<MyEntity, IMyEntityObject>(entityMapper);
 
 	describe('get', () => {
 		var d1 = new Date();
@@ -40,12 +40,12 @@ describe('ODBM.Entity.Updater', () => {
 					createdAt: new Date()
 				}
 			});
-			updater.set(entity, 'id', 114)
+			updater.set(entity, 'id', 114);
 			expect(entity.Object.id).toBe(114);
-			updater.set(entity, 'name', 'Hi')
+			updater.set(entity, 'name', 'Hi');
 			expect(entity.Object.name).toBe('Hi');
 			var d2 = new Date();
-			updater.set(entity, 'embedded', { description: 'City', createdAt: d2 })
+			updater.set(entity, 'embedded', { description: 'City', createdAt: d2 });
 			expect(entity.Object.embedded).toEqual({
 				description: 'City',
 				createdAt: d2

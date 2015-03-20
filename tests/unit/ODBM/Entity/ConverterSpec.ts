@@ -2,10 +2,10 @@
 import Converter = require('../../../../src/ODBM/Entity/Converter');
 import My = require('../../fixtures/My');
 import MyEntity = My.MyEntity;
-import MyEntityObject = My.MyEntityObject;
+import IMyEntityObject = My.IMyEntityObject;
 
 describe('ODBM.Entity.Converter', () => {
-	var converter = new Converter<MyEntity, MyEntityObject>(MyEntity);
+	var converter = new Converter<MyEntity, IMyEntityObject>(MyEntity);
 
 	describe('fromObject', () => {
 		it('should return entity with object inside', () => {

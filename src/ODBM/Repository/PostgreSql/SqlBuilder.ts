@@ -16,7 +16,7 @@ class SqlBuilder<Entity> {
 		private converter: Converter<Entity, any>,
 		private entityMapper: EntityMapper<Entity, any>
 	) {}
-	
+
 	createInsertList(entityList: List<Entity>): IQueryParamsPair {
 		var params = [];
 		var placeholderRows = [];
@@ -38,7 +38,7 @@ class SqlBuilder<Entity> {
 			placeholderRows.push(placeholders.join(','));
 		});
 		var columns = this.entityMapper.getPropertyNames();
-		var sql = "INSERT INTO " + this.entityMapper.getName()
+		var sql = 'INSERT INTO ' + this.entityMapper.getName()
 			+ ' (' + columns.join(',') + ') '
 			+ 'VALUES (' + placeholderRows.join('),(') + ') '
 			+ 'RETURNING ' + this.entityMapper.getIdName();
@@ -105,27 +105,27 @@ class SqlBuilder<Entity> {
 				var comparableConditions: IComparableConditions = value;
 				if (typeof comparableConditions.$gt !== 'undefined' && comparableConditions.$gt !== null) {
 					placeholderIndex++;
-					whereParts.push(' ' + column + ' > $' + placeholderIndex) + ' ';
+					whereParts.push(' ' + column + ' > $' + placeholderIndex + ' ');
 					params.push(this.prepareValue(comparableConditions.$gt));
 				}
 				if (typeof comparableConditions.$lt !== 'undefined' && comparableConditions.$lt !== null) {
 					placeholderIndex++;
-					whereParts.push(' ' + column + ' < $' + placeholderIndex) + ' ';
+					whereParts.push(' ' + column + ' < $' + placeholderIndex + ' ');
 					params.push(this.prepareValue(comparableConditions.$lt));
 				}
 				if (typeof comparableConditions.$gte !== 'undefined' && comparableConditions.$gte !== null) {
 					placeholderIndex++;
-					whereParts.push(' ' + column + ' >= $' + placeholderIndex) + ' ';
+					whereParts.push(' ' + column + ' >= $' + placeholderIndex + ' ');
 					params.push(this.prepareValue(comparableConditions.$gte));
 				}
 				if (typeof comparableConditions.$lte !== 'undefined' && comparableConditions.$lte !== null) {
 					placeholderIndex++;
-					whereParts.push(' ' + column + ' <= $' + placeholderIndex) + ' ';
+					whereParts.push(' ' + column + ' <= $' + placeholderIndex + ' ');
 					params.push(this.prepareValue(comparableConditions.$lte));
 				}
 			} else {
 				placeholderIndex++;
-				whereParts.push(' ' + column + ' = $' + placeholderIndex) + ' ';
+				whereParts.push(' ' + column + ' = $' + placeholderIndex + ' ');
 				params.push(this.prepareValue(value));
 			}
 		});

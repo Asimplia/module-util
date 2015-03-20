@@ -12,11 +12,11 @@ class MethodLocker {
 	private processingStartTime: any = {};
 	private processing: any = {};
 	private processingHookedCallback: any = {};
-	
+
 	lockMethod(Class: any, methodName: string) {
 		var lockKey = this.getMethodKey(Class.name, methodName);
 		if (this.lockedMethod[lockKey]) {
-			throw new AlreadyLockedError('Method '+lockKey+' already locked.');
+			throw new AlreadyLockedError('Method ' + lockKey + ' already locked.');
 		}
 		this.lockedMethod[lockKey] = true;
 		hooker.hook(Class.prototype, methodName, {
@@ -50,9 +50,9 @@ class MethodLocker {
 			var key = _this.getMethodKey(className, methodName) + args.join(',');
 			if (_this.processing[key]) {
 				callback(new AlreadyRunningError(
-					'Method '+key+' already running for '
-					+(_this.now() - _this.processingStartTime[key])+'s. '
-					+'Try it again later.'
+					'Method ' + key + ' already running for '
+					+ (_this.now() - _this.processingStartTime[key]) + 's. '
+					+ 'Try it again later.'
 				));
 				return hooker.preempt(null);
 			}
@@ -70,7 +70,7 @@ class MethodLocker {
 	}
 
 	private getMethodKey(className: string, methodName: string) {
-		return className+'.'+methodName+':';
+		return className + '.' + methodName + ':';
 	}
 
 	private now() {

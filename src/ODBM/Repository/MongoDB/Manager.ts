@@ -11,7 +11,7 @@ import Updater = require('../../Entity/Updater');
 import List = require('../../Entity/List');
 
 // TODO move it to mongoose.d.ts & DefinitelyTyped repo
-interface MongooseCollection {
+interface IMongooseCollection {
 	insert(docs: any[], callback: (e: Error, docs?: mongoose.Document[]) => void): void;
 }
 
@@ -59,10 +59,9 @@ class Manager<Entity, EntityObject, EntityList extends List<any/*Entity*/>> impl
 		this.autoIncrementIdsOfList(entityList, (e: Error, entityList?: List<Entity>) => {
 			if (e) return callback(e);
 			var objects = entityList.toArray(this.converter.toObject);
-			(<MongooseCollection>this.model.collection).insert(
-				objects, 
-				(e: Error, docs?: mongoose.Document[]) => 
-			{
+			(<IMongooseCollection>this.model.collection).insert(
+				objects,
+				(e: Error, docs?: mongoose.Document[]) => {
 				if (e) return callback(e);
 				callback(null, entityList);
 			});
@@ -112,7 +111,10 @@ class Manager<Entity, EntityObject, EntityList extends List<any/*Entity*/>> impl
 		return this;
 	}
 
-	insertOrUpdateList(entityList: List<Entity>, callback: (e: Error, entityList?: List<Entity>) => void): IManager<Entity, EntityObject, EntityList> {
+	insertOrUpdateList(
+		entityList: List<Entity>,
+		callback: (e: Error, entityList?: List<Entity>) => void
+	): IManager<Entity, EntityObject, EntityList> {
 		var idKey = this.entityMapper.getIdKey();
 		var idName = this.entityMapper.getIdName();
 		var ids = this.getIds(entityList);
@@ -131,7 +133,7 @@ class Manager<Entity, EntityObject, EntityList extends List<any/*Entity*/>> impl
 			});
 			var listToUpdate = entityList.filter((entity: Entity) => {
 				var id = this.entityUpdater.get(entity, idKey);
-				return loadedIds.indexOf(id) !== -1
+				return loadedIds.indexOf(id) !== -1;
 			});
 
 			var processCallbacks = [];
@@ -194,7 +196,7 @@ class Manager<Entity, EntityObject, EntityList extends List<any/*Entity*/>> impl
 		.exec((e: Error, doc: mongoose.Document) => {
 			if (e) return callback(e);
 			if (!doc) {
-				return callback(new Error('Entity not found'))
+				return callback(new Error('Entity not found'));
 			}
 			this.updateDocument(entity, doc, callback);
 		});
@@ -250,7 +252,7 @@ class Manager<Entity, EntityObject, EntityList extends List<any/*Entity*/>> impl
 			if (!doc) {
 				return callback(null, 1);
 			}
-			callback(null, 1 + parseInt(doc.id));
+			callback(null, 1 + parseInt(doc.id, 10));
 		});
 	}
 }

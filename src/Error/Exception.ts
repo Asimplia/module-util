@@ -12,7 +12,7 @@ class Exception extends ErrorClass implements IObjectableError {
 	private _causedBy: Error;
 	private _errors: Error[];
 	private _stack: string;
-	
+
 	get name() { return this._name; }
 	get message() { return this._message; }
 	get causedBy(): Error { return <any>this._causedBy; }
@@ -28,7 +28,7 @@ class Exception extends ErrorClass implements IObjectableError {
 	) {
 		if (this.isError(e)) {
 			var error = <Error>e;
-			this._name = error.name || this.getClassName(error);;
+			this._name = error.name || this.getClassName(error);
 			this._message = error.message;
 			this._errors = [error];
 		} else if (_.isArray(e)) {
@@ -64,7 +64,7 @@ class Exception extends ErrorClass implements IObjectableError {
 			name: this._name,
 			message: this._message,
 			code: this._code,
-			causedBy: this._causedBy && typeof causedBy.toObject === 'function' 
+			causedBy: this._causedBy && typeof causedBy.toObject === 'function'
 				? causedBy.toObject()
 				: causedBy,
 			stack: this._stack

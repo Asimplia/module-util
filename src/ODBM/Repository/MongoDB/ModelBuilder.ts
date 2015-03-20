@@ -11,7 +11,7 @@ import AnnotationString = require('../../Mapping/Annotation/String');
 
 
 // should be in mongoose.d.ts, but missing now
-interface MongooseSchemableMongoose extends mongoose.Mongoose {
+interface IMongooseSchemableMongoose extends mongoose.Mongoose {
 	Schema: new (...args: any[]) => mongoose.Schema;
 }
 
@@ -24,12 +24,12 @@ class ModelBuilder<Entity, EntityObject> {
 		private entityMapper: EntityMapper<Entity, EntityObject>,
 		private connection: mongoose.Mongoose
 	) {}
-	
+
 	create(): mongoose.Model<mongoose.Document> {
 		var modelName = this.entityMapper.getName();
 		if (typeof ModelBuilder.cachedModel[modelName] === 'undefined') {
 			var definition = this.getEmbeddedDefinition([]);
-			var schema = new (<MongooseSchemableMongoose>this.connection).Schema(definition);
+			var schema = new (<IMongooseSchemableMongoose>this.connection).Schema(definition);
 			var Model = this.connection.model(modelName, schema);
 			ModelBuilder.cachedModel[modelName] = Model;
 		}
@@ -45,11 +45,12 @@ class ModelBuilder<Entity, EntityObject> {
 		keys.forEach((key: string) => {
 			var keyPath = [].concat(embeddedKeys, [key]);
 			var name = this.entityMapper.getPropertyNameByKey.apply(this.entityMapper, keyPath);
+			var propertyDefinition;
 			if (this.entityMapper.isEmbeddedByKey.apply(this.entityMapper, keyPath)) {
-				var propertyDefinition = this.getEmbeddedDefinition(keyPath);
+				propertyDefinition = this.getEmbeddedDefinition(keyPath);
 			} else {
 				var type = this.entityMapper.getPropertyTypeByKey.apply(this.entityMapper, keyPath);
-				var propertyDefinition = this.getDefinitionByType(type);
+				propertyDefinition = this.getDefinitionByType(type);
 			}
 			definition[name] = propertyDefinition;
 		});

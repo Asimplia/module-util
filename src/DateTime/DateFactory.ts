@@ -7,5 +7,5 @@ class DateFactory {
 	now() {
 		return moment().toDate();
 	}
-	
+
 }

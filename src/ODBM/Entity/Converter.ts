@@ -118,5 +118,5 @@ class Converter<Entity, EntityObject> {
 		});
 		return row;
 	}
-	
+
 }

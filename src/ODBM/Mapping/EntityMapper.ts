@@ -8,7 +8,7 @@ import AnnotationNormalizer = require('./AnnotationNormalizer');
 
 export = EntityMapper;
 class EntityMapper<Entity, EntityObject> {
-	
+
 	constructor(
 		private EntityStatic: IEntityStatic<Entity, EntityObject>
 	) {

@@ -10,7 +10,7 @@ class Id extends Type {
 	private type: Type;
 
 	get Type() { return this.type; }
-	
+
 	constructor(
 		type: Type|ITypeStatic|IIdentificableType = AnnotationInteger
 	) {

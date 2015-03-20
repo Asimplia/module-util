@@ -9,7 +9,7 @@ class ServiceAutoload {
 
 	static ANNOTATION_SERVICE = '$service';
 	static FILES_PATTERN = '*.js';
-	
+
 	private paths: string[];
 
 	static $aspect = 'DI.ServiceAutoload';

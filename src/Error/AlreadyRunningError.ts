@@ -6,7 +6,7 @@ class AlreadyRunningError implements Error {
 
 	constructor(
 		public message: string
-	) {	
+	) {
 		this.name = 'AlreadyRunningError';
 	}
 }

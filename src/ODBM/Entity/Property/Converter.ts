@@ -11,7 +11,7 @@ import AnnotationString = require('../../Mapping/Annotation/String');
 
 export = Converter;
 class Converter {
-	
+
 	convertByType(type: Type, value: any): any {
 		switch (true) {
 			case type instanceof AnnotationBoolean:
@@ -53,7 +53,7 @@ class Converter {
 		}
 		var size = Math.pow(2, type.Length * 8); // 8bits on every byte
 		var range = { min: - size / 2, max: size / 2 - 1 };
-		var integerValue = parseInt(value);
+		var integerValue = parseInt(value, 10);
 		if (integerValue < range.min || integerValue > range.max) {
 			throw new Error('Integer is out of type range. Should be between <' + range.min + ';' + range.max + '> but ' + integerValue + ' given.');
 		}
@@ -74,7 +74,7 @@ class Converter {
 		if (value === null) {
 			return null;
 		}
-		var stringValue = "" + value;
+		var stringValue = '' + value;
 		if (stringValue.length > type.Length) {
 			throw new Error('String is out of size. Should be ' + type.Length + ' but ' + stringValue.length + ' given.');
 		}

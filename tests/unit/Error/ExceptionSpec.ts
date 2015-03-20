@@ -12,7 +12,7 @@ class MyException extends Exception {}
 class YourException extends Exception {}
 
 describe('Error.Exception', () => {
-	
+
 	it('should create by first string', () => {
 		var e = new Exception('Hello world');
 		var obj = e.toObject();
@@ -25,7 +25,7 @@ describe('Error.Exception', () => {
 			causedBy: undefined
 		});
 	});
-	
+
 	it('should create by first Error instance', () => {
 		var err = new Error('message');
 		var e = new Exception(err);
@@ -39,7 +39,7 @@ describe('Error.Exception', () => {
 			causedBy: undefined
 		});
 	});
-	
+
 	it('should create by first Error instance of child error class', () => {
 		var err = new MyError('message');
 		var e = new Exception(err);
@@ -53,7 +53,7 @@ describe('Error.Exception', () => {
 			causedBy: undefined
 		});
 	});
-	
+
 	it('should create by first Error instance of child error class', () => {
 		var err = new MyError('message');
 		var e = new Exception(err);
@@ -67,7 +67,7 @@ describe('Error.Exception', () => {
 			causedBy: undefined
 		});
 	});
-	
+
 	it('should create specific by first Error instance of child error class', () => {
 		var err = new MyError('message');
 		var e = new MyException(err);
@@ -81,7 +81,7 @@ describe('Error.Exception', () => {
 			causedBy: undefined
 		});
 	});
-	
+
 	it('should create specific by first string', () => {
 		var e = new MyException('my message');
 		var obj = e.toObject();
@@ -94,7 +94,7 @@ describe('Error.Exception', () => {
 			causedBy: undefined
 		});
 	});
-	
+
 	it('should create specific by first string & code & causedBy', () => {
 		var err = new Error('message');
 		var e = new MyException('my message', 113, err);
@@ -108,7 +108,7 @@ describe('Error.Exception', () => {
 			causedBy: err
 		});
 	});
-	
+
 	it('should create specific by first specific Exception', () => {
 		var exc = new YourException('message');
 		var e = new MyException(exc);
@@ -122,7 +122,7 @@ describe('Error.Exception', () => {
 			causedBy: undefined
 		});
 	});
-	
+
 	it('should create specific with causedBy Exception', () => {
 		var exc = new YourException('message your');
 		var e = new MyException('message my', undefined, exc);
@@ -143,7 +143,7 @@ describe('Error.Exception', () => {
 			}
 		});
 	});
-	
+
 	it('should create specific with multiple Errors', () => {
 		var errs = [
 			new MyError('my'),

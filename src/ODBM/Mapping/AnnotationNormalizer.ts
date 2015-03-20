@@ -8,7 +8,7 @@ import DatabaseSystem = require('../Repository/DatabaseSystem');
 
 export = AnnotationNormalizer;
 class AnnotationNormalizer<Entity, EntityObject> {
-	
+
 	constructor(
 		private EntityStatic: IEntityStatic<Entity, EntityObject>
 	) {}

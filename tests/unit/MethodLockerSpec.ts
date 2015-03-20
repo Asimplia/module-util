@@ -16,10 +16,10 @@ class MockClass {
 	}
 }
 
-describe("lockMethod", () => {
+describe('lockMethod', () => {
 	var methodLocker = new MethodLocker();
 
-	it("will lock unless method not callback", (done: () => void) => {
+	it('will lock unless method not callback', (done: () => void) => {
 		methodLocker.lockMethod(MockClass, 'someMethod');
 		var mockClass = new MockClass();
 		mockClass.someMethod(113, 'yeah!', (e: Error, someReturn1?: string) => {
@@ -44,15 +44,15 @@ describe("lockMethod", () => {
 });
 
 
-describe("unlockProcessingMethod", () => {
+describe('unlockProcessingMethod', () => {
 	var methodLocker = new MethodLocker();
 
-	it("will unlock processing method to call again", (done: () => void) => {
+	it('will unlock processing method to call again', (done: () => void) => {
 		methodLocker.unlockMethod(MockClass, 'someMethod');
 		methodLocker.lockMethod(MockClass, 'someMethod');
 		var mockClass = new MockClass();
 		mockClass.someMethod(113, 'yeah!', (e: Error, someReturn1?: string) => {
-
+			var doNothing = 1;
 		});
 		mockClass.someMethod(113, 'yeah!', (e: Error, someReturn2?: string) => {
 			expect(e.message).toMatch(
@@ -72,7 +72,7 @@ describe("unlockProcessingMethod", () => {
 });
 
 
-describe("unlockMethod", () => {
+describe('unlockMethod', () => {
 	var methodLocker = new MethodLocker();
 
 	it('throw error on again locking', () => {

@@ -17,7 +17,7 @@ class DependencyInjection {
 	get Name() { return this.name; }
 
 	constructor(
-		private name: string, 
+		private name: string,
 		private serviceDefs: {[name: string]: any|IConstructor|IServiceDefinition},
 		dependencyInjections: DependencyInjection[] = []
 	) {
@@ -56,9 +56,9 @@ class DependencyInjection {
 			def = { $class: def };
 		}
 		if (
-			typeof def === 'object' && this.isServiceDefinition(def) 
+			typeof def === 'object' && this.isServiceDefinition(def)
 			&& (
-				def.$run === true 
+				def.$run === true
 				|| (def.$run !== false && typeof def.$class !== 'undefined' && def.$class.$run === true)
 			)
 		) {
@@ -111,40 +111,44 @@ class DependencyInjection {
 	}
 
 	private createFactoryByDefinition(serviceDef: IServiceDefinition) {
-		if (typeof serviceDef['$class'] === 'undefined' && typeof serviceDef.$path === 'undefined' && typeof serviceDef.$factory === 'undefined') {
+		if (
+			typeof serviceDef.$class === 'undefined'
+			&& typeof serviceDef.$path === 'undefined'
+			&& typeof serviceDef.$factory === 'undefined'
+		) {
 			throw new Error('Class "$class" or "$path" or "$factory" should be specified');
 		}
 		if (typeof serviceDef.$path !== 'undefined') {
 			if (typeof serviceDef.$path !== 'string') {
 				throw new Error('"$path" should be string');
 			}
-			serviceDef['$class'] = require(serviceDef.$path);
+			serviceDef.$class = require(serviceDef.$path);
 		}
 		if (typeof serviceDef.$factory !== 'undefined') {
 			if (typeof serviceDef.$factory !== 'function') {
 				throw new Error('"$factory" should be function');
 			}
 			return this.createFactoryByFactory(
-				serviceDef.$factory, 
-				serviceDef.$args || [], 
+				serviceDef.$factory,
+				serviceDef.$args || [],
 				serviceDef.$inject || []
 			);
 		}
-		if (typeof serviceDef['$class'] === 'function') {
+		if (typeof serviceDef.$class === 'function') {
 			return this.createFactoryByClass(
-				serviceDef['$class'], 
-				serviceDef.$args || serviceDef['$class'].$args, 
-				serviceDef.$inject || serviceDef['$class'].$inject
+				serviceDef.$class,
+				serviceDef.$args || serviceDef.$class.$args,
+				serviceDef.$inject || serviceDef.$class.$inject
 			);
 		}
 		throw new Error('Invalid state');
 	}
 
 	private isServiceDefinition(def: any) {
-		return typeof def.$factory !== 'undefined' 
-			|| typeof def['$class'] !== 'undefined' 
-			|| typeof def.$args !== 'undefined' 
-			|| typeof def.$path !== 'undefined' 
+		return typeof def.$factory !== 'undefined'
+			|| typeof def.$class !== 'undefined'
+			|| typeof def.$args !== 'undefined'
+			|| typeof def.$path !== 'undefined'
 			|| typeof def.$run !== 'undefined';
 	}
 
@@ -213,7 +217,7 @@ class DependencyInjection {
 
 	hasService(nameOrConstructor: any) {
 		var name = this.getName(nameOrConstructor);
-		return typeof this.services[name] !== 'undefined' 
+		return typeof this.services[name] !== 'undefined'
 			|| typeof this.serviceFactories[name] !== 'undefined'
 			|| this.hasSubService(name);
 	}
