@@ -10,7 +10,8 @@ module.exports = exports = function (
 	typescriptBuildFiles, 
 	typescriptBuildReferences,
 	basePath,
-	publicBasePath
+	publicBasePath,
+	tslintConfigPath
 ) {
 	return {
 		typescript: {
@@ -235,6 +236,16 @@ module.exports = exports = function (
 							return true;
 						}
 					}
+				}
+			}
+		},
+		tslint: {
+			all: {
+				options: {
+					configuration: require(tslintConfigPath || basePath + '/tslint.json')
+				},
+				files: {
+					src: [].concat(typescriptBuildFiles || [], typescriptBuildFiles || [])
 				}
 			}
 		}

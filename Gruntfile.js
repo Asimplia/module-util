@@ -16,6 +16,7 @@ module.exports = function (grunt) {
 	GruntConfiguration.loadParentNpmTasks(grunt, 'grunt-contrib-clean');
 	GruntConfiguration.loadParentNpmTasks(grunt, 'grunt-tsd');
 	GruntConfiguration.loadParentNpmTasks(grunt, 'grunt-wait');
+	GruntConfiguration.loadParentNpmTasks(grunt, 'grunt-tslint');
 
 	grunt.registerTask('default', [
 		'clean:build', 'tsd:reinstall', 'wait:typings', 'typescript:build', 'typescript:public', 'jasmine_node:unit'
@@ -26,7 +27,7 @@ module.exports = function (grunt) {
 			__dirname + '/tests', 
 			__dirname + '/typings'
 		]);
-		grunt.task.run('typescript:build', 'typescript:public', 'jasmine_node:unit', 'watch:ts');
+		grunt.task.run('typescript:build', 'typescript:public', 'tslint:all', 'jasmine_node:unit', 'watch:ts');
 	});
 	grunt.registerTask('prepublish', function () {
 		grunt.task.run('default');
