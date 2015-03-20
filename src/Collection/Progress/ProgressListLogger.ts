@@ -22,8 +22,7 @@ class ProgressListLogger implements IAspect {
 
 	private handleIterations(
 		list: List<any, List<any, any>>,
-		defaultCb: (item: any, i?: number) => any
-	): any {
+		defaultCb: (item: any, i?: number) => any): any {
 		var totalCount = list.count();
 		if (totalCount < this.logProgressOverCount) {
 			return;

@@ -40,8 +40,8 @@ class Manager<Entity, EntityObject, EntityList extends List<any/*Entity*/>> impl
 
 	private autoIncrementIdsOfList(
 		entityList: List<Entity>,
-		callback: (e: Error, entityList?: List<Entity>) => void
-	): void {
+		callback: (e: Error, entityList?: List<Entity>) => void)
+	: void {
 		this.getNextId((e: Error, nextId?: number) => {
 			if (e) return callback(e);
 			entityList.forEach((entity: Entity) => {
@@ -113,8 +113,8 @@ class Manager<Entity, EntityObject, EntityList extends List<any/*Entity*/>> impl
 
 	insertOrUpdateList(
 		entityList: List<Entity>,
-		callback: (e: Error, entityList?: List<Entity>) => void
-	): IManager<Entity, EntityObject, EntityList> {
+		callback: (e: Error, entityList?: List<Entity>) => void)
+	: IManager<Entity, EntityObject, EntityList> {
 		var idKey = this.entityMapper.getIdKey();
 		var idName = this.entityMapper.getIdName();
 		var ids = this.getIds(entityList);

@@ -16,25 +16,18 @@ class Converter<Entity, EntityObject> {
 		this.propertyConverter = new PropertyConverter();
 	}
 
-	fromObject(
-		object: EntityObject
-	): Entity {
+	fromObject(object: EntityObject): Entity {
 		var convertedObject = this.convertObject(object, []);
 		return new this.EntityStatic(convertedObject);
 	}
 
-	toObject(
-		entity: Entity
-	): EntityObject {
+	toObject(entity: Entity): EntityObject {
 		var objectPropertyName = this.entityMapper.getObjectPropertyName();
 		var object = entity[objectPropertyName];
 		return this.convertObject(object, []);
 	}
 
-	private convertObject(
-		object: EntityObject,
-		keyPath: string[]
-	): EntityObject {
+	private convertObject(object: EntityObject, keyPath: string[]): EntityObject {
 		var keys = this.entityMapper.getEmbeddedKeys.apply(this.entityMapper, keyPath);
 		var convertedObject = <EntityObject>{};
 		keys.forEach((key: string) => {
@@ -62,17 +55,12 @@ class Converter<Entity, EntityObject> {
 		return convertedObject;
 	}
 
-	fromRow(
-		row: any
-	): Entity {
+	fromRow(row: any): Entity {
 		var object = this.convertRowToObject(row, []);
 		return this.fromObject(object);
 	}
 
-	private convertRowToObject(
-		row: any,
-		keyPath: string[]
-	): any {
+	private convertRowToObject(row: any, keyPath: string[]): any {
 		var keys = this.entityMapper.getEmbeddedKeys.apply(this.entityMapper, keyPath);
 		var object: any = {};
 		keys.forEach((key: string) => {
@@ -90,18 +78,13 @@ class Converter<Entity, EntityObject> {
 		return object;
 	}
 
-	toRow(
-		entity: Entity
-	): any {
+	toRow(entity: Entity): any {
 		var converterObject = this.toObject(entity);
 		var convertedRow = this.convertObjectToRow(converterObject, []);
 		return convertedRow;
 	}
 
-	private convertObjectToRow(
-		object: any,
-		keyPath: string[]
-	): any {
+	private convertObjectToRow(object: any, keyPath: string[]): any {
 		var keys = this.entityMapper.getEmbeddedKeys.apply(this.entityMapper, keyPath);
 		var row: any = {};
 		keys.forEach((key: string) => {
