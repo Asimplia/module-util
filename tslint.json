@@ -34,6 +34,7 @@
     "quotemark": [true, "single"],
     "radix": true,
     "semicolon": true,
+    "use-strict": [true, "check-module", "check-function"],
     "variable-name": true,
     "whitespace": [true,
         "check-branch",

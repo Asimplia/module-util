@@ -26,6 +26,8 @@ class Factoried {
 }
 
 module With {
+	'use strict';
+
 	export class Parameter {
 		static $inject = ['parameter.name'];
 		constructor(public param: string) {}
