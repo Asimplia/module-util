@@ -19,7 +19,7 @@ module.exports = function (grunt) {
 	GruntConfiguration.loadParentNpmTasks(grunt, 'grunt-tslint');
 
 	grunt.registerTask('default', [
-		'clean:build', 'tsd:reinstall', 'wait:typings', 'typescript:build', 'typescript:public', 'jasmine_node:unit'
+		'clean:build', 'tsd:reinstall', 'wait:typings', 'typescript:build', 'typescript:public', 'tslint:all', 'jasmine_node:unit'
 	]);
 	grunt.registerTask('dev', function () {
 		GruntConfiguration.typescriptReferences(__dirname + '/build/references.ts', [
