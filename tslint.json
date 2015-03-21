@@ -1,8 +1,12 @@
 {
   "rules": {
+    "align": [true, "statements", "arguments", "parameters"],
     "ban": true,
     "class-name": true,
-    "comment-format": [true, "check-uppercase"],
+    "comment-format": {
+        "check-space": true,
+        "check-uppercase": true
+    },
     "eofline": true,
     "indent": [true, "tabs"],
     "interface-name": true,
