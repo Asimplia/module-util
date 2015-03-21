@@ -2,7 +2,7 @@
 import DependencyInjection = require('./DependencyInjection');
 import _ = require('underscore');
 import fs = require('fs');
-var finder = require('fs-finder');
+import finder = require('fs-finder');
 
 export = ServiceAutoload;
 class ServiceAutoload {

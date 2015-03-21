@@ -4,7 +4,7 @@ import AspectInterception = require('./AspectInterception');
 import DependencyInjection = require('../DI/DependencyInjection');
 import _ = require('underscore');
 import fs = require('fs');
-var finder = require('fs-finder');
+import finder = require('fs-finder');
 
 export = AnnotationAspects;
 class AnnotationAspects implements IAspect {

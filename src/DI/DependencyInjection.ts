@@ -1,7 +1,7 @@
 
 import IConstructor = require('./IConstructor');
 import IServiceDefinition = require('./IServiceDefinition');
-var hash = require('object-hash');
+import hash = require('object-hash');
 
 export = DependencyInjection;
 class DependencyInjection {
