@@ -1,0 +1,9 @@
+{
+	"linters": {
+        "tslint": {
+            "@disable": false,
+            "args": ["--config", "tslint.json"],
+            "excludes": []
+        }
+    }
+}
