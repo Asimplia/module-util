@@ -1,0 +1,22 @@
+{
+  "name": "asimplia-util",
+  "version": "0.3.10",
+  "homepage": "https://github.com/Asimplia/module-util",
+  "authors": [
+    "Michael Zabka <michael@farfalia.com>"
+  ],
+  "main": "build/public/src/index.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "typescript": {
+    "definitions": [
+      "asimplia-util.amd.d.ts"
+    ]
+  }
+}
