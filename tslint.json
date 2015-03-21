@@ -1,6 +1,7 @@
 {
   "rules": {
     "class-name": true,
+    "comment-format": [true, "check-uppercase"],
     "eofline": true,
     "indent": [true, "tabs"],
     "interface-name": true,
