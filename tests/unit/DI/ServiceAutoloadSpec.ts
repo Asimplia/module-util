@@ -1,4 +1,4 @@
-
+/* tslint:disable:no-unused-variable */
 import Util = require('../../../src/index');
 import DependencyInjection = Util.DI.DependencyInjection;
 import ServiceAutoload = Util.DI.ServiceAutoload;

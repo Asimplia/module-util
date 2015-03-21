@@ -240,7 +240,6 @@ class Manager<Entity, EntityObject, EntityList extends List<any/*Entity*/>> impl
 	}
 
 	private getNextId(callback: (e: Error, id?: number) => void) {
-		var idKey = this.entityMapper.getIdKey();
 		var idName = this.entityMapper.getIdName();
 		var fetchProperties: any = {};
 		fetchProperties[idName] = true;

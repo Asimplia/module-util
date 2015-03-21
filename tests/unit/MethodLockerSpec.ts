@@ -1,4 +1,4 @@
-
+/* tslint:disable:no-unused-variable */
 import Util = require('../../src/index');
 import MethodLocker = Util.MethodLocker;
 import AlreadyLockedError = Util.Error.AlreadyLockedError;
@@ -43,7 +43,6 @@ describe('lockMethod', () => {
 	});
 });
 
-
 describe('unlockProcessingMethod', () => {
 	var methodLocker = new MethodLocker();
 
@@ -70,7 +69,6 @@ describe('unlockProcessingMethod', () => {
 		});
 	});
 });
-
 
 describe('unlockMethod', () => {
 	var methodLocker = new MethodLocker();

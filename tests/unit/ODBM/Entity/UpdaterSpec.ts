@@ -1,4 +1,4 @@
-
+/* tslint:disable:no-unused-variable */
 import Updater = require('../../../../src/ODBM/Entity/Updater');
 import EntityMapper = require('../../../../src/ODBM/Mapping/EntityMapper');
 import My = require('../../fixtures/My');

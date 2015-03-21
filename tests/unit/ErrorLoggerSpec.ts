@@ -1,4 +1,4 @@
-
+/* tslint:disable:no-unused-variable */
 import Util = require('../../src/index');
 import ErrorLogger = Util.ErrorLogger;
 import IObjectableError = Util.Error.IObjectableError;

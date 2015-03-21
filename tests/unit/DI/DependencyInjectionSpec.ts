@@ -1,4 +1,4 @@
-
+/* tslint:disable:no-unused-variable */
 import Util = require('../../../src/index');
 import DependencyInjection = Util.DI.DependencyInjection;
 import Ctrl = require('./MockCtrl');
@@ -13,7 +13,7 @@ var Our = function (your: any) {
 	};
 };
 (<any>Our).$inject = ['Your.Service'];
-/* tslint:enable */
+/* tslint:enable:variable-name */
 
 class NoDep {
 	constructor(private arg1: string = '') {}

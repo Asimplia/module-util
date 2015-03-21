@@ -1,4 +1,4 @@
-
+/* tslint:disable:no-unused-variable */
 import ModelBuilder = require('../../../../../src/ODBM/Repository/MongoDB/ModelBuilder');
 import EntityMapper = require('../../../../../src/ODBM/Mapping/EntityMapper');
 import My = require('../../../fixtures/My');

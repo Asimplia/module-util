@@ -1,4 +1,4 @@
-
+/* tslint:disable:no-unused-variable */
 import Converter = require('../../../../src/ODBM/Entity/Converter');
 import My = require('../../fixtures/My');
 import MyEntity = My.MyEntity;

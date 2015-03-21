@@ -1,5 +1,4 @@
 
-
 export = IQueryParamsPair;
 interface IQueryParamsPair {
 	query: string;
