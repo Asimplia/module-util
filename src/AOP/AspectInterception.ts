@@ -5,8 +5,6 @@ import IAspectDefinition = require('./IAspectDefinition');
 export = AspectInterception;
 class AspectInterception {
 
-	private static ASPECT_INTERCEPTION_TO_ASPECT_DELIMITER = ':';
-
 	private aspects: {[name: string]: any} = {};
 	private aspectDefs: {[name: string]: any|IAspect|IAspectDefinition} = {};
 

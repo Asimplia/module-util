@@ -1,5 +1,4 @@
 
-import IEntityAnnotation = require('./Annotation/IEntityAnnotation');
 import List = require('./List');
 
 export = IEntityListStatic;

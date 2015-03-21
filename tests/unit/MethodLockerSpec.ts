@@ -1,4 +1,4 @@
-
+/* tslint:disable:no-unused-variable */
 import Util = require('../../src/index');
 import MethodLocker = Util.MethodLocker;
 import AlreadyLockedError = Util.Error.AlreadyLockedError;

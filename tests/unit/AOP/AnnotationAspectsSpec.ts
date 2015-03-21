@@ -1,4 +1,4 @@
-
+/* tslint:disable:no-unused-variable */
 import Util = require('../../../src/index');
 import AspectInterception = Util.AOP.AspectInterception;
 import AnnotationAspects = Util.AOP.AnnotationAspects;
