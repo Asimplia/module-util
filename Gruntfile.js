@@ -27,7 +27,7 @@ module.exports = function (grunt) {
 			__dirname + '/tests', 
 			__dirname + '/typings'
 		]);
-		grunt.task.run('typescript:build', 'typescript:public', 'tslint:all', 'jasmine_node:unit', 'watch:ts');
+		grunt.task.run('typescript:build', 'typescript:public', 'jasmine_node:unit', 'watch:ts');
 	});
 	grunt.registerTask('prepublish', function () {
 		grunt.task.run('default');
