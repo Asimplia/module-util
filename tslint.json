@@ -1,5 +1,6 @@
 {
   "rules": {
+    "ban": true,
     "class-name": true,
     "comment-format": [true, "check-uppercase"],
     "eofline": true,
