@@ -200,6 +200,11 @@ module.exports = exports = function (
 					}
 					return 'echo "No package ' + depName + ' linked"';
 				}
+			},
+			link_tsd: {
+				command: function () {
+					return './node_modules/.bin/tsd link';
+				}
 			}
 		},
 		subgrunt: {
