@@ -242,7 +242,15 @@ module.exports = exports = function (
 		tslint: {
 			all: {
 				options: {
-					configuration: require(tslintConfigPath || basePath + '/tslint.json')
+					configuration: (function () {
+						if (!tslintConfigPath) {
+							tslintConfigPath = __dirname + '/../tslint.json';
+						}
+						if (!fs.existsSync(tslintConfigPath)) {
+							return null;
+						}
+						return require(tslintConfigPath);
+					})()
 				},
 				files: {
 					src: [].concat(typescriptBuildFiles || [], typescriptBuildFiles || [])
