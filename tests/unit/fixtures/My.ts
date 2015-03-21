@@ -6,6 +6,7 @@ import Type = require('../../../src/ODBM/Mapping/Type');
 export = My;
 module My {
 	'use strict';
+
 	export class MyEntity {
 
 		static $entity: IEntityAnnotation = {

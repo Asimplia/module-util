@@ -9,7 +9,6 @@ import AnnotationInteger = require('../../Mapping/Annotation/Integer');
 import AnnotationFloat = require('../../Mapping/Annotation/Float');
 import AnnotationString = require('../../Mapping/Annotation/String');
 
-
 // should be in mongoose.d.ts, but missing now
 /* tslint:disable */
 interface IMongooseSchemableMongoose extends mongoose.Mongoose {

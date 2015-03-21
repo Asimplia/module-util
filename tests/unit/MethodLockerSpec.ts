@@ -43,7 +43,6 @@ describe('lockMethod', () => {
 	});
 });
 
-
 describe('unlockProcessingMethod', () => {
 	var methodLocker = new MethodLocker();
 
@@ -70,7 +69,6 @@ describe('unlockProcessingMethod', () => {
 		});
 	});
 });
-
 
 describe('unlockMethod', () => {
 	var methodLocker = new MethodLocker();

@@ -11,6 +11,7 @@
     "no-arg": true,
     "no-bitwise": true,
     "no-console": false,
+    "no-consecutive-blank-lines": true,
     "no-construct": true,
     "no-debugger": true,
     "no-duplicate-key": true,
