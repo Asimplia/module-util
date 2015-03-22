@@ -5,6 +5,5 @@ tests/
 .sublimets
 .travis.yml
 Gruntfile.js
-bower.json
 tsd.json
 .env.json
