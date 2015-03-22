@@ -1,6 +1,7 @@
 
 var fs = require('fs');
 var path = require('path');
+var _ = require('underscore');
 
 module.exports = exports = function (
 	typescriptPublicFiles, 
@@ -203,16 +204,6 @@ module.exports = exports = function (
 					}
 					return 'echo "No package ' + depName + ' linked"';
 				}
-			},
-			link_tsd: {
-				command: function () {
-					return './node_modules/.bin/tsd link';
-				}
-			},
-			link_tsd_public: {
-				command: function () {
-					return './node_modules/.bin/tsd link --config ./tsd_public.json';
-				}
 			}
 		},
 		subgrunt: {
@@ -273,7 +264,36 @@ module.exports = exports = function (
 	};
 };
 
+var tsdUtilAPI = {
+	link: function (baseDir, tsdConfigFile, managerNames) {
+		var tsd = require('tsd');
+		var PackageLinker = require('tsd/build/tsd/support/PackageLinker');
+		var BundleManager = require('tsd/build/tsd/support/BundleManager');
+		var api = tsd.getAPI(baseDir + '/' + tsdConfigFile, true);
+		var linker = new PackageLinker();
+		// linker.managers is private in TS
+		linker.managers = _.filter(linker.managers, function (manager) {
+			return managerNames.indexOf(manager.name) !== -1;
+		});
+		var manager = new BundleManager(api.core.context.getTypingsDir());
 
+		return linker.scanDefinitions(baseDir).then(function (packages) {
+			console.log('TSD link packages:', packages);
+			_.each(packages, function (packaged) {
+				return manager.addToBundle(api.context.config.bundle, packaged.definitions, true);
+			});
+		});
+	}
+};
+
+exports.registerTasks = function (basePath, grunt) {
+	grunt.registerTask('tsd:link:build', function () {
+		tsdUtilAPI.link(basePath, 'tsd.json', ['node']);
+	});
+	grunt.registerTask('tsd:link:public', function () {
+		tsdUtilAPI.link(basePath, 'tsd_public.json', ['bower']);
+	});
+};
 
 exports.typescriptReferences = function (referencesFile, paths) {
 	process.stdout.write('Running "typescriptReferences" task' + "\n");
