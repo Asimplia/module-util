@@ -2,7 +2,7 @@
 	"linters": {
         "tslint": {
             "@disable": false,
-            "args": ["--config", "tslint.json"],
+            "args": ["--config", "${project}/tslint.json"],
             "excludes": []
         }
     }
