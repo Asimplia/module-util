@@ -2,6 +2,7 @@
 var fs = require('fs');
 var path = require('path');
 var _ = require('underscore');
+var each = require('each');
 
 module.exports = exports = function (
 	typescriptPublicFiles, 
@@ -279,10 +280,13 @@ var tsdUtilAPI = {
 
 		return linker.scanDefinitions(baseDir).then(function (packages) {
 			console.log('TSD link packages:', _.map(packages, function (pack) { return pack.name; }));
-			_.each(packages, function (packaged) {
-				return manager.addToBundle(api.context.config.bundle, packaged.definitions, true);
-			});
-			done();
+			each(packages)
+			.on('item', function (packaged, next) {
+				return manager
+				.addToBundle(api.context.config.bundle, packaged.definitions, true)
+				.then(next);
+			})
+			.on('end', done);
 		});
 	}
 };
