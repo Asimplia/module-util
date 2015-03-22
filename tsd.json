@@ -30,10 +30,10 @@
       "commit": "5eaec89c7cfcb02732c62e59184bdf6b6181507b"
     },
     "fs-finder/fs-finder.d.ts": {
-      "commit": "5eaec89c7cfcb02732c62e59184bdf6b6181507b"
+      "commit": "4d64698eff1569cd199831301cb694eccc55b87e"
     },
     "object-hash/object-hash.d.ts": {
-      "commit": "5eaec89c7cfcb02732c62e59184bdf6b6181507b"
+      "commit": "4d64698eff1569cd199831301cb694eccc55b87e"
     }
   }
 }
