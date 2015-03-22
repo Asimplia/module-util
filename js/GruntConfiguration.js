@@ -31,10 +31,8 @@ module.exports = exports = function (
 					// true (default) | false
 					removeComments: false,
 					noImplicitAny: false,
-					basePath: publicBasePath || '',
-					references: [
-						'typings/tsd.d.ts'
-					].concat(typescriptPublicReferences)
+					basePath: publicBasePath,
+					references: typescriptPublicReferences
 				},
 				ignoreTypeCheck: true
 			},
@@ -151,20 +149,25 @@ module.exports = exports = function (
 		tsd: {
 			reinstall: {
 				options: {
-					// execute a command
 					command: 'reinstall',
-					//optional: always get from HEAD
 					latest: true,
-					// specify config file
 					config: './tsd.json',
-					// experimental: options to pass to tsd.API
 					opts: {
-						// props from tsd.Options
 						saveBundle: true,
-						//overwriteFiles: true,
 						saveToConfig: false,
 						addToBundles: [],
-						//resolveDependencies: false
+					}
+				}
+			},
+			reinstall_public: {
+				options: {
+					command: 'reinstall',
+					latest: true,
+					config: './tsd_public.json',
+					opts: {
+						saveBundle: true,
+						saveToConfig: false,
+						addToBundles: [],
 					}
 				}
 			}
@@ -204,6 +207,11 @@ module.exports = exports = function (
 			link_tsd: {
 				command: function () {
 					return './node_modules/.bin/tsd link';
+				}
+			},
+			link_tsd_public: {
+				command: function () {
+					return './node_modules/.bin/tsd link --config ./tsd_public.json';
 				}
 			}
 		},
@@ -258,7 +266,7 @@ module.exports = exports = function (
 					})()
 				},
 				files: {
-					src: [].concat(typescriptBuildFiles || [], typescriptBuildFiles || [])
+					src: [].concat(typescriptPublicFiles || [], typescriptBuildFiles || [])
 				}
 			}
 		}
