@@ -267,23 +267,27 @@ module.exports = exports = function (
 
 var tsdUtilAPI = {
 	link: function (baseDir, tsdConfigFile, managerNames, done) {
+		// deps
 		var tsd = require('tsd');
 		var PackageLinker = require('tsd/build/tsd/support/PackageLinker');
 		var BundleManager = require('tsd/build/tsd/support/BundleManager');
-		var api = tsd.getAPI(baseDir + '/' + tsdConfigFile, true);
+
+		var tsdConfigPath = baseDir + '/' + tsdConfigFile;
+		var api = tsd.getAPI(tsdConfigPath, true);
 		var linker = new PackageLinker();
 		// linker.managers is private in TS
 		linker.managers = _.filter(linker.managers, function (manager) {
 			return managerNames.indexOf(manager.name) !== -1;
 		});
 		var manager = new BundleManager(api.core.context.getTypingsDir());
+		var bundlePath = baseDir + '/' + require(tsdConfigPath).bundle;
 
 		return linker.scanDefinitions(baseDir).then(function (packages) {
-			console.log('TSD link packages:', _.map(packages, function (pack) { return pack.name; }));
+			console.info('TSD link packages:', _.map(packages, function (pack) { return pack.name; }));
 			each(packages)
 			.on('item', function (packaged, next) {
 				return manager
-				.addToBundle(api.context.config.bundle, packaged.definitions, true)
+				.addToBundle(bundlePath, packaged.definitions, true)
 				.then(next);
 			})
 			.on('end', done);
