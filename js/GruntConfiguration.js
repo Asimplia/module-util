@@ -265,7 +265,7 @@ module.exports = exports = function (
 };
 
 var tsdUtilAPI = {
-	link: function (baseDir, tsdConfigFile, managerNames) {
+	link: function (baseDir, tsdConfigFile, managerNames, done) {
 		var tsd = require('tsd');
 		var PackageLinker = require('tsd/build/tsd/support/PackageLinker');
 		var BundleManager = require('tsd/build/tsd/support/BundleManager');
@@ -278,20 +278,23 @@ var tsdUtilAPI = {
 		var manager = new BundleManager(api.core.context.getTypingsDir());
 
 		return linker.scanDefinitions(baseDir).then(function (packages) {
-			console.log('TSD link packages:', packages);
+			console.log('TSD link packages:', _.map(packages, function (pack) { return pack.name; }));
 			_.each(packages, function (packaged) {
 				return manager.addToBundle(api.context.config.bundle, packaged.definitions, true);
 			});
+			done();
 		});
 	}
 };
 
 exports.registerTasks = function (basePath, grunt) {
 	grunt.registerTask('tsd:link:build', function () {
-		tsdUtilAPI.link(basePath, 'tsd.json', ['node']);
+		var done = this.async();
+		tsdUtilAPI.link(basePath, 'tsd.json', ['node'], done);
 	});
 	grunt.registerTask('tsd:link:public', function () {
-		tsdUtilAPI.link(basePath, 'tsd_public.json', ['bower']);
+		var done = this.async();
+		tsdUtilAPI.link(basePath, 'tsd_public.json', ['bower'], done);
 	});
 };
 
