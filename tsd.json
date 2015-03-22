@@ -6,28 +6,28 @@
   "bundle": "typings/tsd.d.ts",
   "installed": {
     "underscore/underscore.d.ts": {
-      "commit": "5eaec89c7cfcb02732c62e59184bdf6b6181507b"
+      "commit": "4d64698eff1569cd199831301cb694eccc55b87e"
     },
     "express/express.d.ts": {
-      "commit": "5eaec89c7cfcb02732c62e59184bdf6b6181507b"
+      "commit": "4d64698eff1569cd199831301cb694eccc55b87e"
     },
     "moment/moment.d.ts": {
-      "commit": "5eaec89c7cfcb02732c62e59184bdf6b6181507b"
+      "commit": "4d64698eff1569cd199831301cb694eccc55b87e"
     },
     "node/node.d.ts": {
-      "commit": "5eaec89c7cfcb02732c62e59184bdf6b6181507b"
+      "commit": "4d64698eff1569cd199831301cb694eccc55b87e"
     },
     "jasmine/jasmine.d.ts": {
-      "commit": "5eaec89c7cfcb02732c62e59184bdf6b6181507b"
+      "commit": "4d64698eff1569cd199831301cb694eccc55b87e"
     },
     "each/each.d.ts": {
-      "commit": "5eaec89c7cfcb02732c62e59184bdf6b6181507b"
+      "commit": "4d64698eff1569cd199831301cb694eccc55b87e"
     },
     "mongoose/mongoose.d.ts": {
-      "commit": "5eaec89c7cfcb02732c62e59184bdf6b6181507b"
+      "commit": "4d64698eff1569cd199831301cb694eccc55b87e"
     },
     "hooker/hooker.d.ts": {
-      "commit": "5eaec89c7cfcb02732c62e59184bdf6b6181507b"
+      "commit": "4d64698eff1569cd199831301cb694eccc55b87e"
     },
     "fs-finder/fs-finder.d.ts": {
       "commit": "4d64698eff1569cd199831301cb694eccc55b87e"
