@@ -205,6 +205,22 @@ module.exports = exports = function (
 					}
 					return 'echo "No package ' + depName + ' linked"';
 				}
+			},
+			link_public_module: {
+				command: function (depName) {
+					if (process.env.NODE_ENV !== 'dev') {
+						return 'echo "Link only in dev environment NODE_ENV"';
+					}
+					var modulePath = exports.resolvePackagePath(depName, basePath);
+					if (
+						modulePath 
+						&& fs.existsSync(modulePath + '/.git') 
+						&& !fs.existsSync(basePath + '/bower_components/' + depName + '/.git')
+					) {
+						return 'rm -rf ' + basePath + '/bower_components/' + depName + ' && ln -s ' + modulePath + ' ' + basePath + '/bower_components/' + depName;
+					}
+					return 'echo "No package ' + depName + ' linked"';
+				}
 			}
 		},
 		subgrunt: {
