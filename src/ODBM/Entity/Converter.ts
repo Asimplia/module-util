@@ -1,9 +1,11 @@
 
 import _ = require('underscore');
 import IEntityStatic = require('./IEntityStatic');
+import IEntityListStatic = require('./IEntityListStatic');
 import EntityMapper = require('../Mapping/EntityMapper');
 import PropertyConverter = require('./Property/Converter');
 import AnnotationArray = require('../Mapping/Annotation/Array');
+import List = require('./List');
 
 export = Converter;
 class Converter<Entity, EntityObject> {
@@ -16,6 +18,14 @@ class Converter<Entity, EntityObject> {
 	) {
 		this.entityMapper = new EntityMapper<Entity, EntityObject>(EntityStatic);
 		this.propertyConverter = new PropertyConverter();
+	}
+
+	getList<EntityList extends List<any>, Entity>(
+		EntityListStatic: IEntityListStatic<EntityList, Entity>,
+		EntityStatic: IEntityStatic<Entity, any>,
+		objects: any[]
+	) {
+		return new EntityListStatic(_.map(objects, (object: any) => new EntityStatic(object)));
 	}
 
 	fromObject(object: EntityObject): Entity {
