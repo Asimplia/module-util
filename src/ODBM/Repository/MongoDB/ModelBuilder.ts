@@ -8,6 +8,7 @@ import AnnotationId = require('../../Mapping/Annotation/Id');
 import AnnotationInteger = require('../../Mapping/Annotation/Integer');
 import AnnotationFloat = require('../../Mapping/Annotation/Float');
 import AnnotationString = require('../../Mapping/Annotation/String');
+import AnnotationArray = require('../../Mapping/Annotation/Array');
 
 // should be in mongoose.d.ts, but missing now
 /* tslint:disable */
@@ -51,26 +52,33 @@ class ModelBuilder<Entity, EntityObject> {
 				propertyDefinition = this.getEmbeddedDefinition(keyPath);
 			} else {
 				var type = this.entityMapper.getPropertyTypeByKey.apply(this.entityMapper, keyPath);
-				propertyDefinition = this.getDefinitionByType(type);
+				propertyDefinition = this.getDefinitionByType(type, keyPath);
 			}
 			definition[name] = propertyDefinition;
 		});
 		return definition;
 	}
 
-	private getDefinitionByType(type: Type) {
+	private getDefinitionByType(type: Type, keyPath: string[]) {
 		switch (true) {
 			case type instanceof AnnotationBoolean:
 				return Boolean;
 			case type instanceof AnnotationDate:
 				return Date;
 			case type instanceof AnnotationId:
-				return this.getDefinitionByType((<AnnotationId>type).Type);
+				return this.getDefinitionByType((<AnnotationId>type).Type, keyPath);
 			case type instanceof AnnotationInteger:
 			case type instanceof AnnotationFloat:
 				return Number;
 			case type instanceof AnnotationString:
 				return String;
+			case type instanceof AnnotationArray:
+				var arrayType = (<AnnotationArray>type);
+				return [
+					arrayType.ItemEmbedded
+					? this.getEmbeddedDefinition([].concat(keyPath, ['$type', 'ItemEmbedded']))
+					: this.getDefinitionByType(arrayType.ItemType, keyPath)
+				];
 		}
 		throw new Error('Specified Type ' + (<any>type).constructor.name + ' is not implemented');
 	}

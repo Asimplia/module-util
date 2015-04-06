@@ -17,7 +17,11 @@ module My {
 			embedded: {
 				description: new Type.String(1000),
 				createdAt: { $name: 'created_at', $type: Type.Date }
-			}
+			},
+			arrayEmbedded: new Type.Array({
+				coolness: Type.Integer
+			}),
+			array: new Type.Array(Type.String)
 		};
 
 		get Object() { return this.object; }
@@ -34,5 +38,9 @@ module My {
 			description: string;
 			createdAt: Date;
 		};
+		arrayEmbedded: {
+			coolness: number;
+		}[];
+		array: string[];
 	}
 }

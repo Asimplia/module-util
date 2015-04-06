@@ -18,7 +18,16 @@ describe('ODBM.Entity.Updater', () => {
 				embedded: {
 					description: 'World',
 					createdAt: d1
-				}
+				},
+				arrayEmbedded: [
+					{
+						coolness: 10
+					},
+					{
+						coolness: 0
+					}
+				],
+				array: ['any', 'some']
 			});
 			expect(updater.get(entity, 'id')).toBe(113);
 			expect(updater.get(entity, 'name')).toBe('Hello');
@@ -31,14 +40,23 @@ describe('ODBM.Entity.Updater', () => {
 
 	describe('set', () => {
 
-		it('should get proper value of entity object', () => {
+		it('should set proper value of entity object', () => {
 			var entity = new MyEntity({
 				id: 113,
 				name: 'Hello',
 				embedded: {
 					description: 'World',
 					createdAt: new Date()
-				}
+				},
+				arrayEmbedded: [
+					{
+						coolness: 10
+					},
+					{
+						coolness: 0
+					}
+				],
+				array: ['any', 'some']
 			});
 			updater.set(entity, 'id', 114);
 			expect(entity.Object.id).toBe(114);

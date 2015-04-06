@@ -18,7 +18,11 @@ describe('ODBM.Repository.MongoDB.ModelBuilder', () => {
 			embedded: {
 				description: String,
 				created_at: Date
-			}
+			},
+			arrayEmbedded: [{
+				coolness: Number
+			}],
+			array: [String]
 		});
 	});
 

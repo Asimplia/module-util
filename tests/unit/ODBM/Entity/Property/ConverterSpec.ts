@@ -84,6 +84,19 @@ describe('ODBM.Entity.Property.Converter', () => {
 		});
 	});
 
+	describe('convertArray', () => {
+		it('should return value in specified type', () => {
+			expect(converter.convertArray(new Type.Array(Type.String), ['myId'])).toEqual(['myId']);
+			expect(converter.convertArray(new Type.Array(Type.String), ['myId', 2])).toEqual(['myId', '2']);
+			expect(() => { converter.convertArray(new Type.Array(new Type.String(4)), ['12345']); }).toThrow('String is out of size. Should be 4 but 5 given.');
+			expect(() => { converter.convertArray(new Type.Array({some: Type.String}), [{some: '123'}]); }).toThrow('Array type must have scalar items types in property converter');
+			expect(converter.convertArray(new Type.Array(Type.String, true), null)).toBe(null);
+			expect(converter.convertArray(new Type.Array(Type.String, true), undefined)).toBe(null);
+			expect(() => { converter.convertArray(new Type.Array(Type.String), null); }).toThrow('Specified type is not nullable, then should not be null or undefined');
+			expect(converter.convertArray(new Type.Array(Type.String), [])).toEqual([]);
+		});
+	});
+
 	describe('convertByType', () => {
 		it('should return value in specified type', () => {
 			var d1 = new Date();

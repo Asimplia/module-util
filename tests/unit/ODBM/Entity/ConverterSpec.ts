@@ -15,7 +15,16 @@ describe('ODBM.Entity.Converter', () => {
 				embedded: {
 					description: 'World',
 					createdAt: new Date()
-				}
+				},
+				arrayEmbedded: [
+					{
+						coolness: 10
+					},
+					{
+						coolness: 0
+					}
+				],
+				array: ['any', 'some']
 			};
 			var entity = converter.fromObject(object);
 			expect(entity.Object).toEqual(object);
@@ -28,7 +37,16 @@ describe('ODBM.Entity.Converter', () => {
 				embedded: {
 					description: true,
 					createdAt: 'Mon Feb 23 2015 09:22:39 GMT+0100 (CET)'
-				}
+				},
+				arrayEmbedded: [
+					{
+						coolness: 10
+					},
+					{
+						coolness: 0
+					}
+				],
+				array: ['any', 'some']
 			};
 			var entity = converter.fromObject(<any>object);
 			var expectedObject = {
@@ -37,7 +55,16 @@ describe('ODBM.Entity.Converter', () => {
 				embedded: {
 					description: 'true',
 					createdAt: new Date('Mon Feb 23 2015 09:22:39 GMT+0100 (CET)')
-				}
+				},
+				arrayEmbedded: [
+					{
+						coolness: 10
+					},
+					{
+						coolness: 0
+					}
+				],
+				array: ['any', 'some']
 			};
 			expect(entity.Object).toEqual(expectedObject);
 		});
@@ -51,7 +78,16 @@ describe('ODBM.Entity.Converter', () => {
 				embedded: {
 					description: 'World',
 					createdAt: new Date()
-				}
+				},
+				arrayEmbedded: [
+					{
+						coolness: 10
+					},
+					{
+						coolness: 0
+					}
+				],
+				array: ['any', 'some']
 			});
 			var object = converter.toObject(entity);
 			expect(object).toEqual(entity.Object);
@@ -64,7 +100,16 @@ describe('ODBM.Entity.Converter', () => {
 				embedded: {
 					description: true,
 					createdAt: 'Mon Feb 23 2015 09:22:39 GMT+0100 (CET)'
-				}
+				},
+				arrayEmbedded: [
+					{
+						coolness: '10'
+					},
+					{
+						coolness: 0
+					}
+				],
+				array: ['any', 1]
 			});
 			var object = converter.toObject(entity);
 			var expectedObject = {
@@ -73,7 +118,16 @@ describe('ODBM.Entity.Converter', () => {
 				embedded: {
 					description: 'true',
 					createdAt: new Date('Mon Feb 23 2015 09:22:39 GMT+0100 (CET)')
-				}
+				},
+				arrayEmbedded: [
+					{
+						coolness: 10
+					},
+					{
+						coolness: 0
+					}
+				],
+				array: ['any', '1']
 			};
 			expect(object).toEqual(expectedObject);
 		});
@@ -87,7 +141,16 @@ describe('ODBM.Entity.Converter', () => {
 				embedded: {
 					description: true,
 					created_at: 'Mon Feb 23 2015 09:22:39 GMT+0100 (CET)'
-				}
+				},
+				arrayEmbedded: [
+					{
+						coolness: '10'
+					},
+					{
+						coolness: 0
+					}
+				],
+				array: ['any', 'some']
 			};
 			var entity = converter.fromRow(row);
 			var expectedObject = {
@@ -96,7 +159,16 @@ describe('ODBM.Entity.Converter', () => {
 				embedded: {
 					description: 'true',
 					createdAt: new Date('Mon Feb 23 2015 09:22:39 GMT+0100 (CET)')
-				}
+				},
+				arrayEmbedded: [
+					{
+						coolness: 10
+					},
+					{
+						coolness: 0
+					}
+				],
+				array: ['any', 'some']
 			};
 			expect(entity.Object).toEqual(expectedObject);
 		});
@@ -110,7 +182,16 @@ describe('ODBM.Entity.Converter', () => {
 				embedded: {
 					description: true,
 					createdAt: 'Mon Feb 23 2015 09:22:39 GMT+0100 (CET)'
-				}
+				},
+				arrayEmbedded: [
+					{
+						coolness: 10
+					},
+					{
+						coolness: 0
+					}
+				],
+				array: ['any', 'some']
 			});
 			var row = converter.toRow(entity);
 			var expectedRow = {
@@ -119,7 +200,16 @@ describe('ODBM.Entity.Converter', () => {
 				embedded: {
 					description: 'true',
 					created_at: new Date('Mon Feb 23 2015 09:22:39 GMT+0100 (CET)')
-				}
+				},
+				arrayEmbedded: [
+					{
+						coolness: 10
+					},
+					{
+						coolness: 0
+					}
+				],
+				array: ['any', 'some']
 			};
 			expect(row).toEqual(expectedRow);
 		});

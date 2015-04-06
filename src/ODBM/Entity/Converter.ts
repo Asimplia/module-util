@@ -1,7 +1,9 @@
 
+import _ = require('underscore');
 import IEntityStatic = require('./IEntityStatic');
 import EntityMapper = require('../Mapping/EntityMapper');
 import PropertyConverter = require('./Property/Converter');
+import AnnotationArray = require('../Mapping/Annotation/Array');
 
 export = Converter;
 class Converter<Entity, EntityObject> {
@@ -39,16 +41,22 @@ class Converter<Entity, EntityObject> {
 				);
 			} else {
 				var type = this.entityMapper.getPropertyTypeByKey.apply(this.entityMapper, embeddedKeyPath);
-				try {
-					convertedObject[key] = this.propertyConverter.convertByType(
-						type,
-						object[key]
-					);
-				} catch (e) {
-					e.object = object;
-					e.keyPath = keyPath;
-					e.key = key;
-					throw e;
+				if (type instanceof AnnotationArray && (<AnnotationArray>type).ItemEmbedded) {
+					convertedObject[key] = _.map(object[key], (itemValue: any) => {
+						return this.convertObject(itemValue, [].concat(embeddedKeyPath, ['$type', 'ItemEmbedded']));
+					});
+				} else {
+					try {
+						convertedObject[key] = this.propertyConverter.convertByType(
+							type,
+							object[key]
+						);
+					} catch (e) {
+						e.object = object;
+						e.keyPath = keyPath;
+						e.key = key;
+						throw e;
+					}
 				}
 			}
 		});

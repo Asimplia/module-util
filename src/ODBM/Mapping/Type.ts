@@ -5,6 +5,7 @@ import AnnotationId = require('./Annotation/Id');
 import AnnotationDate = require('./Annotation/Date');
 import AnnotationString = require('./Annotation/String');
 import AnnotationBoolean = require('./Annotation/Boolean');
+import AnnotationArray = require('./Annotation/Array');
 
 export = Type;
 class Type {
@@ -15,4 +16,5 @@ class Type {
 	static get Date() { return AnnotationDate; }
 	static get String() { return AnnotationString; }
 	static get Boolean() { return AnnotationBoolean; }
+	static get Array() { return AnnotationArray; }
 }

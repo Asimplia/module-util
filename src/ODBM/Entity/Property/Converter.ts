@@ -8,6 +8,7 @@ import AnnotationId = require('../../Mapping/Annotation/Id');
 import AnnotationInteger = require('../../Mapping/Annotation/Integer');
 import AnnotationFloat = require('../../Mapping/Annotation/Float');
 import AnnotationString = require('../../Mapping/Annotation/String');
+import AnnotationArray = require('../../Mapping/Annotation/Array');
 
 export = Converter;
 class Converter {
@@ -26,6 +27,8 @@ class Converter {
 				return this.convertFloat(<AnnotationFloat>type, value);
 			case type instanceof AnnotationString:
 				return this.convertString(<AnnotationString>type, value);
+			case type instanceof AnnotationArray:
+				return this.convertArray(<AnnotationArray>type, value);
 		}
 		throw new Error('Specified Type ' + (<any>type).constructor.name + ' is not implemented');
 	}
@@ -85,6 +88,19 @@ class Converter {
 		var idType = type.Type;
 		var idValue = this.convertByType(idType, value);
 		return idValue;
+	}
+
+	convertArray(type: AnnotationArray, value: any[]) {
+		value = this.getNullOrValue(type, value);
+		if (value === null) {
+			return null;
+		}
+		return _.map(value, (itemValue: any) => {
+			if (!type.ItemType) {
+				throw new Error('Array type must have scalar items types in property converter');
+			}
+			return this.convertByType(type.ItemType, itemValue);
+		});
 	}
 
 	private getNullOrValue(type: Type, value: any) {
