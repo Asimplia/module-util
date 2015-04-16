@@ -19,11 +19,7 @@ class List<Item, ItemList extends CommonItemList> {
 		}
 		var array = [];
 		this.items.forEach((item: Item) => {
-			try {
-				array.push(objectFactory(item));
-			} catch (e) {
-				console.warn('Item was deleted from array becouse error happened during create object', item, e);
-			}
+			array.push(objectFactory(item));
 		});
 		return array;
 	}
