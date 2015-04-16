@@ -1,4 +1,5 @@
 
+import _ = require('underscore');
 import mongoose = require('mongoose'); // only for typing
 import each = require('each');
 import IManager = require('../IManager');
