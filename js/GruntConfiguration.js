@@ -86,7 +86,9 @@ module.exports = exports = function (
 			}
 		},
 		jasmine_node: {
-			options: {},
+			options: {
+				includeStackTrace: true
+			},
 			unit: {
 				options: {
 					specFolders: ['build/tests/unit/']
@@ -312,6 +314,10 @@ var tsdUtilAPI = {
 };
 
 exports.registerTasks = function (basePath, grunt) {
+	process.on('uncaughtException',function(e) {
+		grunt.log.error('Caught unhandled exception: ' + e.toString());
+		grunt.log.error(e.stack);
+	});
 	grunt.registerTask('tsd:link:build', function () {
 		var done = this.async();
 		tsdUtilAPI.link(basePath, 'tsd.json', ['node'], done);
