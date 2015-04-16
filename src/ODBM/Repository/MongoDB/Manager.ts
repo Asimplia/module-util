@@ -59,7 +59,7 @@ class Manager<Entity, EntityObject, EntityList extends List<any/*Entity*/>> impl
 	insertList(entityList: List<Entity>, callback: (e: Error, entityList?: List<Entity>) => void): IManager<Entity, EntityObject, EntityList> {
 		this.autoIncrementIdsOfList(entityList, (e: Error, entityList?: List<Entity>) => {
 			if (e) return callback(e);
-			var objects = entityList.toArray(this.converter.toObject);
+			var objects = entityList.toArray((entity: Entity) => this.converter.toObject(entity));
 			(<IMongooseCollection>this.model.collection).insert(
 				objects,
 				(e: Error, docs?: mongoose.Document[]) => {
