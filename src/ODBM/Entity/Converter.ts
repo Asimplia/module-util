@@ -3,21 +3,20 @@ import _ = require('underscore');
 import IEntityStatic = require('./IEntityStatic');
 import IEntityListStatic = require('./IEntityListStatic');
 import EntityMapper = require('../Mapping/EntityMapper');
-import PropertyConverter = require('./Property/Converter');
-import AnnotationArray = require('../Mapping/Annotation/Array');
+import EntityUpdater = require('./Updater');
 import List = require('./List');
 
 export = Converter;
 class Converter<Entity, EntityObject> {
 
 	private entityMapper: EntityMapper<Entity, EntityObject>;
-	private propertyConverter: PropertyConverter
+	private entityUpdater: EntityUpdater<Entity, EntityObject>;
 
 	constructor(
 		private EntityStatic: IEntityStatic<Entity, EntityObject>
 	) {
 		this.entityMapper = new EntityMapper<Entity, EntityObject>(EntityStatic);
-		this.propertyConverter = new PropertyConverter();
+		this.entityUpdater = new EntityUpdater<Entity, EntityObject>(this.entityMapper);
 	}
 
 	getList<EntityList extends List<any>, Entity>(
@@ -40,36 +39,7 @@ class Converter<Entity, EntityObject> {
 	}
 
 	private convertObject(object: EntityObject, keyPath: string[]): EntityObject {
-		var keys = this.entityMapper.getEmbeddedKeys.apply(this.entityMapper, keyPath);
-		var convertedObject = <EntityObject>{};
-		keys.forEach((key: string) => {
-			var embeddedKeyPath = [].concat(keyPath, [key]);
-			if (this.entityMapper.isEmbeddedByKey.apply(this.entityMapper, embeddedKeyPath)) {
-				convertedObject[key] = this.convertObject(
-					object[key],
-					embeddedKeyPath
-				);
-			} else {
-				var type = this.entityMapper.getPropertyTypeByKey.apply(this.entityMapper, embeddedKeyPath);
-				if (type instanceof AnnotationArray && (<AnnotationArray>type).ItemEmbedded) {
-					convertedObject[key] = _.map(object[key], (itemValue: any) => {
-						return this.convertObject(itemValue, [].concat(embeddedKeyPath, ['$type', 'ItemEmbedded']));
-					});
-				} else {
-					try {
-						convertedObject[key] = this.propertyConverter.convertByType(
-							type,
-							object[key]
-						);
-					} catch (e) {
-						e.object = object;
-						e.keyPath = keyPath;
-						e.key = key;
-						throw e;
-					}
-				}
-			}
-		});
+		var convertedObject = this.entityUpdater.updateObject(object, <EntityObject>{}, keyPath);
 		return convertedObject;
 	}
 

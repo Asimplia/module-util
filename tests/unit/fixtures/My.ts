@@ -12,7 +12,7 @@ module My {
 		static $entity: IEntityAnnotation = {
 			$dbs: DatabaseSystem.MONGO_DB,
 			$name: 'my_entity',
-			id: Type.Integer,
+			id: new Type.Id(Type.Integer),
 			name: { $name: 'entity_name', $type: Type.String },
 			embedded: {
 				description: new Type.String(1000),

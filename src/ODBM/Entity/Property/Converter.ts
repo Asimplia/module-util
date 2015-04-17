@@ -30,7 +30,7 @@ class Converter {
 			case type instanceof AnnotationArray:
 				return this.convertArray(<AnnotationArray>type, value);
 		}
-		throw new Error('Specified Type ' + (<any>type).constructor.name + ' is not implemented');
+		throw new Error('Specified Type ' + (typeof type === 'function' ? (<any>type).constructor.name : type) + ' is not implemented');
 	}
 
 	convertBoolean(type: AnnotationBoolean, value: any): boolean {

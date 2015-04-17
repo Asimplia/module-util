@@ -4,6 +4,7 @@ import EntityMapper = require('../../../../src/ODBM/Mapping/EntityMapper');
 import My = require('../../fixtures/My');
 import MyEntity = My.MyEntity;
 import IMyEntityObject = My.IMyEntityObject;
+import Type = require('../../../../src/ODBM/Mapping/Type');
 
 describe('ODBM.Entity.Updater', () => {
 	var entityMapper = new EntityMapper<MyEntity, IMyEntityObject>(MyEntity);
@@ -58,7 +59,7 @@ describe('ODBM.Entity.Updater', () => {
 				],
 				array: ['any', 'some']
 			});
-			updater.set(entity, 'id', 114);
+			updater.set(entity, 'id', '114');
 			expect(entity.Object.id).toBe(114);
 			updater.set(entity, 'name', 'Hi');
 			expect(entity.Object.name).toBe('Hi');
