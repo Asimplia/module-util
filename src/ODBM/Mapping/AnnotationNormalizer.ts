@@ -27,11 +27,6 @@ class AnnotationNormalizer<Entity, EntityObject> {
 		if (typeof entityAnnotation.$object !== 'string') {
 			throw new Error('Entity annotation $object must be string');
 		}
-		var testObject = <any>{ $$testProperty: true };
-		var testEntity = new this.EntityStatic(testObject);
-		if (testEntity[entityAnnotation.$object] !== testObject) {
-			throw new Error('Object passed by constructor must be accessible by propertyName from annotation $object');
-		}
 		this.propertyAnnotationNormalizer.normalizePropertyAnnotations(entityAnnotation);
 	}
 }
