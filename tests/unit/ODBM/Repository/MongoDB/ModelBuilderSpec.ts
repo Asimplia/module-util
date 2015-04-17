@@ -22,7 +22,8 @@ describe('ODBM.Repository.MongoDB.ModelBuilder', () => {
 			arrayEmbedded: [{
 				coolness: Number
 			}],
-			array: [String]
+			array: [String],
+			nullableArray: [String]
 		});
 	});
 

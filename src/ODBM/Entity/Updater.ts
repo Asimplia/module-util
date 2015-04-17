@@ -60,14 +60,21 @@ class Updater<Entity, EntityObject> {
 		} else {
 			var type = this.entityMapper.getPropertyTypeByKey.apply(this.entityMapper, embeddedKeyPath);
 			if (type instanceof AnnotationArray && (<AnnotationArray>type).ItemEmbedded) {
+				if (!(<AnnotationArray>type).Nullable && !sourceValue) {
+					var e: any = new Error('Specified type is not nullable, then should not be null or undefined');
+					e.sourceValue = sourceValue;
+					e.destinationValue = destinationValue;
+					e.embeddedKeyPath = embeddedKeyPath;
+					throw e;
+				}
 				// TODO update Array object instead of replacing with new Array
-				destinationObject[key] = _.map(sourceValue, (itemValue: any, i: number) => {
+				destinationObject[key] = sourceValue ? _.map(sourceValue, (itemValue: any, i: number) => {
 					return this.updateObject(
 						itemValue,
 						typeof destinationValue === 'object' && destinationValue[i] ? destinationValue[i] : {},
 						[].concat(embeddedKeyPath, ['$type', 'ItemEmbedded'])
 					);
-				});
+				}) : null;
 			} else {
 				try {
 					destinationObject[key] = this.propertyConverter.convertByType(

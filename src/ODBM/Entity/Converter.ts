@@ -24,18 +24,28 @@ class Converter<Entity, EntityObject> {
 		EntityStatic: IEntityStatic<Entity, any>,
 		objects: any[]
 	) {
-		return new EntityListStatic(_.map(objects, (object: any) => new EntityStatic(object)));
+		return objects
+			? new EntityListStatic(_.map(objects, (object: any) => this.createEntity<Entity>(EntityStatic, object)))
+			: null;
 	}
 
 	fromObject(object: EntityObject): Entity {
 		var convertedObject = this.convertObject(object, []);
-		return new this.EntityStatic(convertedObject);
+		return this.createEntity<Entity>(this.EntityStatic, convertedObject);
 	}
 
 	toObject(entity: Entity): EntityObject {
 		var objectPropertyName = this.entityMapper.getObjectPropertyName();
 		var object = entity[objectPropertyName];
 		return this.convertObject(object, []);
+	}
+
+	private createEntity<Entity>(EntityStatic: IEntityStatic<Entity, any>, object: any) {
+		var entityMapper = new EntityMapper<Entity, any>(EntityStatic);
+		var objectPropertyName = entityMapper.getObjectPropertyName();
+		var entity = new EntityStatic();
+		entity[objectPropertyName] = object;
+		return entity;
 	}
 
 	private convertObject(object: EntityObject, keyPath: string[]): EntityObject {

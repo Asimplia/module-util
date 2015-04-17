@@ -24,7 +24,8 @@ describe('ODBM.Entity.Converter', () => {
 						coolness: 0
 					}
 				],
-				array: ['any', 'some']
+				array: ['any', 'some'],
+				nullableArray: null
 			};
 			var entity = converter.fromObject(object);
 			expect(entity.Object).toEqual(object);
@@ -64,7 +65,8 @@ describe('ODBM.Entity.Converter', () => {
 						coolness: 0
 					}
 				],
-				array: ['any', 'some']
+				array: ['any', 'some'],
+				nullableArray: null
 			};
 			expect(entity.Object).toEqual(expectedObject);
 		});
@@ -87,7 +89,8 @@ describe('ODBM.Entity.Converter', () => {
 						coolness: 0
 					}
 				],
-				array: ['any', 'some']
+				array: ['any', 'some'],
+				nullableArray: null
 			});
 			var object = converter.toObject(entity);
 			expect(object).toEqual(entity.Object);
@@ -127,7 +130,49 @@ describe('ODBM.Entity.Converter', () => {
 						coolness: 0
 					}
 				],
-				array: ['any', '1']
+				array: ['any', '1'],
+				nullableArray: null
+			};
+			expect(object).toEqual(expectedObject);
+		});
+
+		it('should return entity with proper converted values with nullable array null', () => {
+			var entity = new MyEntity(<any>{
+				id: '113',
+				name: 432,
+				embedded: {
+					description: true,
+					createdAt: 'Mon Feb 23 2015 09:22:39 GMT+0100 (CET)'
+				},
+				arrayEmbedded: [
+					{
+						coolness: '10'
+					},
+					{
+						coolness: 0
+					}
+				],
+				array: ['any', 1],
+				nullableArray: null
+			});
+			var object = converter.toObject(entity);
+			var expectedObject = {
+				id: 113,
+				name: '432',
+				embedded: {
+					description: 'true',
+					createdAt: new Date('Mon Feb 23 2015 09:22:39 GMT+0100 (CET)')
+				},
+				arrayEmbedded: [
+					{
+						coolness: 10
+					},
+					{
+						coolness: 0
+					}
+				],
+				array: ['any', '1'],
+				nullableArray: null
 			};
 			expect(object).toEqual(expectedObject);
 		});
@@ -168,7 +213,8 @@ describe('ODBM.Entity.Converter', () => {
 						coolness: 0
 					}
 				],
-				array: ['any', 'some']
+				array: ['any', 'some'],
+				nullableArray: null
 			};
 			expect(entity.Object).toEqual(expectedObject);
 		});
@@ -209,7 +255,8 @@ describe('ODBM.Entity.Converter', () => {
 						coolness: 0
 					}
 				],
-				array: ['any', 'some']
+				array: ['any', 'some'],
+				nullableArray: null
 			};
 			expect(row).toEqual(expectedRow);
 		});

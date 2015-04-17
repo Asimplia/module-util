@@ -21,7 +21,8 @@ module My {
 			arrayEmbedded: new Type.Array({
 				coolness: Type.Integer
 			}),
-			array: new Type.Array(Type.String)
+			array: new Type.Array(Type.String),
+			nullableArray: new Type.Array(Type.String, true)
 		};
 
 		get Object() { return this.object; }
