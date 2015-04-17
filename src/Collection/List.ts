@@ -129,4 +129,27 @@ class List<Item, ItemList extends CommonItemList> {
 	merge(mergeList: ItemList) {
 		return new this.ListStatic([].concat(this.items, mergeList.toArray()));
 	}
+
+	add(item: Item) {
+		var items = [].concat(this.items);
+		items.push(item);
+		return new this.ListStatic(items);
+	}
+
+	remove(item: Item) {
+		var items = [].concat(this.items);
+		var i = items.indexOf(item);
+		if (i !== -1) {
+			items.splice(i, 1);
+		}
+		return new this.ListStatic(items);
+	}
+
+	contains(item: Item) {
+		return _.contains(this.items, item);
+	}
+
+	flatMap(cb: (item: Item) => any) {
+		return new List<any, CommonItemList>(_.flatten(this.map(cb).toArray()));
+	}
 }
