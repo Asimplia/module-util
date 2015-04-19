@@ -232,7 +232,9 @@ module.exports = exports = function (
 			]
 		},
 		clean: {
-			build: "build/"
+			build: "build/",
+			typings: "typings/",
+			bower_components: "bower_components/",
 		},
 		develop: {
 			server: {
