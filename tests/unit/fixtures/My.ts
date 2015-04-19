@@ -44,4 +44,27 @@ module My {
 		}[];
 		array: string[];
 	}
+
+	export class PlainEntity {
+
+		static $entity: IEntityAnnotation = {
+			$dbs: DatabaseSystem.MONGO_DB,
+			$name: 'plain_entity',
+			id: new Type.Id(Type.Integer),
+			name: { $name: 'entity_name', $type: Type.String },
+			type: { $name: 'entity_type', $type: Type.String }
+		};
+
+		get Object() { return this.object; }
+
+		constructor(
+			private object: IPlainEntityObject
+		) {}
+	}
+
+	export interface IPlainEntityObject {
+		id: number;
+		name: string;
+		type: string;
+	}
 }

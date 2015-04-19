@@ -68,6 +68,37 @@ class Manager<Entity, EntityObject, EntityList extends List<any/*Entity*/>> impl
 		return this;
 	}
 
+	update(entity: Entity, callback: (e: Error, entity?: Entity) => void): IManager<Entity, EntityObject, EntityList> {
+		this.updateList(new this.EntityListStatic([entity]), (e: Error, entityList?: EntityList) => {
+			if (e) return callback(e);
+			callback(null, entityList.first());
+		});
+		return this;
+	}
+
+	updateList(entityList: EntityList, callback: (e: Error, entityList?: EntityList) => void): IManager<Entity, EntityObject, EntityList> {
+		if (entityList.isEmpty()) {
+			callback(null, entityList);
+			return;
+		}
+		var entityLists = entityList.chunk(1000);
+		each(entityLists)
+		.on('item', (batchEntityList: EntityList, next: Function) => {
+			var queryParamsPair = this.sqlBuilder.createUpdateList(batchEntityList);
+			this.connection.query(
+				queryParamsPair.query,
+				queryParamsPair.params,
+				(e: Error, result: any) => {
+				if (e) return callback(e);
+				next(null, batchEntityList);
+			});
+		})
+		.on('error', (e: Error) => callback(e))
+		.on('end', () => callback(null, entityList));
+
+		return this;
+	}
+
 	fetchListBy(conditions: any, callback: (e: Error, entityList?: EntityList) => void): IManager<Entity, EntityObject, EntityList> {
 		var queryParamsPair = this.sqlBuilder.createSelectByConditions(conditions);
 		this.connection.query(

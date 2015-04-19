@@ -48,6 +48,38 @@ class SqlBuilder<Entity> {
 		};
 	}
 
+	createUpdateList(entityList: List<Entity>): IQueryParamsPair {
+		var params = [];
+		var placeholderRows = [];
+		var placeholderIndex = 0;
+		entityList.forEach((entity: Entity) => {
+			var placeholders = [];
+			var object = this.converter.toObject(entity);
+			var entityKeys = this.entityMapper.getKeys();
+			entityKeys.forEach((key: string) => {
+				var value = object[key];
+				placeholderIndex++;
+				params.push(value);
+				placeholders.push('$' + placeholderIndex);
+			});
+			placeholderRows.push(placeholders.join(','));
+		});
+		var tableName = this.entityMapper.getName();
+		var columns = this.entityMapper.getPropertyNames();
+		var columnsSetBySource = _.map(columns, (column: string) => {
+			return column + ' = source.' + column;
+		});
+		var idColumn = this.entityMapper.getIdName();
+		var sql = 'UPDATE ' + tableName + ' '
+			+ 'SET ' + columnsSetBySource.join(',') + ' '
+			+ 'FROM (VALUES (' + placeholderRows.join('),(') + ')) AS source (' + columns.join(',') + ') '
+			+ 'WHERE ' + tableName + '.' + idColumn + ' = source.' + idColumn;
+		return {
+			query: sql,
+			params: params
+		};
+	}
+
 	createSelectByConditions(conditions: IConditions): IQueryParamsPair {
 		var tableName = this.entityMapper.getName();
 		var where = this.getWhereByConditions(conditions);
