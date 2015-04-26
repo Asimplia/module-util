@@ -95,6 +95,10 @@ class List<Item, ItemList extends CommonItemList> {
 		return new this.ListStatic(_.first(this.items, n));
 	}
 
+	restList(n: number): ItemList {
+		return new this.ListStatic(_.rest(this.items, n));
+	}
+
 	createEach() {
 		return each(this.items);
 	}
