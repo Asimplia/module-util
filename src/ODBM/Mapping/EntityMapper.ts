@@ -37,6 +37,11 @@ class EntityMapper<Entity, EntityObject> {
 		return annotation.$name;
 	}
 
+	getIdType(): Id {
+		var annotation = this.getIdAnnotation();
+		return <Id>annotation.$type;
+	}
+
 	getKeys(): string[] {
 		return this.getEmbeddedKeys();
 	}

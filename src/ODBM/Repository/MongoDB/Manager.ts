@@ -10,6 +10,10 @@ import Converter = require('../../Entity/Converter');
 import EntityMapper = require('../../Mapping/EntityMapper');
 import Updater = require('../../Entity/Updater');
 import List = require('../../Entity/List');
+import Exception = require('../../../Error/Exception');
+// import SequenceManager = require('./Sequence/SequenceManager'); // circular require dependency
+import ISequenceObject = require('./Sequence/ISequenceObject');
+import Sequence = require('./Sequence/Sequence');
 
 // TODO move it to mongoose.d.ts & DefinitelyTyped repo
 interface IMongooseCollection {
@@ -23,6 +27,7 @@ class Manager<Entity, EntityObject, EntityList extends List<any/*Entity*/>> impl
 	private entityMapper: EntityMapper<Entity, EntityObject>;
 	private entityUpdater: Updater<Entity, EntityObject>;
 	private model: mongoose.Model<mongoose.Document>;
+	private sequenceManager: Manager<Sequence, ISequenceObject, List<Sequence>>;
 
 	get Model() { return this.model; }
 	get Converter() { return this.converter; }
@@ -37,19 +42,28 @@ class Manager<Entity, EntityObject, EntityList extends List<any/*Entity*/>> impl
 		this.entityUpdater = new Updater<Entity, EntityObject>(this.entityMapper);
 		var modelBuilder = new ModelBuilder<Entity, EntityObject>(this.entityMapper, this.connection);
 		this.model = modelBuilder.create();
+		if (this.entityMapper.getIdType().SequenceAllowed) {
+			this.sequenceManager = new (require('./Sequence/SequenceManager'))(this.connection);
+		}
 	}
 
 	private autoIncrementIdsOfList(
 		entityList: List<Entity>,
 		callback: (e: Error, entityList?: List<Entity>) => void)
 	: void {
-		this.getNextId((e: Error, nextId?: number) => {
+		this.getNextIds(entityList.count(), (e: Error, nextIds?: number[]) => {
 			if (e) return callback(e);
 			entityList.forEach((entity: Entity) => {
 				var idKey = this.entityMapper.getIdKey();
 				var id = this.entityUpdater.get(entity, idKey);
+				var nextId = nextIds.shift();
+				if (!nextId) {
+					throw new Exception('No next id is available for current got set');
+				}
 				if (id === null) {
-					this.entityUpdater.set(entity, idKey, nextId++);
+					this.entityUpdater.set(entity, idKey, nextId);
+				} else {
+					throw new Exception('Id tried to autoincrement is not null');
 				}
 			});
 			callback(null, entityList);
@@ -241,18 +255,33 @@ class Manager<Entity, EntityObject, EntityList extends List<any/*Entity*/>> impl
 	}
 
 	private getNextId(callback: (e: Error, id?: number) => void) {
-		var idName = this.entityMapper.getIdName();
-		var fetchProperties: any = {};
-		fetchProperties[idName] = true;
-		this.model.findOne({}, fetchProperties)
-		.sort('-' + idName)
-		.limit(1)
-		.exec((e: Error, doc: mongoose.Document) => {
+		this.getNextIds(1, (e: Error, ids: number[]) => callback(e, ids ? ids.pop() : null));
+	}
+
+	private getNextIds(count: number, callback: (e: Error, ids?: number[]) => void) {
+		var idType = this.entityMapper.getIdType();
+		if (!idType.SequenceAllowed) {
+			throw new Exception('For collection is not allowed sequence. Id must be specified not null');
+		}
+		if (count < 0) {
+			throw new Exception('Count of next ids must be positive integer');
+		}
+		this.sequenceManager.Model.findOneAndUpdate({
+			id: this.model.modelName
+		}, {
+			$inc: { seq: count }
+		}, (e: Error, doc?: mongoose.Document) => {
 			if (e) return callback(e);
-			if (!doc) {
-				return callback(null, 1);
+			var sequence: Sequence;
+			if (doc) {
+				sequence = this.sequenceManager.Converter.fromObject(<ISequenceObject>doc.toObject());
+				callback(null, _.range(sequence.Seq - count, sequence.Seq));
+			} else {
+				sequence = this.sequenceManager.Converter.fromObject({ id: this.model.modelName, seq: 1 + count });
+				this.sequenceManager.insert(sequence, () => {
+					callback(null, _.range(1, 1 + count));
+				});
 			}
-			callback(null, 1 + parseInt(doc.id, 10));
 		});
 	}
 }

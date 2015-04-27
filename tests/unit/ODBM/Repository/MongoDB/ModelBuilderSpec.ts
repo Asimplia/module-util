@@ -12,18 +12,20 @@ describe('ODBM.Repository.MongoDB.ModelBuilder', () => {
 
 	describe('getEmbeddedDefinition', () => {
 		var definition = (<any>modelBuilder).getEmbeddedDefinition([]); // test private, becouse create is depend on mongoose
-		expect(definition).toEqual({
-			id: Number,
-			entity_name: String,
-			embedded: {
-				description: String,
-				created_at: Date
-			},
-			arrayEmbedded: [{
-				coolness: Number
-			}],
-			array: [String],
-			nullableArray: [String]
+		it('should return right model definition', () => {
+			expect(definition).toEqual({
+				id: { type: Number, unique: true },
+				entity_name: String,
+				embedded: {
+					description: String,
+					created_at: Date
+				},
+				arrayEmbedded: [{
+					coolness: Number
+				}],
+				array: [String],
+				nullableArray: [String]
+			});
 		});
 	});
 

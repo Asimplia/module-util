@@ -59,14 +59,14 @@ class ModelBuilder<Entity, EntityObject> {
 		return definition;
 	}
 
-	private getDefinitionByType(type: Type, keyPath: string[]) {
+	private getDefinitionByType(type: Type, keyPath: string[]): any {
 		switch (true) {
 			case type instanceof AnnotationBoolean:
 				return Boolean;
 			case type instanceof AnnotationDate:
 				return Date;
 			case type instanceof AnnotationId:
-				return this.getDefinitionByType((<AnnotationId>type).Type, keyPath);
+				return { type: this.getDefinitionByType((<AnnotationId>type).Type, keyPath), unique: true };
 			case type instanceof AnnotationInteger:
 			case type instanceof AnnotationFloat:
 				return Number;
