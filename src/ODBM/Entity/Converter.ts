@@ -92,7 +92,7 @@ class Converter<Entity, EntityObject> {
 				embeddedKeyPath
 			);
 			if (this.entityMapper.isEmbeddedByKey.apply(this.entityMapper, embeddedKeyPath)) {
-				row[name] = this.convertObjectToRow(object[key], embeddedKeyPath);
+				row[name] = object[key] ? this.convertObjectToRow(object[key], embeddedKeyPath) : null;
 			} else {
 				row[name] = object[key];
 			}
