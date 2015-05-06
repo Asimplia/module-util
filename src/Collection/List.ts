@@ -156,4 +156,11 @@ class List<Item, ItemList extends CommonItemList> {
 	flatMap(cb: (item: Item) => any) {
 		return new List<any, CommonItemList>(_.flatten(this.map(cb).toArray()));
 	}
+
+	groupBy(cb: (item: Item) => any) {
+		var groups = _.groupBy(this.items, cb);
+		return new List<ItemList, List<ItemList, any>>(_.map(_.toArray(groups), (items: Item[]) => {
+			return new this.ListStatic(items);
+		}));
+	}
 }
