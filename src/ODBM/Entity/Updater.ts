@@ -50,18 +50,27 @@ class Updater<Entity, EntityObject> {
 	}
 
 	private updateObjectValue(sourceValue: any, destinationObject: any, key: string, embeddedKeyPath: string[]) {
+		var e: any;
 		var destinationValue: any = destinationObject[key];
 		if (this.entityMapper.isEmbeddedByKey.apply(this.entityMapper, embeddedKeyPath)) {
-			destinationObject[key] = this.updateObject(
+			var embeddedAnnotation = this.entityMapper.getAnnotationByKey.apply(this.entityMapper, embeddedKeyPath);
+			if (!embeddedAnnotation.$nullable && !sourceValue) {
+				e = new Error('Specified embedded object is not nullable, then should not be null or undefined');
+				e.sourceValue = sourceValue;
+				e.destinationValue = destinationValue;
+				e.embeddedKeyPath = embeddedKeyPath;
+				throw e;
+			}
+			destinationObject[key] = sourceValue ? this.updateObject(
 				sourceValue,
 				destinationValue || {},
 				embeddedKeyPath
-			);
+			) : null;
 		} else {
 			var type = this.entityMapper.getPropertyTypeByKey.apply(this.entityMapper, embeddedKeyPath);
 			if (type instanceof AnnotationArray && (<AnnotationArray>type).ItemEmbedded) {
 				if (!(<AnnotationArray>type).Nullable && !sourceValue) {
-					var e: any = new Error('Specified type is not nullable, then should not be null or undefined');
+					e = new Error('Specified type is not nullable, then should not be null or undefined');
 					e.sourceValue = sourceValue;
 					e.destinationValue = destinationValue;
 					e.embeddedKeyPath = embeddedKeyPath;

@@ -7,6 +7,7 @@ import DatabaseSystem = require('../../Repository/DatabaseSystem');
 export = IEmbeddedAnnotation;
 interface IEmbeddedAnnotation {
 	$name?: string;
+	$nullable?: boolean;
 	[propertyName: string]: IPropertyAnnotation|Type|ITypeStatic|IEmbeddedAnnotation
-		|DatabaseSystem|string;
+		|DatabaseSystem|string|boolean;
 }

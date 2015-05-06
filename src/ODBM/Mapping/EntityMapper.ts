@@ -57,7 +57,7 @@ class EntityMapper<Entity, EntityObject> {
 		});
 	}
 
-	private getAnnotationByKey(...keys: string[]): IPropertyAnnotation {
+	getAnnotationByKey(...keys: string[]): IPropertyAnnotation {
 		var entityAnnotation = this.EntityStatic.$entity;
 		var annotation = <any>entityAnnotation;
 		keys.forEach((key: string) => {
