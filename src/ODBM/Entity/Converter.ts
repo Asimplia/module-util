@@ -29,6 +29,10 @@ class Converter<Entity, EntityObject> {
 			: null;
 	}
 
+	toArray(list: List<Entity>): EntityObject[] {
+		return list.toArray((entity: Entity) => this.toObject(entity));
+	}
+
 	fromObject(object: EntityObject): Entity {
 		var convertedObject = this.convertObject(object, []);
 		return this.createEntity<Entity>(this.EntityStatic, convertedObject);
