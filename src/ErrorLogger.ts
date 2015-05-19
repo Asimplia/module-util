@@ -29,15 +29,15 @@ class ErrorLogger {
 				consoleError(e);
 			}
 		});
-		console.error = () => {
-			consoleError.apply(this, arguments);
-			_.forEach(arguments, (e: IObjectableError) => {
+		console.error = (...args: any[]) => {
+			consoleError.apply(this, args);
+			_.forEach(args, (e: IObjectableError) => {
 				callOnError(e, errorType);
 			});
 		};
-		console.warn = () => {
-			consoleWarn.apply(this, arguments);
-			_.forEach(arguments, (e: IObjectableError) => {
+		console.warn = (...args: any[]) => {
+			consoleWarn.apply(this, args);
+			_.forEach(args, (e: IObjectableError) => {
 				callOnError(e, warningType);
 			});
 		};
