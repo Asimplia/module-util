@@ -18,6 +18,24 @@ class ProgressListLogger implements IAspect {
 				return self.handleIterations(this, cb);
 			}
 		});
+		hooker.hook(List.prototype, 'createEach', {
+			post: function (each: Each) {
+				var defaultOn = each.on;
+				each.on = function (eventName: string, cb: (item: any, next: Function) => void) {
+					if (eventName == 'item' && each.total >= this.logProgressOverCount) {
+						return defaultOn.call(this, eventName, function (item: any, next: Function) {
+							if (each.done % (each.total / 100) == 0) {
+								var progressPercentage = Math.round(each.done / each.total * 100);
+								console.info('Processing of each list is done for ' + progressPercentage + '%');
+							}
+							return cb.call(this, item, next);
+						});
+					} else {
+						return defaultOn.call(this, eventName, cb);
+					}
+				};
+			}
+		});
 	}
 
 	private handleIterations(
