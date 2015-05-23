@@ -7,4 +7,6 @@ interface IComparableConditions {
 	$lt?: ComparableTypes;
 	$gte?: ComparableTypes;
 	$lte?: ComparableTypes;
+	$in?: ComparableTypes[];
+	$ne?: ComparableTypes;
 }

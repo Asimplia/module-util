@@ -5,8 +5,15 @@ import IQueryParamsPair = require('./IQueryParamsPair');
 import Converter = require('../../Entity/Converter');
 import EntityMapper = require('../../Mapping/EntityMapper');
 import Id = require('../../Mapping/Annotation/Id');
+import DateType = require('../../Mapping/Annotation/Date');
+import String = require('../../Mapping/Annotation/String');
+import Float = require('../../Mapping/Annotation/Float');
+import Boolean = require('../../Mapping/Annotation/Boolean');
+import Integer = require('../../Mapping/Annotation/Integer');
+import Type = require('../../Mapping/Annotation/Type');
 import List = require('../../Entity/List');
 import IConditions = require('./IConditions');
+import Exepction = require('../../../Error/Exception');
 import IComparableConditions = require('./IComparableConditions');
 
 export = SqlBuilder;
@@ -60,7 +67,7 @@ class SqlBuilder<Entity> {
 				var value = object[key];
 				placeholderIndex++;
 				params.push(value);
-				placeholders.push('$' + placeholderIndex);
+				placeholders.push('$' + placeholderIndex + '::' + this.getTypeCast(key));
 			});
 			placeholderRows.push(placeholders.join(','));
 		});
@@ -70,10 +77,11 @@ class SqlBuilder<Entity> {
 			return column + ' = source.' + column;
 		});
 		var idColumn = this.entityMapper.getIdName();
+		var idTypeCast = this.getTypeCast(this.entityMapper.getIdKey());
 		var sql = 'UPDATE ' + tableName + ' '
 			+ 'SET ' + columnsSetBySource.join(',') + ' '
 			+ 'FROM (VALUES (' + placeholderRows.join('),(') + ')) AS source (' + columns.join(',') + ') '
-			+ 'WHERE ' + tableName + '.' + idColumn + ' = source.' + idColumn;
+			+ 'WHERE ' + tableName + '.' + idColumn + '::' + idTypeCast + ' = source.' + idColumn + '::' + idTypeCast;
 		return {
 			query: sql,
 			params: params
@@ -85,7 +93,9 @@ class SqlBuilder<Entity> {
 		var where = this.getWhereByConditions(conditions);
 		var sql = 'SELECT ' + this.getAliasedColumnNames().join(', ') + ' '
 			+ ' FROM ' + tableName + ' '
-			+ ' WHERE ' + where.query;
+			+ ' WHERE ' + where.query
+			+ (conditions.$limit ? 'LIMIT ' + conditions.$limit : '')
+			+ (conditions.$offset ? 'OFFSET ' + conditions.$offset : '');
 		return {
 			query: sql,
 			params: where.params
@@ -155,6 +165,18 @@ class SqlBuilder<Entity> {
 					whereParts.push(' ' + column + ' <= $' + placeholderIndex + ' ');
 					params.push(this.prepareValue(comparableConditions.$lte));
 				}
+				if (typeof comparableConditions.$ne !== 'undefined' && comparableConditions.$ne !== null) {
+					placeholderIndex++;
+					whereParts.push(' ' + column + ' != $' + placeholderIndex + ' ');
+					params.push(this.prepareValue(comparableConditions.$ne));
+				}
+				if (typeof comparableConditions.$in !== 'undefined' && comparableConditions.$in !== null) {
+					whereParts.push(' ' + column + ' IN (' + _.map(comparableConditions.$in, (value: any) => {
+						placeholderIndex++;
+						params.push(this.prepareValue(value));
+						return '$' + placeholderIndex;
+					}) + ') ');
+				}
 			} else {
 				placeholderIndex++;
 				whereParts.push(' ' + column + ' = $' + placeholderIndex + ' ');
@@ -176,5 +198,28 @@ class SqlBuilder<Entity> {
 
 	private formatDate(value: Date): string {
 		return moment(value).format('YYYY-MM-DD\\THH:mm:ss.SSSZZ');
+	}
+
+	private getTypeCast(key: string) {
+		var type = this.entityMapper.getPropertyTypeByKey(key);
+		return this.getTypeCastByType(type);
+	}
+
+	private getTypeCastByType(type: Type) {
+		switch (true) {
+			case type instanceof String:
+				return 'text';
+			case type instanceof Boolean:
+				return 'boolean';
+			case type instanceof DateType:
+				return 'timestamp' + ((<DateType>type).TimeZone ? 'tz' : '');
+			case type instanceof Float:
+				return 'real';
+			case type instanceof Integer:
+				return 'bigint';
+			case type instanceof Id:
+				return this.getTypeCastByType((<Id>type).Type);
+		}
+		throw new Exepction('Not supported type cast for type ' + type);
 	}
 }
