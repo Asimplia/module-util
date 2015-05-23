@@ -18,6 +18,10 @@ class Manager<Entity, EntityObject, EntityList extends List<any/*Entity*/>> impl
 	private entityUpdater: Updater<Entity, EntityObject>;
 	private sqlBuilder: SqlBuilder<Entity>;
 
+	get Converter() { return this.converter; }
+	get Updater() { return this.entityUpdater; }
+	get Mapper() { return this.entityMapper; }
+
 	constructor(
 		private EntityStatic: IEntityStatic<Entity, EntityObject>,
 		private EntityListStatic: IEntityListStatic<EntityList, Entity>,
