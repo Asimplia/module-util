@@ -9,6 +9,7 @@ import AnnotationInteger = require('../../Mapping/Annotation/Integer');
 import AnnotationFloat = require('../../Mapping/Annotation/Float');
 import AnnotationString = require('../../Mapping/Annotation/String');
 import AnnotationArray = require('../../Mapping/Annotation/Array');
+import IEmbeddedAnnotation = require('../../Entity/Annotation/IEmbeddedAnnotation');
 
 // should be in mongoose.d.ts, but missing now
 /* tslint:disable */
@@ -66,7 +67,16 @@ class ModelBuilder<Entity, EntityObject> {
 			case type instanceof AnnotationDate:
 				return Date;
 			case type instanceof AnnotationId:
-				return { type: this.getDefinitionByType((<AnnotationId>type).Type, keyPath), unique: true };
+				var definition: any = {
+					type: this.getDefinitionByType((<AnnotationId>type).Type, keyPath),
+					unique: true
+				};
+				var parentKeyPath = keyPath.slice(0, keyPath.length - 1);
+				var parentAnnotation: IEmbeddedAnnotation = this.entityMapper.getAnnotationByKey.apply(this.entityMapper, parentKeyPath);
+				if (parentAnnotation.$nullable) {
+					definition.sparse = true;
+				}
+				return definition;
 			case type instanceof AnnotationInteger:
 			case type instanceof AnnotationFloat:
 				return Number;
