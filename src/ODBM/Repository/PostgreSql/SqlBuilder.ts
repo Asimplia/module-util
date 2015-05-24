@@ -165,17 +165,25 @@ class SqlBuilder<Entity> {
 					whereParts.push(' ' + column + ' <= $' + placeholderIndex + ' ');
 					params.push(this.prepareValue(comparableConditions.$lte));
 				}
-				if (typeof comparableConditions.$ne !== 'undefined' && comparableConditions.$ne !== null) {
-					placeholderIndex++;
-					whereParts.push(' ' + column + ' != $' + placeholderIndex + ' ');
-					params.push(this.prepareValue(comparableConditions.$ne));
+				if (typeof comparableConditions.$ne !== 'undefined') {
+					if (comparableConditions.$ne === null) {
+						whereParts.push(' ' + column + ' IS NULL ');
+					} else {
+						placeholderIndex++;
+						whereParts.push(' ' + column + ' != $' + placeholderIndex + ' ');
+						params.push(this.prepareValue(comparableConditions.$ne));
+					}
 				}
 				if (typeof comparableConditions.$in !== 'undefined' && comparableConditions.$in !== null) {
-					whereParts.push(' ' + column + ' IN (' + _.map(comparableConditions.$in, (value: any) => {
-						placeholderIndex++;
-						params.push(this.prepareValue(value));
-						return '$' + placeholderIndex;
-					}) + ') ');
+					if (comparableConditions.$in.length > 0) {
+						whereParts.push(' ' + column + ' IN (' + _.map(comparableConditions.$in, (value: any) => {
+							placeholderIndex++;
+							params.push(this.prepareValue(value));
+							return '$' + placeholderIndex;
+						}) + ') ');
+					} else {
+						whereParts.push(' FALSE ');
+					}
 				}
 			} else {
 				placeholderIndex++;

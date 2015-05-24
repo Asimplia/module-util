@@ -30,7 +30,7 @@ describe('ODBM.Repository.PostgreSql.SqlBuilder', () => {
 			]);
 			/* tslint:disable:max-line-length */
 			expect(queryParamsPair.query).toBe(
-				'UPDATE plain_entity SET id = source.id,entity_name = source.entity_name,entity_type = source.entity_type FROM (VALUES ($1,$2,$3),($4,$5,$6)) AS source (id,entity_name,entity_type) WHERE plain_entity.id = source.id'
+				'UPDATE plain_entity SET id = source.id,entity_name = source.entity_name,entity_type = source.entity_type FROM (VALUES ($1::bigint,$2::text,$3::text),($4::bigint,$5::text,$6::text)) AS source (id,entity_name,entity_type) WHERE plain_entity.id::bigint = source.id::bigint'
 			);
 			/* tslint:enable */
 		});
