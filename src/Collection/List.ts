@@ -161,6 +161,10 @@ class List<Item, ItemList extends CommonItemList> {
 		return new List<any, CommonItemList>(_.flatten(this.toArray()));
 	}
 
+	unique() {
+		return new List<any, CommonItemList>(_.unique(this.toArray()));
+	}
+
 	groupBy(cb: (item: Item) => any) {
 		var groups = _.groupBy(this.items, cb);
 		return new List<ItemList, List<ItemList, any>>(_.map(_.toArray(groups), (items: Item[]) => {
