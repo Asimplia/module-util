@@ -12,10 +12,12 @@ class StatusPromise {
 	get Promise() { return this.promise; }
 	get Data() { return this.data; }
 	get Error() { return this.error; }
+	get StartedAt() { return this.startedAt; }
 
 	constructor(
 		private promise: Q.Promise<any>,
-		private asyncPath: string
+		private asyncPath: string,
+		private startedAt: Date
 	) {}
 
 	reject(error: Error) {
