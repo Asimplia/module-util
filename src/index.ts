@@ -12,6 +12,7 @@ export import Collection = require('./Collection/index');
 export import Console = require('./Console/index');
 export import DateTime = require('./DateTime/index');
 export import Cache = require('./Cache/index');
+export import Express = require('./Express/index');
 /* tslint:disable:variable-name no-var-requires */
 export var GruntConfiguration: any;
 exports.GruntConfiguration = require('../../js/GruntConfiguration');
@@ -29,3 +30,4 @@ Collection;
 Console;
 DateTime;
 Cache;
+Express;

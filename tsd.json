@@ -34,6 +34,15 @@
     },
     "object-hash/object-hash.d.ts": {
       "commit": "b05e766a045db7d43d53da3ad97ead35774540e7"
+    },
+    "http-status/http-status.d.ts": {
+      "commit": "b05e766a045db7d43d53da3ad97ead35774540e7"
+    },
+    "crypto-js/crypto-js.d.ts": {
+      "commit": "b05e766a045db7d43d53da3ad97ead35774540e7"
+    },
+    "q/Q.d.ts": {
+      "commit": "b05e766a045db7d43d53da3ad97ead35774540e7"
     }
   }
 }
