@@ -7,6 +7,7 @@ import Converter = require('../../Entity/Converter');
 import EntityMapper = require('../../Mapping/EntityMapper');
 import Updater = require('../../Entity/Updater');
 import List = require('../../Entity/List');
+import IClient = require('../../../Postgre/IClient');
 import each = require('each');
 import MoreThenOneResultException = require('../Exception/MoreThenOneResultException');
 
@@ -25,7 +26,7 @@ class Manager<Entity, EntityObject, EntityList extends List<any/*Entity*/>> impl
 	constructor(
 		private EntityStatic: IEntityStatic<Entity, EntityObject>,
 		private EntityListStatic: IEntityListStatic<EntityList, Entity>,
-		private connection: any
+		private connection: IClient
 	) {
 		this.converter = new Converter<Entity, EntityObject>(EntityStatic);
 		this.entityMapper = new EntityMapper<Entity, EntityObject>(EntityStatic);
