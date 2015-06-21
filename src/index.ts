@@ -13,6 +13,7 @@ export import Console = require('./Console/index');
 export import DateTime = require('./DateTime/index');
 export import Cache = require('./Cache/index');
 export import Express = require('./Express/index');
+export import Postgre = require('./Postgre/index');
 /* tslint:disable:variable-name no-var-requires */
 export var GruntConfiguration: any;
 exports.GruntConfiguration = require('../../js/GruntConfiguration');
@@ -31,3 +32,4 @@ Console;
 DateTime;
 Cache;
 Express;
+Postgre;
